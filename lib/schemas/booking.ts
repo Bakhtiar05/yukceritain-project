@@ -6,10 +6,10 @@ export const bookingSchema = z.object({
   nama_lengkap: z.string().min(2, "Nama lengkap wajib diisi"),
   nama_panggilan: z.string().min(2, "Nama panggilan wajib diisi"),
   tanggal_lahir: z.date({
-    required_error: "Tanggal lahir wajib diisi",
+    message: "Tanggal lahir wajib diisi",
   }),
   jenis_kelamin: z.enum(["Laki-laki", "Perempuan"], {
-    required_error: "Pilih jenis kelamin",
+    message: "Pilih jenis kelamin",
   }),
   nik: z.string().length(16, "NIK harus 16 digit").regex(/^\d+$/, "NIK hanya boleh berisi angka"),
   nomor_hp: z.string().regex(/^08\d{8,11}$/, "Nomor HP tidak valid, contoh: 081234567890"),
@@ -17,22 +17,22 @@ export const bookingSchema = z.object({
   provinsi: z.string().min(2, "Pilih provinsi"),
 
   // Step 2
-  status: z.enum(["Pelajar", "Mahasiswa", "Orang Tua", "Lainnya"], { required_error: "Pilih status" }),
+  status: z.enum(["Pelajar", "Mahasiswa", "Orang Tua", "Lainnya"], { message: "Pilih status" }),
   status_lainnya: z.string().optional(),
-  alasan: z.enum(["Kemauan sendiri", "Saran dari teman", "Lainnya"], { required_error: "Pilih alasan" }),
+  alasan: z.enum(["Kemauan sendiri", "Saran dari teman", "Lainnya"], { message: "Pilih alasan" }),
   alasan_lainnya: z.string().optional(),
   topik_permasalahan: z.array(z.string()).min(1, "Pilih setidaknya satu topik"),
   topik_lainnya: z.string().optional(),
   ceritakan_permasalahan: z.string().min(50, "Ceritakan permasalahan minimal 50 karakter").max(3000, "Maksimal 3000 karakter"),
 
   // Step 3
-  tanggal_konsultasi: z.date({ required_error: "Pilih tanggal konsultasi" }),
-  waktu_konsultasi: z.string({ required_error: "Pilih waktu konsultasi" }),
-  metode_konsultasi: z.enum(["Online", "Offline"], { required_error: "Pilih metode konsultasi" }),
+  tanggal_konsultasi: z.date({ message: "Pilih tanggal konsultasi" }),
+  waktu_konsultasi: z.string({ message: "Pilih waktu konsultasi" }),
+  metode_konsultasi: z.enum(["Online", "Offline"], { message: "Pilih metode konsultasi" }),
 
   // Step 4
-  urutan_konseling: z.enum(["Pertama", "Kedua", "Ketiga", "Keempat", "Lebih dari Empat"], { required_error: "Pilih ini konseling ke berapa" }),
-  sumber_informasi: z.enum(["WhatsApp", "Instagram", "Campaign", "Teman", "Lainnya"], { required_error: "Pilih sumber informasi" }),
+  urutan_konseling: z.enum(["Pertama", "Kedua", "Ketiga", "Keempat", "Lebih dari Empat"], { message: "Pilih ini konseling ke berapa" }),
+  sumber_informasi: z.enum(["WhatsApp", "Instagram", "Campaign", "Teman", "Lainnya"], { message: "Pilih sumber informasi" }),
   sumber_informasi_lainnya: z.string().optional(),
 }).superRefine((data, ctx) => {
   // Step 2 Refinements
