@@ -90,12 +90,11 @@ export function Step1DataDiri() {
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
-                  selected={field.value}
+                  selected={field.value ?? undefined}
                   onSelect={(date: Date | undefined) => field.onChange(date)}
                   disabled={(date) =>
                     date > new Date() || date < new Date("1900-01-01")
                   }
-                  initialFocus
                 />
               </PopoverContent>
             </Popover>
