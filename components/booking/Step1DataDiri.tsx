@@ -91,7 +91,7 @@ export function Step1DataDiri() {
                 <Calendar
                   mode="single"
                   selected={field.value}
-                  onSelect={field.onChange}
+                  onSelect={(date: Date | undefined) => field.onChange(date)}
                   disabled={(date) =>
                     date > new Date() || date < new Date("1900-01-01")
                   }
@@ -230,10 +230,10 @@ export function Step1DataDiri() {
           <FormItem className="col-span-1 md:col-span-2">
             <FormLabel>Alamat Lengkap *</FormLabel>
             <FormControl>
-              <Textarea 
-                placeholder="Jl. Sudirman No. 123, RT 01/RW 02..." 
-                className="resize-none" 
-                {...field} 
+              <Textarea
+                placeholder="Jl. Sudirman No. 123, RT 01/RW 02..."
+                className="resize-none"
+                {...field}
               />
             </FormControl>
             <FormMessage />
