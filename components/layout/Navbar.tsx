@@ -47,7 +47,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
     >
       <div className="max-w-container mx-auto px-6 h-[72px] flex items-center justify-between">
         <Link href="/" className="flex-shrink-0">
-          <Image src="/assets/logo.png" alt="Akutemanmu" width={120} height={36} className="h-9 w-auto" />
+          <Image src="/assets/logo.png" alt="Akutemanmu" width={120} height={36} className="h-9 w-auto" style={{ width: "auto" }} />
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">

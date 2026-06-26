@@ -78,7 +78,7 @@ export async function submitBooking(data: BookingFormData) {
         mobile_number: parsedData.nomor_hp,
       },
       success_redirect_url: `${appUrl}/booking/success?request_number=${requestNumber}`,
-      failure_redirect_url: `${appUrl}/cek-status`,
+      failure_redirect_url: `${appUrl}/cek-status?request_number=${requestNumber}`,
     };
 
     const invoice = await createXenditInvoice(invoiceReq);

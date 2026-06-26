@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-10 mb-12">
           {/* Brand */}
           <div>
-            <Image src="/assets/logo.png" alt="Akutemanmu" width={130} height={40} className="h-10 w-auto brightness-0 invert mb-4" />
+            <Image src="/assets/logo.png" alt="Akutemanmu" width={130} height={40} className="h-10 w-auto brightness-0 invert mb-4" style={{ width: "auto" }} />
             <p className="text-blue-200 text-sm leading-relaxed mb-5 max-w-[280px]">
               Platform kesehatan mental #1 di Indonesia. Terhubung dengan psikolog profesional kapan saja, di mana saja.
             </p>
