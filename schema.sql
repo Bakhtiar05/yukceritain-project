@@ -1,5 +1,5 @@
 -- ============================================
--- Akutemanmu Blog — PostgreSQL Schema
+-- YukceritaIN Blog — PostgreSQL Schema
 -- Run this in your Supabase SQL Editor
 -- ============================================
 

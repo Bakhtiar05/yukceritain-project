@@ -84,7 +84,7 @@ function SuccessPageContent() {
               {isPending ? 'Menunggu Pembayaran' : 'Pembayaran Berhasil'}
             </h1>
             <p className={`font-medium ${isPending ? 'text-amber-700/80' : 'text-success/80'}`}>
-              Terima kasih telah mempercayakan AkuTemanmu.
+              Terima kasih telah mempercayakan YukceritaIN.
             </p>
           </div>
 

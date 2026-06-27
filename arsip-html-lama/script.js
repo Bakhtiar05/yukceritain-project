@@ -1,5 +1,5 @@
 /* =========================================
-   AKUTEMANMU — JavaScript
+   YUKCERITAIN — JavaScript
    Interactions, animations & accessibility
    ========================================= */
 

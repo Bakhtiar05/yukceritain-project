@@ -48,7 +48,7 @@ export function Step4InformasiTambahan() {
         name="sumber_informasi"
         render={({ field }) => (
           <FormItem className="space-y-3">
-            <FormLabel>Mengetahui AkuTemanmu dari mana? *</FormLabel>
+            <FormLabel>Mengetahui YukceritaIN dari mana? *</FormLabel>
             <FormControl>
               <RadioGroup
                 onValueChange={field.onChange}

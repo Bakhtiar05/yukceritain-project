@@ -36,7 +36,7 @@ export default function HowItWorks() {
 
         {/* Illustration */}
         <div className="relative hidden lg:block">
-          <Image src="/assets/services_illustration.png" alt="Cara kerja Akutemanmu" width={480} height={440} className="w-full h-auto" />
+          <Image src="/assets/services_illustration.png" alt="Cara kerja YukceritaIN" width={480} height={440} className="w-full h-auto" />
 
           <div className="absolute bottom-8 left-4 bg-white rounded-xl shadow-lg px-4 py-3 flex items-center gap-3 animate-gentle-bounce">
             <span className="w-2.5 h-2.5 rounded-full bg-green-400" />

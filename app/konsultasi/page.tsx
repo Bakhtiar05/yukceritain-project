@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { BookingWizard } from "@/components/booking/BookingWizard";
 
 export const metadata: Metadata = {
-  title: "Konsultasi Psikologi | AkuTemanmu",
+  title: "Konsultasi Psikologi | YukceritaIN",
   description: "Layanan konsultasi psikologi profesional. Booking jadwal Anda sekarang.",
 };
 

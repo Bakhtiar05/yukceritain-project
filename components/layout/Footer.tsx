@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-10 mb-12">
           {/* Brand */}
           <div>
-            <Image src="/assets/logo.png" alt="Akutemanmu" width={130} height={40} className="h-10 w-auto brightness-0 invert mb-4" style={{ width: "auto" }} />
+            <Image src="/assets/logo-yukceritain.png" alt="YukceritaIN" width={130} height={40} className="h-10 w-auto brightness-0 invert mb-4" style={{ width: "auto" }} />
             <p className="text-blue-200 text-sm leading-relaxed mb-5 max-w-[280px]">
               Platform kesehatan mental #1 di Indonesia. Terhubung dengan psikolog profesional kapan saja, di mana saja.
             </p>
@@ -62,7 +62,7 @@ export default function Footer() {
 
         <div className="border-t border-blue-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-blue-400 text-xs text-center md:text-left">
-            © 2026 Akutemanmu. Dibuat dengan ❤️ untuk kesehatan mental Indonesia.
+            © 2026 YukceritaIN. All rights reserved.
           </p>
           <p className="text-blue-500 text-xs text-center md:text-right max-w-md">
             Jika Anda atau seseorang yang Anda kenal membutuhkan bantuan darurat, hubungi 119 ext 8.

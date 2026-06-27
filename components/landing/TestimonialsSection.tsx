@@ -4,14 +4,14 @@ const testimonials = [
     role: 'Mahasiswi, Jakarta',
     initials: 'SA',
     gradient: 'from-pink-400 to-purple-500',
-    quote: 'Awalnya saya ragu untuk konseling online, tapi pengalaman di Akutemanmu benar-benar mengubah pandangan saya. Psikolognya sangat profesional dan membuat saya merasa nyaman.',
+    quote: 'Awalnya saya ragu untuk konseling online, tapi pengalaman di YukceritaIN benar-benar mengubah pandangan saya. Psikolognya sangat profesional dan membuat saya merasa nyaman.',
   },
   {
     name: 'Rizki Handoko',
     role: 'Software Engineer, Bandung',
     initials: 'RH',
     gradient: 'from-blue-400 to-blue-600',
-    quote: 'Sebagai orang yang sibuk, fleksibilitas jadwal di Akutemanmu sangat membantu. Saya bisa konseling kapan saja tanpa mengganggu pekerjaan.',
+    quote: 'Sebagai orang yang sibuk, fleksibilitas jadwal di YukceritaIN sangat membantu. Saya bisa konseling kapan saja tanpa mengganggu pekerjaan.',
     featured: true,
   },
   {
@@ -19,7 +19,7 @@ const testimonials = [
     role: 'Ibu Rumah Tangga, Surabaya',
     initials: 'DP',
     gradient: 'from-emerald-400 to-teal-500',
-    quote: 'Komunitas dukungan di sini luar biasa. Saya merasa tidak sendirian dalam menghadapi tantangan sebagai ibu. Terima kasih Akutemanmu!',
+    quote: 'Komunitas dukungan di sini luar biasa. Saya merasa tidak sendirian dalam menghadapi tantangan sebagai ibu. Terima kasih YukceritaIN!',
   },
 ]
 
@@ -32,7 +32,7 @@ export default function TestimonialsSection() {
             Apa Kata Mereka?
           </h2>
           <p className="text-neutral-500 max-w-lg mx-auto">
-            Cerita nyata dari pengguna yang telah merasakan manfaat Akutemanmu
+            Cerita nyata dari pengguna yang telah merasakan manfaat YukceritaIN
           </p>
         </div>
 

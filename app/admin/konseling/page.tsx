@@ -63,7 +63,7 @@ export default async function AdminKonselingDashboard() {
   const getWhatsAppLink = (req: any) => {
     const waNumber = formatWhatsAppNumber(req.nomor_hp);
     const dateFormatted = req.tanggal_konsultasi ? format(new Date(req.tanggal_konsultasi), "dd MMMM yyyy", { locale: id }) : "-";
-    const text = `Halo ${req.nama_panggilan || req.nama_lengkap}, kami dari tim admin AkuTemanmu.
+    const text = `Halo ${req.nama_panggilan || req.nama_lengkap}, kami dari tim admin YukceritaIN.
 Berikut adalah detail permohonan konseling Anda:
 Nomor Permohonan: ${req.request_number}
 Tanggal: ${dateFormatted}

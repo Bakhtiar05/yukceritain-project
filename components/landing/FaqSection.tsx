@@ -12,7 +12,7 @@ const faqs = [
     a: 'Sesi pertama gratis untuk semua pengguna baru. Setelah itu, paket mulai dari Rp99.000/sesi. Kami juga menyediakan paket bulanan dengan harga lebih terjangkau. Tidak ada biaya tersembunyi atau komitmen jangka panjang.',
   },
   {
-    q: 'Apakah psikolog di Akutemanmu memiliki lisensi resmi?',
+    q: 'Apakah psikolog di YukceritaIN memiliki lisensi resmi?',
     a: 'Ya, semua psikolog kami memiliki izin praktik resmi dari HIMPSI dan terdaftar di Kementerian Kesehatan RI. Setiap profesional melalui proses verifikasi ketat sebelum bergabung dengan platform kami.',
   },
   {

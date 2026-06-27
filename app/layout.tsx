@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 
@@ -16,10 +16,15 @@ const playfair = Playfair_Display({
   display: 'swap',
 })
 
+export const viewport: Viewport = {
+  themeColor: '#0066FF',
+}
+
 export const metadata: Metadata = {
+  applicationName: 'YukceritaIN',
   title: {
-    default: 'Akutemanmu',
-    template: '%s | Akutemanmu',
+    default: 'YukceritaIN | Cerita. Didengar. Dimengerti.',
+    template: '%s | YukceritaIN',
   },
   description:
     'Terhubung dengan psikolog profesional untuk konseling online yang aman, nyaman, dan terjangkau. Dipercaya oleh 50.000+ pengguna di seluruh Indonesia.',
@@ -33,14 +38,46 @@ export const metadata: Metadata = {
     'self-care',
     'Indonesia',
   ],
-  authors: [{ name: 'Akutemanmu' }],
+  authors: [{ name: 'YukceritaIN' }],
+  creator: 'YukceritaIN',
+  publisher: 'YukceritaIN',
+  category: 'health',
+  robots: 'index, follow',
+  alternates: {
+    canonical: '/',
+  },
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/manifest.json',
+  appleWebApp: {
+    title: 'YukceritaIN',
+    statusBarStyle: 'default',
+  },
   openGraph: {
     type: 'website',
     locale: 'id_ID',
-    siteName: 'Akutemanmu',
-    title: 'Akutemanmu — Kesehatan Mentalmu Adalah Prioritas',
+    siteName: 'YukceritaIN',
+    title: 'YukceritaIN | Cerita. Didengar. Dimengerti.',
     description:
       'Terhubung dengan psikolog profesional untuk konseling online yang aman, nyaman, dan terjangkau.',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'YukceritaIN Logo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'YukceritaIN | Cerita. Didengar. Dimengerti.',
+    description:
+      'Terhubung dengan psikolog profesional untuk konseling online yang aman, nyaman, dan terjangkau.',
+    images: ['/og-image.png'],
   },
 }
 

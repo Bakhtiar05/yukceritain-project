@@ -33,7 +33,7 @@ export default function LoginForm() {
   return (
     <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-10">
       <div className="flex justify-center mb-6">
-        <Image src="/assets/logo.png" alt="Akutemanmu" width={120} height={36} className="h-9 w-auto" style={{ width: "auto" }} />
+        <Image src="/assets/logo-yukceritain.png" alt="YukceritaIN" width={120} height={36} className="h-9 w-auto" style={{ width: "auto" }} />
       </div>
 
       <h1 className="font-display text-2xl font-bold text-neutral-900 text-center mb-1">Masuk ke Admin</h1>
