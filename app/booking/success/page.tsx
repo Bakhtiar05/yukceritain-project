@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import { CheckCircle2, ArrowRight, Calendar, Clock, Video, MapPin, Copy, CreditCard, Loader2 } from "lucide-react";
+import { CheckCircle2, ArrowRight, Calendar, Clock, Video, MapPin, Copy, CreditCard, Loader2, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { getPaymentAndBookingDetails } from "@/app/actions/payment";
@@ -16,6 +16,19 @@ function SuccessPageContent() {
   
   const [loading, setLoading] = useState(true);
   const [successData, setSuccessData] = useState<any>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const fetchStatus = async () => {
+    const requestNumber = searchParams.get("request_number");
+    if (requestNumber) {
+      setIsRefreshing(true);
+      const res = await getPaymentAndBookingDetails(requestNumber);
+      if (res.success && res.data) {
+        setSuccessData(res.data);
+      }
+      setIsRefreshing(false);
+    }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -44,6 +57,16 @@ function SuccessPageContent() {
 
     fetchData();
   }, [searchParams, router, toast]);
+
+  useEffect(() => {
+    const requestNumber = searchParams.get("request_number");
+    if (successData?.paymentStatus === "PENDING" && requestNumber) {
+      const interval = setInterval(() => {
+        fetchStatus();
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [successData?.paymentStatus, searchParams]);
 
   const handleCopyRequestNumber = () => {
     if (successData?.requestNumber) {
@@ -158,15 +181,21 @@ function SuccessPageContent() {
             </div>
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {isPending && successData.invoiceUrl && (
-                <Button onClick={() => window.location.href = successData.invoiceUrl} className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-6 h-auto text-base font-semibold shadow-blue w-full sm:w-auto">
-                  Lanjutkan Pembayaran
-                  <ArrowRight className="w-5 h-5 ml-2" />
+            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 w-full justify-center items-center mt-4">
+              {isPending && (
+                <Button onClick={fetchStatus} disabled={isRefreshing} variant="outline" className="rounded-full px-6 py-5 h-auto text-sm sm:text-base font-semibold shadow-sm w-full sm:w-auto">
+                  {isRefreshing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCcw className="w-4 h-4 mr-2" />}
+                  Cek Status
                 </Button>
               )}
-              <Button onClick={() => router.push("/")} variant={isPending ? "outline" : "default"} className={`${!isPending && "bg-blue-600 hover:bg-blue-700 text-white"} rounded-full px-8 py-6 h-auto text-base font-semibold shadow-sm w-full sm:w-auto`}>
-                Kembali ke Beranda
+              {isPending && successData.invoiceUrl && (
+                <Button onClick={() => window.location.href = successData.invoiceUrl} className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-5 h-auto text-sm sm:text-base font-semibold shadow-blue w-full sm:w-auto">
+                  Lanjutkan Pembayaran
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              )}
+              <Button onClick={() => router.push("/")} variant={isPending ? "outline" : "default"} className={`${!isPending && "bg-blue-600 hover:bg-blue-700 text-white"} rounded-full px-6 py-5 h-auto text-sm sm:text-base font-semibold shadow-sm w-full sm:w-auto`}>
+                Kembali
               </Button>
             </div>
           </div>

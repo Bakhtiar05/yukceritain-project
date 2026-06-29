@@ -63,20 +63,14 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           <div className="flex-1 flex justify-start items-center">
             <Link href="/" className="flex items-center gap-3 flex-shrink-0 group focus:outline-none">
               <Image 
-                src="/assets/logo-yukceritain.png" 
+                src="/assets/logo_yukceritain.png" 
                 alt="YukceritaIN Logo" 
-                width={56} 
-                height={56} 
-                className={`w-auto transition-all duration-300 group-hover:scale-105 ${scrolled ? 'h-[38px] lg:h-[42px]' : 'h-[42px] lg:h-[48px]'}`} 
+                width={200} 
+                height={200} 
+                className={`w-auto transition-all duration-300 group-hover:scale-105 ${scrolled ? 'h-[50px] sm:h-[60px] lg:h-[70px]' : 'h-[60px] sm:h-[70px] lg:h-[90px]'}`} 
                 style={{ width: "auto" }} 
                 priority
               />
-              <div className="hidden lg:flex flex-col justify-center">
-                <span className="font-display font-bold text-[1.15rem] text-neutral-900 leading-tight">YukceritaIN</span>
-                <span className="text-[9px] text-blue-600 font-semibold tracking-[0.08em] uppercase">
-                  Cerita. Didengar. Dimengerti.
-                </span>
-              </div>
             </Link>
           </div>
 

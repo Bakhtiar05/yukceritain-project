@@ -37,6 +37,7 @@ export function BookingWizard() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submittedRequestNumber, setSubmittedRequestNumber] = useState<string | null>(null);
   const [showSummaryDialog, setShowSummaryDialog] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
@@ -112,7 +113,6 @@ export function BookingWizard() {
   };
 
   const handleFinalSubmit = async () => {
-    setShowSummaryDialog(false);
     setIsSubmitting(true);
     try {
       const data = getValues();
@@ -123,6 +123,7 @@ export function BookingWizard() {
           title: "Berhasil",
           description: "Permohonan Anda berhasil dikirim. Mengalihkan ke pembayaran...",
         });
+        setSubmittedRequestNumber(res.requestNumber);
         
         // Redirect to Xendit Invoice if available
         if (res.invoiceUrl) {
@@ -270,11 +271,29 @@ export function BookingWizard() {
           </p>
 
           <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0 mt-4 font-sans">
-            <Button variant="outline" onClick={() => setShowSummaryDialog(false)} className="w-full sm:w-auto">
-              Batal
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                if (submittedRequestNumber) {
+                  router.push(`/cek-status?request_number=${submittedRequestNumber}`);
+                } else {
+                  setShowSummaryDialog(false);
+                }
+              }} 
+              disabled={isSubmitting && !submittedRequestNumber}
+              className="w-full sm:w-auto"
+            >
+              {submittedRequestNumber ? "Ke Halaman Status" : "Batal"}
             </Button>
-            <Button onClick={handleFinalSubmit} className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto">
-              Lanjut ke Pembayaran
+            <Button onClick={handleFinalSubmit} disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto">
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Mengirim...
+                </>
+              ) : (
+                "Lanjut ke Pembayaran"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
