@@ -206,13 +206,9 @@ export default function RequestDetailSheet({ req }: RequestDetailSheetProps) {
                   <dd className="font-medium text-neutral-900">{payment.payment_method || "-"}</dd>
                 </div>
                 <div className="col-span-2">
-                  <dt className="text-neutral-500 mb-1 text-xs uppercase tracking-wider">Payment Provider</dt>
-                  <dd className="font-medium text-neutral-900 capitalize">{payment.payment_provider || "duitku"}</dd>
-                </div>
-                <div className="col-span-2">
-                  <dt className="text-neutral-500 mb-1 text-xs uppercase tracking-wider">Transaction ID / Reference</dt>
+                  <dt className="text-neutral-500 mb-1 text-xs uppercase tracking-wider">Invoice ID / External ID</dt>
                   <dd className="font-medium text-neutral-900 font-mono text-xs">
-                    {payment.provider_transaction_id} / {payment.provider_reference}
+                    {payment.xendit_invoice_id} / {payment.external_id}
                   </dd>
                 </div>
                 {payment.paid_at && (
@@ -223,10 +219,10 @@ export default function RequestDetailSheet({ req }: RequestDetailSheetProps) {
                     </dd>
                   </div>
                 )}
-                {payment.payment_url && (
+                {payment.invoice_url && (
                   <div className="col-span-2 mt-2">
-                    <a href={payment.payment_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm font-medium">
-                      Buka Link Pembayaran &rarr;
+                    <a href={payment.invoice_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm font-medium">
+                      Buka Link Invoice &rarr;
                     </a>
                   </div>
                 )}

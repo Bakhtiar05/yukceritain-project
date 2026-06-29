@@ -27,7 +27,7 @@ export async function getPaymentAndBookingDetails(requestNumber: string) {
         method: booking.metode_konsultasi,
         bookingStatus: booking.db_status,
         paymentStatus: payment?.payment_status || "PENDING",
-        invoiceUrl: payment?.payment_url || null,
+        invoiceUrl: payment?.invoice_url || null,
         paymentMethod: payment?.payment_method || null,
         amount: payment?.amount || null,
       },

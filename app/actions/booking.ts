@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { bookingSchema, BookingFormData } from "@/lib/schemas/booking";
 import { format } from "date-fns";
-import { createInvoice } from "@/lib/payment/duitku/createInvoice";
+import { createXenditInvoice } from "@/lib/services/xendit";
 
 export async function submitBooking(data: BookingFormData) {
   try {
@@ -60,46 +60,40 @@ export async function submitBooking(data: BookingFormData) {
 
     const consultationRequestId = requestData.id;
 
-    // Create Duitku Invoice
+    // Create Xendit Invoice
     const priceStr = process.env.NEXT_PUBLIC_CONSULTATION_PRICE || "75000";
     const amount = parseInt(priceStr, 10);
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
     
     // External ID format INV-{requestNumber}-{timestamp}
     const externalId = `INV-${requestNumber}-${Date.now()}`;
     
-    const invoice = await createInvoice({
-      paymentAmount: amount,
-      merchantOrderId: externalId,
-      productDetails: `Pembayaran Konsultasi ${requestNumber}`,
-      merchantUserInfo: parsedData.nama_lengkap,
-      customerVaName: parsedData.nama_lengkap,
-      email: parsedData.email,
-      phoneNumber: parsedData.nomor_hp,
-      itemDetails: [
-        {
-          name: `Konsultasi ${requestNumber}`,
-          price: amount,
-          quantity: 1
-        }
-      ],
-      expiryPeriod: 60, // 60 minutes
-    });
+    const invoiceReq = {
+      external_id: externalId,
+      amount: amount,
+      description: `Pembayaran Konsultasi ${requestNumber}`,
+      customer: {
+        given_names: parsedData.nama_lengkap,
+        email: parsedData.email,
+        mobile_number: parsedData.nomor_hp,
+      },
+      success_redirect_url: `${appUrl}/booking/success?request_number=${requestNumber}`,
+      failure_redirect_url: `${appUrl}/cek-status?request_number=${requestNumber}`,
+    };
+
+    const invoice = await createXenditInvoice(invoiceReq);
 
     // Save payment to database
-    // Ensure timestamp computation for expired_at
-    const expiredAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
-
     const { error: paymentError } = await supabase
       .from("payments")
       .insert({
         consultation_request_id: consultationRequestId,
-        provider_transaction_id: invoice.reference, // Duitku reference
-        provider_reference: externalId, // Our merchant order id
+        xendit_invoice_id: invoice.id,
+        external_id: externalId,
         amount: amount,
         payment_status: "PENDING",
-        payment_url: invoice.paymentUrl,
-        payment_provider: 'duitku',
-        expired_at: expiredAt,
+        invoice_url: invoice.invoice_url,
+        expired_at: invoice.expiry_date,
       });
 
     if (paymentError) {
@@ -107,7 +101,7 @@ export async function submitBooking(data: BookingFormData) {
       // We don't block the user, they can retry payment from status check page
     }
 
-    return { success: true, requestNumber, invoiceUrl: invoice.paymentUrl };
+    return { success: true, requestNumber, invoiceUrl: invoice.invoice_url };
   } catch (error) {
     console.error("Booking submission error:", error);
     return { success: false, error: error instanceof Error ? error.message : "Terjadi kesalahan yang tidak terduga" };
