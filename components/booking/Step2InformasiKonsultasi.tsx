@@ -1,9 +1,8 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { BookingFormData } from "@/lib/schemas/booking";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { CustomFormField } from "@/components/ui/custom-form-field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const TOPIK_OPTIONS = [
@@ -56,19 +55,14 @@ export function Step2InformasiKonsultasi() {
       />
 
       {status === "Lainnya" && (
-        <FormField
-          control={control}
-          name="status_lainnya"
-          render={({ field }) => (
-            <FormItem className="animate-fade-enter">
-              <FormLabel>Sebutkan Status Lainnya *</FormLabel>
-              <FormControl>
-                <Input placeholder="Contoh: Pekerja Lepas" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="animate-fade-enter">
+          <CustomFormField
+            control={control}
+            name="status_lainnya"
+            label="Sebutkan Status Lainnya *"
+            placeholder="Contoh: Pekerja Lepas"
+          />
+        </div>
       )}
 
       {/* Alasan */}
@@ -104,19 +98,14 @@ export function Step2InformasiKonsultasi() {
       />
 
       {alasan === "Lainnya" && (
-        <FormField
-          control={control}
-          name="alasan_lainnya"
-          render={({ field }) => (
-            <FormItem className="animate-fade-enter">
-              <FormLabel>Sebutkan Alasan Lainnya *</FormLabel>
-              <FormControl>
-                <Input placeholder="Contoh: Rujukan dari dokter" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="animate-fade-enter">
+          <CustomFormField
+            control={control}
+            name="alasan_lainnya"
+            label="Sebutkan Alasan Lainnya *"
+            placeholder="Contoh: Rujukan dari dokter"
+          />
+        </div>
       )}
 
       {/* Topik Permasalahan */}
@@ -170,47 +159,33 @@ export function Step2InformasiKonsultasi() {
       />
 
       {topikPermasalahan.includes("Lainnya") && (
-        <FormField
-          control={control}
-          name="topik_lainnya"
-          render={({ field }) => (
-            <FormItem className="animate-fade-enter">
-              <FormLabel>Sebutkan Topik Lainnya *</FormLabel>
-              <FormControl>
-                <Input placeholder="Contoh: Quarter Life Crisis" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="animate-fade-enter">
+          <CustomFormField
+            control={control}
+            name="topik_lainnya"
+            label="Sebutkan Topik Lainnya *"
+            placeholder="Contoh: Quarter Life Crisis"
+          />
+        </div>
       )}
 
       {/* Ceritakan Permasalahan */}
-      <FormField
-        control={control}
-        name="ceritakan_permasalahan"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Ceritakan Permasalahan *</FormLabel>
-            <FormDescription>
-              Tuliskan gambaran umum mengenai permasalahan yang ingin Anda konsultasikan. Informasi ini akan membantu tim kami memahami kebutuhan Anda.
-            </FormDescription>
-            <FormControl>
-              <Textarea
-                placeholder="Saya merasa kesulitan dalam..."
-                className="min-h-[150px] resize-y"
-                {...field}
-              />
-            </FormControl>
-            <div className="flex justify-end mt-2">
-              <span className={`text-xs ${ceritakan.length < 50 || ceritakan.length > 3000 ? 'text-destructive' : 'text-neutral-500'}`}>
-                {ceritakan.length} / 3000 karakter
-              </span>
-            </div>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <div className="relative">
+        <CustomFormField
+          control={control}
+          name="ceritakan_permasalahan"
+          label="Ceritakan Permasalahan *"
+          description="Tuliskan gambaran umum mengenai permasalahan yang ingin Anda konsultasikan. Informasi ini akan membantu tim kami memahami kebutuhan Anda."
+          placeholder="Saya merasa kesulitan dalam..."
+          isTextarea={true}
+          maxLength={3000}
+        />
+        <div className="flex justify-end mt-2">
+          <span className={`text-xs ${ceritakan.length < 50 || ceritakan.length > 3000 ? 'text-destructive' : 'text-neutral-500'}`}>
+            {ceritakan.length} / 3000 karakter
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

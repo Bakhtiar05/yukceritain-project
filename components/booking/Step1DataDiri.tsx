@@ -11,55 +11,36 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { provinces } from "@/lib/data-provinces";
-import { Textarea } from "@/components/ui/textarea";
+import { CustomFormField } from "@/components/ui/custom-form-field";
 
 export function Step1DataDiri() {
   const { control } = useFormContext<BookingFormData>();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <FormField
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
+      <CustomFormField
         control={control}
         name="email"
-        render={({ field }) => (
-          <FormItem className="col-span-1 md:col-span-2">
-            <FormLabel>Email *</FormLabel>
-            <FormControl>
-              <Input placeholder="example@email.com" type="email" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        label="Email *"
+        placeholder="example@email.com"
+        type="email"
+        className="col-span-1 md:col-span-2"
       />
 
-      <FormField
+      <CustomFormField
         control={control}
         name="nama_lengkap"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Nama Lengkap *</FormLabel>
-            <FormControl>
-              <Input placeholder="HANNA AZZAHRA" {...field} />
-            </FormControl>
-            <FormDescription>Tulis nama menggunakan huruf kapital.</FormDescription>
-            <FormMessage />
-          </FormItem>
-        )}
+        label="Nama Lengkap *"
+        placeholder="HANNA AZZAHRA"
+        description="Tulis nama menggunakan huruf kapital."
       />
 
-      <FormField
+      <CustomFormField
         control={control}
         name="nama_panggilan"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Nama Panggilan *</FormLabel>
-            <FormControl>
-              <Input placeholder="Mba Hanna" {...field} />
-            </FormControl>
-            <FormDescription>Contoh: Mba Hanna, Mas Andi, Kak Rina.</FormDescription>
-            <FormMessage />
-          </FormItem>
-        )}
+        label="Nama Panggilan *"
+        placeholder="Mba Hanna"
+        description="Contoh: Mba Hanna, Mas Andi, Kak Rina."
       />
 
       <FormField
@@ -87,9 +68,12 @@ export function Step1DataDiri() {
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
+              <PopoverContent className="w-auto p-0 z-[100] bg-white border border-neutral-200 shadow-xl" align="start" sideOffset={8}>
                 <Calendar
                   mode="single"
+                  captionLayout="dropdown"
+                  startMonth={new Date(1900, 0)}
+                  endMonth={new Date()}
                   selected={field.value ?? undefined}
                   onSelect={(date: Date | undefined) => field.onChange(date)}
                   disabled={(date) =>
@@ -134,33 +118,19 @@ export function Step1DataDiri() {
         )}
       />
 
-      <FormField
+      <CustomFormField
         control={control}
         name="nik"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>NIK (16 Digit) *</FormLabel>
-            <FormControl>
-              <Input placeholder="36730xxxxxxxxxxx" {...field} />
-            </FormControl>
-            <FormDescription>Jika belum memiliki KTP, gunakan NIK pada Kartu Keluarga.</FormDescription>
-            <FormMessage />
-          </FormItem>
-        )}
+        label="NIK (16 Digit) *"
+        placeholder="36730xxxxxxxxxxx"
+        description="Jika belum memiliki KTP, gunakan NIK pada Kartu Keluarga."
       />
 
-      <FormField
+      <CustomFormField
         control={control}
         name="nomor_hp"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Nomor HP Aktif *</FormLabel>
-            <FormControl>
-              <Input placeholder="081234567890" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        label="Nomor HP Aktif *"
+        placeholder="081234567890"
       />
 
       <FormField
@@ -187,7 +157,7 @@ export function Step1DataDiri() {
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="w-full md:w-[350px] p-0">
+              <PopoverContent className="w-full md:w-[350px] p-0 bg-white border border-neutral-200 shadow-xl z-[100]">
                 <Command>
                   <CommandInput placeholder="Cari provinsi..." />
                   <CommandList>
@@ -222,22 +192,13 @@ export function Step1DataDiri() {
         )}
       />
 
-      <FormField
+      <CustomFormField
         control={control}
         name="alamat_lengkap"
-        render={({ field }) => (
-          <FormItem className="col-span-1 md:col-span-2">
-            <FormLabel>Alamat Lengkap *</FormLabel>
-            <FormControl>
-              <Textarea
-                placeholder="Jl. Sudirman No. 123, RT 01/RW 02..."
-                className="resize-none"
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        label="Alamat Lengkap *"
+        placeholder="Jl. Sudirman No. 123, RT 01/RW 02..."
+        isTextarea={true}
+        className="col-span-1 md:col-span-2"
       />
     </div>
   );

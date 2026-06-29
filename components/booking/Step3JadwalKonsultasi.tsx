@@ -4,7 +4,7 @@ import { BookingFormData } from "@/lib/schemas/booking";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Calendar } from "@/components/ui/calendar";
-import { format, startOfWeek, addWeeks, isSameWeek, isBefore, startOfDay, getDay, isAfter, endOfWeek } from "date-fns";
+import { format, startOfWeek, addWeeks, isSameWeek, isBefore, startOfDay, getDay, isAfter, endOfWeek, addDays } from "date-fns";
 import { getBookedSlots } from "@/app/actions/booking";
 import { Loader2 } from "lucide-react";
 import { toZonedTime } from "date-fns-tz";
@@ -51,12 +51,8 @@ export function Step3JadwalKonsultasi() {
   // Ensure we evaluate "today" based on Jakarta time
   const nowWib = toZonedTime(now, "Asia/Jakarta");
   
-  // Start of current week (Monday)
-  const currentWeekStart = startOfWeek(nowWib, { weekStartsOn: 1 });
-  
-  // Next week Monday
-  const nextWeekStart = addWeeks(currentWeekStart, 1);
-  const nextWeekEnd = endOfWeek(nextWeekStart, { weekStartsOn: 1 });
+  // Set minimum date to tomorrow
+  const minDate = addDays(startOfDay(nowWib), 1);
 
   const isDateDisabled = (date: Date) => {
     // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
@@ -65,8 +61,8 @@ export function Step3JadwalKonsultasi() {
     // Only allow Tue (2), Wed (3), Thu (4), Fri (5)
     if (day < 2 || day > 5) return true;
 
-    // Must be strictly next week
-    if (isBefore(date, startOfDay(nextWeekStart)) || isAfter(date, startOfDay(nextWeekEnd))) {
+    // Must be strictly from tomorrow onwards
+    if (isBefore(date, minDate)) {
       return true;
     }
 
@@ -84,7 +80,7 @@ export function Step3JadwalKonsultasi() {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Tanggal Konsultasi *</FormLabel>
-              <FormDescription>Pilih hari antara Selasa - Jumat di minggu depan.</FormDescription>
+              <FormDescription>Pilih hari antara Selasa - Jumat.</FormDescription>
               <div className="rounded-md border bg-white p-3 inline-block shadow-sm w-fit">
                 <Calendar
                   mode="single"

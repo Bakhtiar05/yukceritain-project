@@ -1,8 +1,8 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { BookingFormData } from "@/lib/schemas/booking";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { CustomFormField } from "@/components/ui/custom-form-field";
 
 export function Step4InformasiTambahan() {
   const { control } = useFormContext<BookingFormData>();
@@ -75,19 +75,14 @@ export function Step4InformasiTambahan() {
       />
 
       {sumberInformasi === "Lainnya" && (
-        <FormField
-          control={control}
-          name="sumber_informasi_lainnya"
-          render={({ field }) => (
-            <FormItem className="animate-fade-enter">
-              <FormLabel>Sebutkan Sumber Informasi Lainnya *</FormLabel>
-              <FormControl>
-                <Input placeholder="Contoh: TikTok, Facebook, dll" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="animate-fade-enter">
+          <CustomFormField
+            control={control}
+            name="sumber_informasi_lainnya"
+            label="Sebutkan Sumber Informasi Lainnya *"
+            placeholder="Contoh: TikTok, Facebook, dll"
+          />
+        </div>
       )}
     </div>
   );

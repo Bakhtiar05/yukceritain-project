@@ -121,23 +121,13 @@ export function BookingWizard() {
         localStorage.removeItem("booking-draft");
         toast({
           title: "Berhasil",
-          description: "Permohonan Anda berhasil dikirim. Mengalihkan ke pembayaran...",
+          description: "Permohonan Anda berhasil dikirim. Mengalihkan ke halaman status...",
         });
         setSubmittedRequestNumber(res.requestNumber);
+        setShowSummaryDialog(false); // Close modal
         
-        // Redirect to Xendit Invoice if available
-        if (res.invoiceUrl) {
-          window.location.href = res.invoiceUrl;
-        } else {
-          // Fallback if no invoice was generated (should not happen typically)
-          sessionStorage.setItem("booking-success", JSON.stringify({
-            requestNumber: res.requestNumber,
-            date: data.tanggal_konsultasi,
-            time: data.waktu_konsultasi,
-            method: data.metode_konsultasi
-          }));
-          router.push("/booking/success");
-        }
+        // Immediately redirect to the status page instead of Xendit
+        router.push(`/booking/success?request_number=${res.requestNumber}`);
       } else {
         throw new Error(res.error || "Gagal menyimpan data");
       }
@@ -275,7 +265,7 @@ export function BookingWizard() {
               variant="outline" 
               onClick={() => {
                 if (submittedRequestNumber) {
-                  router.push(`/cek-status?request_number=${submittedRequestNumber}`);
+                  router.push(`/booking/success?request_number=${submittedRequestNumber}`);
                 } else {
                   setShowSummaryDialog(false);
                 }
