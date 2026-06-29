@@ -63,7 +63,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           <div className="flex-1 flex justify-start items-center">
             <Link href="/" className="flex items-center gap-3 flex-shrink-0 group focus:outline-none">
               <Image 
-                src="/assets/logo_yukceritain.png" 
+                src="/assets/logov2_yukceritain.png" 
                 alt="YukceritaIN Logo" 
                 width={200} 
                 height={200} 

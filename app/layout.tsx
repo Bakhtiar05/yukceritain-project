@@ -47,9 +47,9 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   icons: {
-    icon: '/icon.png',
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: '/assets/fav_logo_iconv3.png',
+    shortcut: '/assets/fav_logo_iconv3.png',
+    apple: '/assets/fav_logo_iconv3.png',
   },
   manifest: '/manifest.json',
   appleWebApp: {
