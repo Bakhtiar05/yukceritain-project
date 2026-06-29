@@ -63,7 +63,12 @@ export async function submitBooking(data: BookingFormData) {
     // Create Xendit Invoice
     const priceStr = process.env.NEXT_PUBLIC_CONSULTATION_PRICE || "75000";
     const amount = parseInt(priceStr, 10);
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    let appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://yukceritain.vercel.app";
+    
+    // Fallback if Vercel auto-injects dynamic preview URLs without explicit NEXT_PUBLIC_APP_URL
+    if (appUrl.includes("vercel.app") && process.env.VERCEL_URL && !process.env.NEXT_PUBLIC_APP_URL) {
+      appUrl = "https://yukceritain.vercel.app";
+    }
     
     // External ID format INV-{requestNumber}-{timestamp}
     const externalId = `INV-${requestNumber}-${Date.now()}`;
