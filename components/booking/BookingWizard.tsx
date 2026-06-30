@@ -62,7 +62,11 @@ export function BookingWizard() {
 
   useEffect(() => {
     if (isMounted) {
-      localStorage.setItem("booking-draft", JSON.stringify(formValues));
+      try {
+        localStorage.setItem("booking-draft", JSON.stringify(formValues));
+      } catch (e) {
+        console.warn("localStorage is not available", e);
+      }
     }
   }, [formValues, isMounted]);
 
@@ -115,16 +119,21 @@ export function BookingWizard() {
       const data = getValues();
       const res = await submitBooking(data);
       if (res.success && res.requestNumber) {
-        localStorage.removeItem("booking-draft");
+        try {
+          localStorage.removeItem("booking-draft");
+        } catch (e) {
+          console.warn("localStorage is not available", e);
+        }
         toast({
           title: "Berhasil",
           description: "Permohonan Anda berhasil dikirim. Mengalihkan ke halaman status...",
         });
         
-        // Immediately redirect to the status page.
-        // Using window.location.href for maximum reliability on mobile browsers (Safari)
-        // when redirecting after an async API call.
-        window.location.href = `/booking/success?request_number=${res.requestNumber}`;
+        router.push(`/booking/success?request_number=${res.requestNumber}`);
+        // Add a fallback reset just in case router.push takes time
+        setTimeout(() => {
+          setIsSubmitting(false);
+        }, 3000);
       } else {
         throw new Error(res.error || "Gagal menyimpan data");
       }

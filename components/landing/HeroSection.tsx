@@ -4,39 +4,6 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion, useReducedMotion, Variants, AnimatePresence } from 'framer-motion'
 
-const TypewriterText = ({ text }: { text: string }) => {
-  const [displayedText, setDisplayedText] = useState('')
-
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout
-    setDisplayedText('')
-
-    let i = 0
-    const typeWriter = () => {
-      if (i <= text.length) {
-        setDisplayedText(text.slice(0, i))
-        i++
-        timeoutId = setTimeout(typeWriter, 35)
-      }
-    }
-
-    typeWriter()
-    return () => clearTimeout(timeoutId)
-  }, [text])
-
-  return (
-    <span className="text-left">
-      <span>{displayedText}</span>
-      <motion.span
-        animate={{ opacity: [1, 0] }}
-        transition={{ repeat: Infinity, duration: 0.8 }}
-        className="inline-block ml-[2px] font-normal"
-      >
-        |
-      </motion.span>
-    </span>
-  )
-}
 
 const dynamicWords = ["Didengar", "Dimengerti", "Divalidasi", "Dihargai"];
 
@@ -161,7 +128,7 @@ export default function HeroSection() {
                        shadow-[0_10px_20px_-5px_rgba(29,78,216,0.3),inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-1px_-1px_2px_rgba(0,0,0,0.1)]
                        font-sans font-medium text-white text-[11px] leading-tight"
           >
-            <TypewriterText text={chatText} />
+            {chatText}
           </motion.div>
         )}
       </motion.div>
@@ -197,7 +164,7 @@ export default function HeroSection() {
                      shadow-[0_12px_25px_-5px_rgba(29,78,216,0.3),inset_2px_2px_3px_rgba(255,255,255,0.3),inset_-1px_-1px_3px_rgba(0,0,0,0.1)]
                      font-sans font-medium text-white text-[13px] leading-snug"
         >
-          <TypewriterText text={chatText} />
+          {chatText}
         </motion.div>
       )}
 

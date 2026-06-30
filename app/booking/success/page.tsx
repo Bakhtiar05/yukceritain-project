@@ -45,7 +45,13 @@ function SuccessPageContent() {
         setLoading(false);
       } else {
         // Try fallback to sessionStorage for edge cases where URL doesn't have it
-        const sessionData = sessionStorage.getItem("booking-success");
+        let sessionData = null;
+        try {
+          sessionData = sessionStorage.getItem("booking-success");
+        } catch (e) {
+          console.warn("sessionStorage is not available", e);
+        }
+        
         if (sessionData) {
           setSuccessData(JSON.parse(sessionData));
         } else {
