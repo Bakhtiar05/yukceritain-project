@@ -106,13 +106,12 @@ export default function HeroSection() {
             backgroundImage: 'url(/assets/latar-belakang.png)',
             backgroundPosition: '70% 30%', // Focus on the women
             backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat'
+            backgroundRepeat: 'no-repeat',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)'
           }}
           title="Counseling Session"
         />
-
-        {/* Gradient fade at the bottom of the image to blend with the text section */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#F8FBFF] to-transparent pointer-events-none z-0" />
 
         {/* MOBILE INTERACTIVE BUBBLE */}
         {isMounted && (
@@ -142,7 +141,9 @@ export default function HeroSection() {
             backgroundImage: 'url(/assets/latar-belakang.png)',
             backgroundPosition: 'right center',
             backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat'
+            backgroundRepeat: 'no-repeat',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
           }}
           title="Counseling Session"
         />

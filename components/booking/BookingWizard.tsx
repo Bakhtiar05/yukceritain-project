@@ -124,9 +124,12 @@ export function BookingWizard() {
           description: "Permohonan Anda berhasil dikirim. Mengalihkan ke halaman status...",
         });
         setSubmittedRequestNumber(res.requestNumber);
-        setShowSummaryDialog(false); // Close modal
+        // Do NOT call setShowSummaryDialog(false) here to avoid Radix UI exit animation locking the body pointer-events
         
-        // Immediately redirect to the status page instead of Xendit
+        // Immediately redirect to the status page.
+        // Using router.push prevents mobile browsers (like Safari) from blocking the redirect
+        // if the API call takes too long. We purposefully do NOT close the dialog manually 
+        // to avoid the Radix UI unmount/pointer-events bug.
         router.push(`/booking/success?request_number=${res.requestNumber}`);
       } else {
         throw new Error(res.error || "Gagal menyimpan data");
