@@ -1,8 +1,9 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { BookingFormData } from "@/lib/schemas/booking";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { RadioGroup } from "@/components/ui/radio-group";
 import { CustomFormField } from "@/components/ui/custom-form-field";
+import { SelectableChip } from "@/components/ui/selectable-chip";
 
 export function Step4InformasiTambahan() {
   const { control } = useFormContext<BookingFormData>();
@@ -21,19 +22,10 @@ export function Step4InformasiTambahan() {
               <RadioGroup
                 onValueChange={field.onChange}
                 defaultValue={field.value}
-                className="grid grid-cols-2 md:grid-cols-5 gap-4"
+                className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3"
               >
                 {["Pertama", "Kedua", "Ketiga", "Keempat", "Lebih dari Empat"].map((item) => (
-                  <FormItem key={item}>
-                    <FormControl>
-                      <RadioGroupItem value={item} className="peer sr-only" />
-                    </FormControl>
-                    <FormLabel
-                      className="flex flex-col items-center justify-center rounded-xl border-2 border-[#E2E8F0] bg-white p-4 text-sm hover:bg-[#F8FAFC] hover:border-[#CBD5E1] peer-data-[state=checked]:border-[#2563EB] peer-data-[state=checked]:bg-[#EFF6FF] cursor-pointer text-center h-full transition-all duration-200 font-medium"
-                    >
-                      {item}
-                    </FormLabel>
-                  </FormItem>
+                  <SelectableChip key={item} value={item} label={item} />
                 ))}
               </RadioGroup>
             </FormControl>
@@ -53,19 +45,10 @@ export function Step4InformasiTambahan() {
               <RadioGroup
                 onValueChange={field.onChange}
                 defaultValue={field.value}
-                className="grid grid-cols-2 md:grid-cols-5 gap-4"
+                className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3"
               >
                 {["WhatsApp", "Instagram", "Campaign", "Teman", "Lainnya"].map((item) => (
-                  <FormItem key={item}>
-                    <FormControl>
-                      <RadioGroupItem value={item} className="peer sr-only" />
-                    </FormControl>
-                    <FormLabel
-                      className="flex flex-col items-center justify-center rounded-xl border-2 border-[#E2E8F0] bg-white p-4 text-sm hover:bg-[#F8FAFC] hover:border-[#CBD5E1] peer-data-[state=checked]:border-[#2563EB] peer-data-[state=checked]:bg-[#EFF6FF] cursor-pointer text-center h-full transition-all duration-200 font-medium"
-                    >
-                      {item}
-                    </FormLabel>
-                  </FormItem>
+                  <SelectableChip key={item} value={item} label={item} />
                 ))}
               </RadioGroup>
             </FormControl>

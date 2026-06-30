@@ -41,8 +41,6 @@ export function BookingWizard() {
   const [showSummaryDialog, setShowSummaryDialog] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
-  const price = parseInt(process.env.NEXT_PUBLIC_CONSULTATION_PRICE || "75000");
-
   const methods = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
     defaultValues: defaultBookingValues,
@@ -51,6 +49,8 @@ export function BookingWizard() {
 
   const { watch, trigger, getValues, reset } = methods;
   const formValues = watch();
+  
+  const price = parseInt(process.env.NEXT_PUBLIC_CONSULTATION_BASE_PRICE || "20000") * (formValues.jumlah_sesi || 1);
 
   useEffect(() => {
     // Load from local storage
@@ -83,7 +83,7 @@ export function BookingWizard() {
     } else if (currentStep === 1) {
       fieldsToValidate = ["status", "status_lainnya", "alasan", "alasan_lainnya", "topik_permasalahan", "topik_lainnya", "ceritakan_permasalahan"];
     } else if (currentStep === 2) {
-      fieldsToValidate = ["tanggal_konsultasi", "waktu_konsultasi", "metode_konsultasi"];
+      fieldsToValidate = ["tanggal_konsultasi", "waktu_konsultasi", "jumlah_sesi", "metode_konsultasi"];
     } else if (currentStep === 3) {
       fieldsToValidate = ["urutan_konseling", "sumber_informasi", "sumber_informasi_lainnya"];
     }
@@ -203,26 +203,26 @@ export function BookingWizard() {
       </FormProvider>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between mt-14 pt-8 border-t border-[#E2E8F0]">
+      <div className="flex flex-row justify-between items-center gap-3 mt-14 pt-8 border-t border-[#E2E8F0]">
         {currentStep > 0 ? (
-          <Button variant="outline" onClick={handleBack} className="rounded-xl px-6 h-[52px] text-[#64748B] border-[#E2E8F0] hover:bg-[#F8FAFC] hover:text-[#0F172A] hover:border-[#CBD5E1] transition-all duration-200">
-            <ArrowLeft className="w-4 h-4 mr-2" />
+          <Button variant="outline" onClick={handleBack} className="rounded-xl px-4 md:px-6 h-12 text-sm md:text-[15px] font-medium text-[#64748B] border-[#E2E8F0] hover:bg-[#F8FAFC] hover:text-[#0F172A] hover:border-[#CBD5E1] transition-all duration-200 shrink-0">
+            <ArrowLeft className="w-4 h-4 mr-1.5 md:mr-2" />
             Kembali
           </Button>
         ) : (
-          <div />
+          <div className="w-[1px]" />
         )}
 
         {currentStep < steps.length - 1 ? (
-          <Button onClick={handleNext} className="booking-btn-primary rounded-xl px-8 h-[52px] text-white font-semibold shadow-md">
+          <Button onClick={handleNext} className="booking-btn-primary rounded-xl px-5 md:px-8 h-12 text-sm md:text-[15px] font-semibold text-white shadow-md shrink-0">
             Selanjutnya
-            <ArrowRight className="w-4 h-4 ml-2" />
+            <ArrowRight className="w-4 h-4 ml-1.5 md:ml-2" />
           </Button>
         ) : (
-          <Button onClick={handleOpenSummary} disabled={isSubmitting} className="bg-[#22C55E] hover:bg-[#16A34A] rounded-xl px-8 h-[52px] shadow-md text-white font-semibold transition-all duration-200">
+          <Button onClick={handleOpenSummary} disabled={isSubmitting} className="bg-[#22C55E] hover:bg-[#16A34A] rounded-xl px-5 md:px-8 h-12 shadow-md text-sm md:text-[15px] text-white font-semibold transition-all duration-200 shrink-0">
             {isSubmitting ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                <Loader2 className="w-4 h-4 mr-1.5 md:mr-2 animate-spin" />
                 Mengirim...
               </>
             ) : (
@@ -251,11 +251,11 @@ export function BookingWizard() {
               <span className="text-sm font-medium text-[#0F172A] text-right">{formValues.metode_konsultasi}</span>
             </div>
             <div className="flex justify-between items-start border-b border-[#E2E8F0] pb-3">
-              <span className="text-sm text-[#64748B]">Jadwal</span>
+              <span className="text-sm text-[#64748B]">Jadwal & Durasi</span>
               <span className="text-sm font-medium text-[#0F172A] text-right">
                 {formValues.tanggal_konsultasi ? format(new Date(formValues.tanggal_konsultasi), "dd MMMM yyyy", { locale: id }) : ""}
                 <br />
-                {formValues.waktu_konsultasi} WIB
+                {formValues.waktu_konsultasi} WIB ({formValues.jumlah_sesi} Sesi)
               </span>
             </div>
             <div className="flex justify-between items-start pt-1">

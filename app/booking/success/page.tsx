@@ -189,9 +189,11 @@ function SuccessPageContent() {
                 </Button>
               )}
               {isPending && successData.invoiceUrl && (
-                <Button onClick={() => window.location.href = successData.invoiceUrl} className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-5 h-auto text-sm sm:text-base font-semibold shadow-blue w-full sm:w-auto">
-                  Lanjutkan Pembayaran
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-5 h-auto text-sm sm:text-base font-semibold shadow-blue w-full sm:w-auto">
+                  <a href={successData.invoiceUrl}>
+                    Lanjutkan Pembayaran
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </a>
                 </Button>
               )}
               <Button onClick={() => router.push("/")} variant={isPending ? "outline" : "default"} className={`${!isPending && "bg-blue-600 hover:bg-blue-700 text-white"} rounded-full px-6 py-5 h-auto text-sm sm:text-base font-semibold shadow-sm w-full sm:w-auto`}>

@@ -252,6 +252,7 @@ CREATE TABLE IF NOT EXISTS consultation_requests (
   -- Step 3: Jadwal Konsultasi
   tanggal_konsultasi DATE NOT NULL,
   waktu_konsultasi TEXT NOT NULL,
+  jumlah_sesi INTEGER DEFAULT 1,
   metode_konsultasi TEXT NOT NULL,
   
   -- Step 4: Informasi Tambahan

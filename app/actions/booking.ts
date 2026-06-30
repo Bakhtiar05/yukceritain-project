@@ -43,6 +43,7 @@ export async function submitBooking(data: BookingFormData) {
         
         tanggal_konsultasi: format(parsedData.tanggal_konsultasi, "yyyy-MM-dd"),
         waktu_konsultasi: parsedData.waktu_konsultasi,
+        jumlah_sesi: parsedData.jumlah_sesi,
         metode_konsultasi: parsedData.metode_konsultasi,
         
         urutan_konseling: parsedData.urutan_konseling,
@@ -61,8 +62,8 @@ export async function submitBooking(data: BookingFormData) {
     const consultationRequestId = requestData.id;
 
     // Create Xendit Invoice
-    const priceStr = process.env.NEXT_PUBLIC_CONSULTATION_PRICE || "75000";
-    const amount = parseInt(priceStr, 10);
+    const basePriceStr = process.env.NEXT_PUBLIC_CONSULTATION_BASE_PRICE || "20000";
+    const amount = parseInt(basePriceStr, 10) * parsedData.jumlah_sesi;
     let appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://yukceritain.vercel.app";
     
     // Fallback if Vercel auto-injects dynamic preview URLs without explicit NEXT_PUBLIC_APP_URL
@@ -76,7 +77,7 @@ export async function submitBooking(data: BookingFormData) {
     const invoiceReq = {
       external_id: externalId,
       amount: amount,
-      description: `Pembayaran Konsultasi ${requestNumber}`,
+      description: `Pembayaran Konsultasi ${requestNumber} (${parsedData.jumlah_sesi} Sesi)`,
       customer: {
         given_names: parsedData.nama_lengkap,
         email: parsedData.email,
@@ -113,6 +114,15 @@ export async function submitBooking(data: BookingFormData) {
   }
 }
 
+const TIME_SLOTS = [
+  "09:00 WIB",
+  "10:00 WIB",
+  "11:00 WIB",
+  "13:00 WIB",
+  "14:00 WIB",
+  "15:00 WIB",
+];
+
 export async function getBookedSlots(date: Date) {
   try {
     const supabase = await createClient();
@@ -120,13 +130,26 @@ export async function getBookedSlots(date: Date) {
 
     const { data, error } = await supabase
       .from("consultation_requests")
-      .select("waktu_konsultasi")
+      .select("waktu_konsultasi, jumlah_sesi")
       .eq("tanggal_konsultasi", dateStr)
       .in("db_status", ["Menunggu Verifikasi", "Disetujui"]);
 
     if (error) throw error;
 
-    return data.map((row: any) => row.waktu_konsultasi);
+    const bookedSlots: string[] = [];
+    data.forEach((row: any) => {
+      bookedSlots.push(row.waktu_konsultasi);
+      
+      // If they booked 2 sessions, block the consecutive slot as well
+      if (row.jumlah_sesi === 2) {
+        const startIndex = TIME_SLOTS.indexOf(row.waktu_konsultasi);
+        if (startIndex !== -1 && startIndex < TIME_SLOTS.length - 1) {
+          bookedSlots.push(TIME_SLOTS[startIndex + 1]);
+        }
+      }
+    });
+
+    return bookedSlots;
   } catch (error) {
     console.error("Failed to fetch booked slots:", error);
     return [];

@@ -4,6 +4,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescripti
 import { CustomFormField } from "@/components/ui/custom-form-field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import { SelectableChip } from "@/components/ui/selectable-chip";
 
 const TOPIK_OPTIONS = [
   "Keluarga", "Parenting", "Pranikah", "KDRT", "Hubungan", 
@@ -33,19 +34,10 @@ export function Step2InformasiKonsultasi() {
               <RadioGroup
                 onValueChange={field.onChange}
                 defaultValue={field.value}
-                className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3"
               >
                 {["Pelajar", "Mahasiswa", "Orang Tua", "Lainnya"].map((item) => (
-                  <FormItem key={item}>
-                    <FormControl>
-                      <RadioGroupItem value={item} className="peer sr-only" />
-                    </FormControl>
-                    <FormLabel
-                      className="flex flex-col items-center justify-between rounded-xl border-2 border-[#E2E8F0] bg-white p-5 hover:bg-[#F8FAFC] hover:border-[#CBD5E1] peer-data-[state=checked]:border-[#2563EB] peer-data-[state=checked]:bg-[#EFF6FF] cursor-pointer transition-all duration-200"
-                    >
-                      {item}
-                    </FormLabel>
-                  </FormItem>
+                  <SelectableChip key={item} value={item} label={item} />
                 ))}
               </RadioGroup>
             </FormControl>
@@ -76,19 +68,10 @@ export function Step2InformasiKonsultasi() {
               <RadioGroup
                 onValueChange={field.onChange}
                 defaultValue={field.value}
-                className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3"
               >
                 {["Kemauan sendiri", "Saran dari teman", "Lainnya"].map((item) => (
-                  <FormItem key={item}>
-                    <FormControl>
-                      <RadioGroupItem value={item} className="peer sr-only" />
-                    </FormControl>
-                    <FormLabel
-                      className="flex flex-col items-center justify-between rounded-xl border-2 border-[#E2E8F0] bg-white p-5 hover:bg-[#F8FAFC] hover:border-[#CBD5E1] peer-data-[state=checked]:border-[#2563EB] peer-data-[state=checked]:bg-[#EFF6FF] cursor-pointer text-center transition-all duration-200"
-                    >
-                      {item}
-                    </FormLabel>
-                  </FormItem>
+                  <SelectableChip key={item} value={item} label={item} />
                 ))}
               </RadioGroup>
             </FormControl>

@@ -28,6 +28,7 @@ export const bookingSchema = z.object({
   // Step 3
   tanggal_konsultasi: z.date({ message: "Pilih tanggal konsultasi" }),
   waktu_konsultasi: z.string({ message: "Pilih waktu konsultasi" }),
+  jumlah_sesi: z.number().min(1).max(2).default(1),
   metode_konsultasi: z.enum(["Online", "Offline"], { message: "Pilih metode konsultasi" }),
 
   // Step 4
@@ -72,6 +73,7 @@ export const defaultBookingValues: Partial<BookingFormData> = {
   ceritakan_permasalahan: "",
   tanggal_konsultasi: undefined,
   waktu_konsultasi: "",
+  jumlah_sesi: 1,
   metode_konsultasi: undefined,
   urutan_konseling: undefined,
   sumber_informasi: undefined,
