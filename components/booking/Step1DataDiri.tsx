@@ -48,7 +48,7 @@ export function Step1DataDiri() {
         name="tanggal_lahir"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <FormLabel>Tanggal Lahir *</FormLabel>
+            <FormLabel>Tanggal Lahir <span className="text-red-500">*</span></FormLabel>
             <Popover>
               <PopoverTrigger asChild>
                 <FormControl>
@@ -92,7 +92,7 @@ export function Step1DataDiri() {
         name="jenis_kelamin"
         render={({ field }) => (
           <FormItem className="space-y-3">
-            <FormLabel>Jenis Kelamin *</FormLabel>
+            <FormLabel>Jenis Kelamin <span className="text-red-500">*</span></FormLabel>
             <FormControl>
               <RadioGroup
                 onValueChange={field.onChange}
@@ -138,7 +138,7 @@ export function Step1DataDiri() {
         name="provinsi"
         render={({ field }) => (
           <FormItem className="flex flex-col mt-2">
-            <FormLabel>Provinsi *</FormLabel>
+            <FormLabel>Provinsi <span className="text-red-500">*</span></FormLabel>
             <Popover>
               <PopoverTrigger asChild>
                 <FormControl>

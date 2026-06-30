@@ -31,7 +31,15 @@ export function CustomFormField({
       name={name}
       render={({ field }) => (
         <FormItem className={className}>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel>
+            {label.endsWith(" *") ? (
+              <>
+                {label.slice(0, -2)} <span className="text-red-500">*</span>
+              </>
+            ) : (
+              label
+            )}
+          </FormLabel>
           <FormControl>
             {isTextarea ? (
               <Textarea 

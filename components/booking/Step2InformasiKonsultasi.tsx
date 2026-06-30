@@ -29,7 +29,7 @@ export function Step2InformasiKonsultasi() {
         name="status"
         render={({ field }) => (
           <FormItem className="space-y-3">
-            <FormLabel>Status saat ini *</FormLabel>
+            <FormLabel>Status saat ini <span className="text-red-500">*</span></FormLabel>
             <FormControl>
               <RadioGroup
                 onValueChange={field.onChange}
@@ -63,7 +63,7 @@ export function Step2InformasiKonsultasi() {
         name="alasan"
         render={({ field }) => (
           <FormItem className="space-y-3">
-            <FormLabel>Alasan Menghubungi Layanan *</FormLabel>
+            <FormLabel>Alasan Menghubungi Layanan <span className="text-red-500">*</span></FormLabel>
             <FormControl>
               <RadioGroup
                 onValueChange={field.onChange}
@@ -98,7 +98,7 @@ export function Step2InformasiKonsultasi() {
         render={() => (
           <FormItem>
             <div className="mb-4">
-              <FormLabel className="text-base font-semibold">Topik Permasalahan Secara Umum *</FormLabel>
+              <FormLabel className="text-base font-semibold">Topik Permasalahan Secara Umum <span className="text-red-500">*</span></FormLabel>
               <FormDescription>Boleh pilih lebih dari satu.</FormDescription>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

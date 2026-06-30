@@ -27,7 +27,7 @@ export const bookingSchema = z.object({
 
   // Step 3
   tanggal_konsultasi: z.date({ message: "Pilih tanggal konsultasi" }),
-  waktu_konsultasi: z.string({ message: "Pilih waktu konsultasi" }),
+  waktu_konsultasi: z.string({ message: "Pilih waktu konsultasi" }).min(1, "Pilih waktu konsultasi"),
   metode_konsultasi: z.enum(["Online", "Offline"], { message: "Pilih metode konsultasi" }),
 
   // Step 4

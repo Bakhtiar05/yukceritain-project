@@ -99,7 +99,16 @@ export function BookingWizard() {
 
   const handleFinalSubmit = async () => {
     const isValid = await trigger();
-    if (!isValid) return;
+    if (!isValid) {
+      const errors = methods.formState.errors;
+      console.log("Form validation errors:", errors);
+      toast({
+        variant: "destructive",
+        title: "Validasi Gagal",
+        description: "Ada isian yang belum lengkap atau tidak valid di langkah sebelumnya. Mohon periksa kembali semua langkah.",
+      });
+      return;
+    }
 
     setIsSubmitting(true);
     try {
@@ -113,9 +122,9 @@ export function BookingWizard() {
         });
         
         // Immediately redirect to the status page.
-        // Using router.push prevents mobile browsers (like Safari) from blocking the redirect
-        // if the API call takes too long.
-        router.push(`/booking/success?request_number=${res.requestNumber}`);
+        // Using window.location.href for maximum reliability on mobile browsers (Safari)
+        // when redirecting after an async API call.
+        window.location.href = `/booking/success?request_number=${res.requestNumber}`;
       } else {
         throw new Error(res.error || "Gagal menyimpan data");
       }

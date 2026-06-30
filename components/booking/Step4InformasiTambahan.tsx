@@ -17,7 +17,7 @@ export function Step4InformasiTambahan() {
         name="urutan_konseling"
         render={({ field }) => (
           <FormItem className="space-y-3">
-            <FormLabel>Ini adalah sesi konseling ke berapa untuk Anda? *</FormLabel>
+            <FormLabel>Ini adalah sesi konseling ke berapa untuk Anda? <span className="text-red-500">*</span></FormLabel>
             <FormControl>
               <RadioGroup
                 onValueChange={field.onChange}
@@ -40,7 +40,7 @@ export function Step4InformasiTambahan() {
         name="sumber_informasi"
         render={({ field }) => (
           <FormItem className="space-y-3">
-            <FormLabel>Mengetahui YukceritaIN dari mana? *</FormLabel>
+            <FormLabel>Mengetahui YukceritaIN dari mana? <span className="text-red-500">*</span></FormLabel>
             <FormControl>
               <RadioGroup
                 onValueChange={field.onChange}

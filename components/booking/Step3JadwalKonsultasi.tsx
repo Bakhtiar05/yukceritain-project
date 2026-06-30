@@ -82,7 +82,7 @@ export function Step3JadwalKonsultasi() {
           name="tanggal_konsultasi"
           render={({ field }) => (
             <FormItem className="flex flex-col bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm">
-              <FormLabel className="text-base font-semibold">Tanggal Konsultasi *</FormLabel>
+              <FormLabel className="text-base font-semibold">Tanggal Konsultasi <span className="text-red-500">*</span></FormLabel>
               <FormDescription>Pilih hari antara Selasa - Jumat.</FormDescription>
               <div className="rounded-xl border border-[#E2E8F0] bg-white p-4 inline-block shadow-sm w-fit mt-4">
                 <Calendar
@@ -104,7 +104,7 @@ export function Step3JadwalKonsultasi() {
           name="waktu_konsultasi"
           render={({ field }) => (
             <FormItem className="space-y-3 bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm flex flex-col h-full">
-              <FormLabel className="text-base font-semibold">Waktu Konsultasi *</FormLabel>
+              <FormLabel className="text-base font-semibold">Waktu Konsultasi <span className="text-red-500">*</span></FormLabel>
               <FormDescription>Zona waktu WIB (GMT+7)</FormDescription>
               
               {!selectedDate ? (
@@ -165,7 +165,7 @@ export function Step3JadwalKonsultasi() {
         name="metode_konsultasi"
         render={({ field }) => (
           <FormItem className="space-y-3 bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm">
-            <FormLabel className="text-base font-semibold">Metode Konsultasi *</FormLabel>
+            <FormLabel className="text-base font-semibold">Metode Konsultasi <span className="text-red-500">*</span></FormLabel>
             <FormControl>
               <RadioGroup
                 onValueChange={field.onChange}
