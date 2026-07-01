@@ -3,13 +3,15 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Home, HeartHandshake, Activity, BookOpen, MoreHorizontal } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 interface NavbarProps {
   variant?: 'default' | 'blog'
 }
 
 export default function Navbar({ variant = 'default' }: NavbarProps) {
+  const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -46,13 +48,17 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
   return (
     <>
       <header
-        className={`fixed top-0 inset-x-0 w-full z-[1000] transition-all duration-300 ${
-          scrolled
-            ? 'bg-white/90 backdrop-blur-xl border-b border-neutral-200/50 shadow-sm py-2 lg:py-2.5'
-            : 'bg-white/50 backdrop-blur-sm border-b border-transparent py-3.5 lg:py-4'
+        className={`fixed inset-x-0 z-[1000] transition-all duration-500 flex justify-center w-full px-4 sm:px-6 lg:px-8 ${
+          scrolled ? 'top-3 md:top-4' : 'top-4 md:top-6'
         }`}
       >
-        <div className="max-w-container mx-auto px-6 md:px-8 xl:px-12 flex items-center justify-between">
+        <div
+          className={`w-full max-w-container mx-auto flex items-center justify-between transition-all duration-500 ${
+            scrolled
+              ? 'bg-white/70 backdrop-blur-xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-2xl md:rounded-full py-2 px-4 md:px-6 xl:px-8'
+              : 'bg-white/40 backdrop-blur-md border border-white/30 shadow-[0_4px_20px_rgba(0,0,0,0.04)] rounded-2xl md:rounded-full py-3 md:py-3.5 px-4 md:px-6 xl:px-8'
+          }`}
+        >
           {/* Logo */}
           <div className="flex-1 flex justify-start items-center">
             <Link href="/" className="flex items-center gap-3 flex-shrink-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg">
@@ -86,83 +92,83 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           </nav>
 
           {/* Actions */}
-          <div className="flex-1 flex justify-end items-center gap-3 lg:gap-4">
+          <div className="flex-1 hidden md:flex justify-end items-center gap-3 lg:gap-4">
             <Link
               href="/cek-status"
-              className="hidden md:block text-[0.875rem] font-medium text-neutral-500 hover:text-blue-600 transition-colors px-3 py-2 rounded-full hover:bg-blue-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+              className="text-[0.875rem] font-medium text-neutral-500 hover:text-blue-600 transition-colors px-3 py-2 rounded-full hover:bg-blue-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
             >
               Cek Status
             </Link>
 
             <Link
               href="/konsultasi"
-              className="hidden md:flex items-center justify-center px-5 lg:px-6 py-2.5 text-[0.875rem] lg:text-[0.925rem] font-semibold text-white bg-blue-600 rounded-full shadow-[0_2px_8px_rgba(37,99,235,0.25)] hover:bg-blue-700 hover:shadow-[0_4px_16px_rgba(37,99,235,0.35)] hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+              className="flex items-center justify-center px-5 lg:px-6 py-2.5 text-[0.875rem] lg:text-[0.925rem] font-semibold text-white bg-blue-600 rounded-full shadow-[0_2px_8px_rgba(37,99,235,0.25)] hover:bg-blue-700 hover:shadow-[0_4px_16px_rgba(37,99,235,0.35)] hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
             >
               Mulai Konseling
             </Link>
-
-            {/* Mobile Hamburger */}
-            <button
-              className="md:hidden p-2 -mr-2 text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle mobile menu"
-            >
-              {menuOpen ? (
-                <X size={24} className="transition-transform duration-200" />
-              ) : (
-                <Menu size={24} className="transition-transform duration-200" />
-              )}
-            </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Bottom Navigation */}
+      <nav className="md:hidden fixed bottom-4 inset-x-4 z-[998] bg-white/85 backdrop-blur-xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-[24px] px-2 py-2 flex items-center justify-between pb-safe">
+        <Link href="/konsultasi" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
+          <HeartHandshake size={22} className={pathname === '/konsultasi' ? 'text-blue-600' : ''} />
+          <span className={`text-[10px] font-medium ${pathname === '/konsultasi' ? 'text-blue-600' : ''}`}>Konseling</span>
+        </Link>
+        <Link href="/cek-status" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
+          <Activity size={22} className={pathname === '/cek-status' ? 'text-blue-600' : ''} />
+          <span className={`text-[10px] font-medium ${pathname === '/cek-status' ? 'text-blue-600' : ''}`}>Status</span>
+        </Link>
+        <Link href="/" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors group">
+          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white shadow-[0_8px_20px_rgba(0,0,0,0.12)] border-2 ${pathname === '/' ? 'border-blue-50' : 'border-neutral-50'} transition-transform duration-300 group-hover:-translate-y-1`}>
+            <Image src="/assets/navbar-bawah.png" alt="Beranda" width={36} height={36} className={`object-contain transition-all duration-300 ${pathname === '/' ? 'opacity-100 scale-105 drop-shadow-md' : 'opacity-80'}`} />
+          </div>
+          <span className={`text-[10px] font-medium ${pathname === '/' ? 'text-blue-600' : ''}`}>Beranda</span>
+        </Link>
+        <Link href="/blog" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
+          <BookOpen size={22} className={pathname?.startsWith('/blog') ? 'text-blue-600' : ''} />
+          <span className={`text-[10px] font-medium ${pathname?.startsWith('/blog') ? 'text-blue-600' : ''}`}>Blog</span>
+        </Link>
+        <button onClick={() => setMenuOpen(true)} className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
+          <MoreHorizontal size={22} className={menuOpen ? 'text-blue-600' : ''} />
+          <span className={`text-[10px] font-medium ${menuOpen ? 'text-blue-600' : ''}`}>Lainnya</span>
+        </button>
+      </nav>
+
+      {/* Mobile Drawer (Bottom Sheet) */}
       <div
-        className={`fixed left-4 right-4 top-[76px] bg-white/95 backdrop-blur-2xl border border-neutral-100 shadow-xl rounded-2xl p-5 transition-all duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] md:hidden z-[999] flex flex-col ${
-          menuOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-4'
+        className={`fixed inset-x-0 bottom-0 bg-white/95 backdrop-blur-2xl border-t border-neutral-100 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] rounded-t-[32px] p-6 pb-28 transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] md:hidden z-[1000] flex flex-col ${
+          menuOpen ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
-        <div className="flex flex-col gap-1">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="font-bold text-lg text-neutral-800">Menu Lainnya</h3>
+          <button onClick={() => setMenuOpen(false)} className="p-2 bg-neutral-100 hover:bg-neutral-200 rounded-full text-neutral-600 transition-colors">
+            <X size={20} />
+          </button>
+        </div>
+        
+        <div className="flex flex-col gap-2 overflow-y-auto max-h-[60vh]">
           {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className={`px-4 py-3.5 text-[1rem] font-semibold rounded-xl transition-colors focus:outline-none ${
-                link.active
-                  ? 'text-blue-600 bg-blue-50'
-                  : 'text-neutral-700 hover:bg-neutral-50 hover:text-blue-600'
-              }`}
-            >
-              {link.label}
-            </Link>
+            link.label !== 'Blog' && (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="px-4 py-3.5 text-[1rem] font-semibold rounded-xl transition-colors focus:outline-none text-neutral-700 hover:bg-neutral-50 hover:text-blue-600"
+              >
+                {link.label}
+              </Link>
+            )
           ))}
-
-          <div className="h-px bg-neutral-100 my-3" />
-
-          <Link
-            href="/cek-status"
-            onClick={() => setMenuOpen(false)}
-            className="px-4 py-3.5 text-center text-[1rem] font-semibold text-neutral-600 hover:bg-neutral-50 rounded-xl transition-colors focus:outline-none"
-          >
-            Cek Status
-          </Link>
-
-          <Link
-            href="/konsultasi"
-            onClick={() => setMenuOpen(false)}
-            className="px-4 py-3.5 text-center text-[1rem] font-bold text-white bg-blue-600 rounded-xl shadow-[0_2px_12px_rgba(37,99,235,0.25)] hover:bg-blue-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 mt-1"
-          >
-            Mulai Konseling
-          </Link>
         </div>
       </div>
 
       {/* Backdrop */}
       {menuOpen && (
         <div
-          className="fixed inset-0 bg-neutral-900/10 backdrop-blur-[2px] z-[998] md:hidden"
+          className="fixed inset-0 bg-neutral-900/20 backdrop-blur-sm z-[999] md:hidden transition-opacity duration-300"
           onClick={() => setMenuOpen(false)}
           aria-hidden="true"
         />

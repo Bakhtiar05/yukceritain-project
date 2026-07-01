@@ -19,11 +19,11 @@ const DynamicTextSwap = () => {
 
   return (
     <div className="flex flex-col items-center lg:items-start w-full">
-      <span className="text-slate-800 text-[2.8rem] md:text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-[1.05] tracking-tight">
+      <span className="text-slate-800 text-[2.5rem] md:text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-[1.05] tracking-tight">
         Ceritamu Layak
       </span>
       {/* Stable container height to prevent layout shift */}
-      <div className="relative h-[52px] md:h-[64px] lg:h-[80px] w-full flex justify-center lg:justify-start mt-1 md:mt-3">
+      <div className="relative h-[48px] md:h-[64px] lg:h-[80px] w-full flex justify-center lg:justify-start mt-1 md:mt-3">
         <AnimatePresence>
           <motion.span
             key={index}
@@ -31,7 +31,7 @@ const DynamicTextSwap = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -25, opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute font-bold text-[2.8rem] md:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 pb-2 md:pb-3 lg:pb-4"
+            className="absolute font-bold text-[2.5rem] md:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 pb-2 md:pb-3 lg:pb-4"
           >
             {dynamicWords[index]}
           </motion.span>
@@ -130,7 +130,7 @@ export default function HeroSection() {
 
       {/* MOBILE & TABLET FULL-BLEED IMAGE (Visible < 1024px) */}
       <motion.div
-        className="lg:hidden relative w-full h-[55vh] sm:h-[65vh] -mt-[72px] mb-2 overflow-hidden z-0"
+        className="lg:hidden relative w-full h-[55vh] sm:h-[65vh] -mt-[72px] overflow-hidden z-0"
         initial="hidden"
         animate="visible"
         variants={imageVariants}
@@ -139,7 +139,7 @@ export default function HeroSection() {
           className="absolute inset-0 w-full h-full"
           style={{
             backgroundImage: 'url(/assets/latar-belakang.png)',
-            backgroundPosition: '70% 30%', // Focus on the women
+            backgroundPosition: '90% 30%', // Shifted to the right
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
@@ -204,21 +204,21 @@ export default function HeroSection() {
 
         {/* LEFT COLUMN: TEXT & CTA */}
         <motion.div
-          className="relative z-20 w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left"
+          className="relative z-20 w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left -mt-12 md:-mt-16 lg:mt-0"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           <motion.div
             variants={fadeUpVariants}
-            className="mb-4 md:mb-8 w-full"
+            className="mb-3 md:mb-8 w-full"
           >
             <DynamicTextSwap />
           </motion.div>
 
           <motion.p
             variants={fadeUpVariants}
-            className="text-neutral-500 text-lg md:text-xl leading-relaxed mb-6 md:mb-10 max-w-[520px]"
+            className="text-neutral-500 text-base md:text-xl leading-relaxed mb-5 md:mb-10 max-w-[520px]"
           >
             Ruang aman untuk setiap ceritamu🤗. Konseling bersama konselor &amp; psikolog klinis profesional.
           </motion.p>
@@ -241,7 +241,7 @@ export default function HeroSection() {
             </Link>
           </motion.div>
 
-          <motion.div variants={fadeUpVariants} className="mt-6 flex items-center justify-center lg:justify-start gap-2 text-[0.95rem] text-neutral-500 font-medium">
+          <motion.div variants={fadeUpVariants} className="mt-4 md:mt-6 flex items-center justify-center lg:justify-start gap-2 text-[0.95rem] text-neutral-500 font-medium">
             <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
