@@ -114,7 +114,7 @@ export async function getFeaturedPost(): Promise<Post | null> {
     .eq('is_featured', true)
     .order('created_at', { ascending: false })
     .limit(1)
-    .single()
+    .maybeSingle()
 
   if (error) {
     console.error('Error fetching featured post:', error)

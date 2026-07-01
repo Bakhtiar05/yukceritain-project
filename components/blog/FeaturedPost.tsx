@@ -11,7 +11,7 @@ export default function FeaturedPost({ post }: { post: Post }) {
     <Link href={`/blog/${post.slug}`} className="blog-card grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] rounded-xl border border-neutral-200 overflow-hidden bg-white shadow-sm">
       <div className="relative h-64 lg:h-[340px] overflow-hidden">
         {post.cover_image ? (
-          <Image src={post.cover_image} alt={post.title} fill className="object-cover" />
+          <Image src={post.cover_image} alt={post.title} fill className="object-cover" priority />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-blue-200 to-blue-400" />
         )}

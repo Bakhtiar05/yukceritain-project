@@ -41,6 +41,38 @@ const DynamicTextSwap = () => {
   );
 }
 
+const TypewriterText = ({ text, delay = 50 }: { text: string; delay?: number }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    setDisplayedText("");
+    setCurrentIndex(0);
+  }, [text]);
+
+  useEffect(() => {
+    const chars = Array.from(text);
+    if (currentIndex < chars.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedText(prev => prev + chars[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, delay);
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, text, delay]);
+
+  return (
+    <span>
+      {displayedText}
+      <motion.span
+        animate={{ opacity: [1, 0] }}
+        transition={{ repeat: Infinity, duration: 0.8 }}
+        className="inline-block w-[2px] ml-[2px] -mb-[2px] h-[1em] bg-white opacity-70"
+      />
+    </span>
+  );
+};
+
 export default function HeroSection() {
   const prefersReducedMotion = useReducedMotion()
   const [isMounted, setIsMounted] = useState(false)
@@ -128,7 +160,7 @@ export default function HeroSection() {
                        shadow-[0_10px_20px_-5px_rgba(29,78,216,0.3),inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-1px_-1px_2px_rgba(0,0,0,0.1)]
                        font-sans font-medium text-white text-[11px] leading-tight"
           >
-            {chatText}
+            <TypewriterText text={chatText} />
           </motion.div>
         )}
       </motion.div>
@@ -164,7 +196,7 @@ export default function HeroSection() {
                      shadow-[0_12px_25px_-5px_rgba(29,78,216,0.3),inset_2px_2px_3px_rgba(255,255,255,0.3),inset_-1px_-1px_3px_rgba(0,0,0,0.1)]
                      font-sans font-medium text-white text-[13px] leading-snug"
         >
-          {chatText}
+          <TypewriterText text={chatText} />
         </motion.div>
       )}
 
