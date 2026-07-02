@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Home, Compass, PenSquare, Calendar, User, Settings, LogOut } from 'lucide-react'
+import { Home, Compass, PenSquare, Calendar, User, Settings, LogOut, Globe } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useAuthModal } from './AuthModalProvider'
 
@@ -65,6 +65,10 @@ export default function LeftSidebar() {
           <Settings className="w-5 h-5 text-slate-400" />
           <span className="text-[15px]">Settings</span>
         </button>
+        <Link href="/" className="flex items-center space-x-4 px-4 py-3 rounded-xl font-medium text-slate-600 hover:bg-slate-50 w-full transition-all">
+          <Globe className="w-5 h-5 text-slate-400" />
+          <span className="text-[15px]">Back to Website</span>
+        </Link>
         <button onClick={handleLogout} className="flex items-center space-x-4 px-4 py-3 rounded-xl font-medium text-red-500 hover:bg-red-50 w-full transition-all">
           <LogOut className="w-5 h-5 text-red-400" />
           <span className="text-[15px]">Logout</span>

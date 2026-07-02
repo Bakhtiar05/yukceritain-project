@@ -1,168 +1,128 @@
-import { createClient } from "@/lib/supabase/server";
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
-import { MessageCircle } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import StatusActionCell from "@/components/admin/StatusActionCell";
-import RequestDetailSheet from "@/components/admin/RequestDetailSheet";
+import React from 'react'
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
+import { getUserRole } from '@/lib/auth/roles'
+import { Users, FileText, Calendar, CreditCard, Activity } from 'lucide-react'
+import StatCard from '@/components/admin/ui/StatCard'
+import AdminPageHeader from '@/components/admin/ui/AdminPageHeader'
+import OverviewClient from './OverviewClient'
 
-export const revalidate = 0; // Ensure data is fresh on load
+export const metadata = {
+  title: 'Counseling Overview | Admin YukCeritain',
+}
 
-export default async function AdminKonselingDashboard() {
-  const supabase = await createClient();
+export default async function KonselingDashboardPage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const role = await getUserRole()
 
-  const { data: requests, error } = await supabase
-    .from("consultation_requests")
-    .select("*, payments(*)")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Error fetching consultation requests:", error);
-    return (
-      <div className="p-8 text-center text-red-500 bg-red-50 rounded-lg">
-        Gagal mengambil data permohonan konseling.
-      </div>
-    );
+  if (!user || (role !== 'super_admin' && role !== 'admin_konseling')) {
+    redirect('/admin')
   }
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "Menunggu Verifikasi":
-        return <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">Menunggu</Badge>;
-      case "Disetujui":
-        return <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">Disetujui</Badge>;
-      case "Ditolak":
-      case "Dibatalkan":
-        return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">{status}</Badge>;
-      case "Selesai":
-        return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">Selesai</Badge>;
-      default:
-        return <Badge variant="outline" className="bg-neutral-50 text-neutral-700 border-neutral-200">{status || "Menunggu Verifikasi"}</Badge>;
-    }
-  };
+  // Fetch basic stats
+  const [totalBookingsRes, pendingRes, paymentsRes] = await Promise.all([
+    supabase.from('consultation_requests').select('id', { count: 'exact', head: true }),
+    supabase.from('consultation_requests').select('id', { count: 'exact', head: true }).eq('db_status', 'Menunggu Verifikasi'),
+    supabase.from('payments').select('amount').eq('payment_status', 'PAID')
+  ])
 
-  const formatWhatsAppNumber = (phone: string) => {
-    if (!phone) return "";
-    let cleanPhone = phone.replace(/\D/g, "");
-    if (cleanPhone.startsWith("0")) {
-      cleanPhone = "62" + cleanPhone.substring(1);
-    } else if (cleanPhone.startsWith("8")) {
-      cleanPhone = "62" + cleanPhone;
-    }
-    return cleanPhone;
-  };
-
-  const getWhatsAppLink = (req: any) => {
-    const waNumber = formatWhatsAppNumber(req.nomor_hp);
-    const dateFormatted = req.tanggal_konsultasi ? format(new Date(req.tanggal_konsultasi), "dd MMMM yyyy", { locale: id }) : "-";
-    const text = `Halo ${req.nama_panggilan || req.nama_lengkap}, kami dari tim admin YukceritaIN.
-Berikut adalah detail permohonan konseling Anda:
-Nomor Permohonan: ${req.request_number}
-Tanggal: ${dateFormatted}
-Waktu: ${req.waktu_konsultasi} WIB
-Metode: ${req.metode_konsultasi}`;
-    return `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`;
-  };
-
-  const getPaymentBadge = (payment: any) => {
-    if (!payment) return <Badge variant="outline" className="bg-neutral-50 text-neutral-500">-</Badge>;
-    switch (payment.payment_status) {
-      case "PAID":
-        return <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200">Lunas</Badge>;
-      case "PENDING":
-        return <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">Belum Bayar</Badge>;
-      case "EXPIRED":
-        return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">Kedaluwarsa</Badge>;
-      default:
-        return <Badge variant="outline" className="bg-neutral-50 text-neutral-700 border-neutral-200">{payment.payment_status}</Badge>;
-    }
-  };
+  const totalBookings = totalBookingsRes.count || 0
+  const pendingBookings = pendingRes.count || 0
+  
+  // Calculate total revenue
+  const totalRevenue = paymentsRes.data?.reduce((acc, curr) => acc + (curr.amount || 0), 0) || 0
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-neutral-900">Dashboard Konseling</h1>
-          <p className="text-sm text-neutral-500 mt-1">Kelola permohonan konseling masuk.</p>
-        </div>
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <AdminPageHeader 
+        title="Counseling Overview" 
+        description="Monitor bookings, revenue, and active sessions."
+      />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard 
+          title="Total Bookings" 
+          value={totalBookings} 
+          icon={Calendar} 
+          trend="up" 
+          trendValue="+15%" 
+        />
+        <StatCard 
+          title="Total Revenue" 
+          value={`Rp ${totalRevenue.toLocaleString('id-ID')}`} 
+          icon={CreditCard} 
+          trend="up" 
+          trendValue="+8%" 
+        />
+        <StatCard 
+          title="Pending Approval" 
+          value={pendingBookings} 
+          icon={Activity} 
+          trend="down" 
+          trendValue="-5%" 
+        />
+        <StatCard 
+          title="Active Counselors" 
+          value={8} // Mock data for now since we don't have a counselors table
+          icon={Users} 
+          trend="neutral" 
+          trendValue="0%" 
+        />
       </div>
-      
-      <div className="bg-white rounded-xl border border-neutral-200 overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader className="bg-neutral-50/50">
-              <TableRow>
-                <TableHead className="w-[140px] font-semibold text-neutral-600">Nomor</TableHead>
-                <TableHead className="font-semibold text-neutral-600">Nama</TableHead>
-                <TableHead className="font-semibold text-neutral-600">Jadwal</TableHead>
-                <TableHead className="font-semibold text-neutral-600">Metode</TableHead>
-                <TableHead className="font-semibold text-neutral-600">Status</TableHead>
-                <TableHead className="font-semibold text-neutral-600">Pembayaran</TableHead>
-                <TableHead className="font-semibold text-neutral-600 text-right">Aksi</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {requests?.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={7} className="h-32 text-center text-neutral-500">
-                    Belum ada permohonan konseling.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                requests?.map((req) => (
-                  <TableRow key={req.id} className="hover:bg-blue-50/30 transition-colors">
-                    <TableCell className="font-mono text-xs font-medium text-blue-600">
-                      {req.request_number}
-                    </TableCell>
-                    <TableCell>
-                      <div className="font-medium text-neutral-900">{req.nama_lengkap}</div>
-                      <div className="text-xs text-neutral-500">{req.nomor_hp}</div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm text-neutral-900">
-                        {req.tanggal_konsultasi ? format(new Date(req.tanggal_konsultasi), "dd MMM yyyy", { locale: id }) : "-"}
-                      </div>
-                      <div className="text-xs text-neutral-500">{req.waktu_konsultasi || "-"} WIB</div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm text-neutral-700">{req.metode_konsultasi}</span>
-                    </TableCell>
-                    <TableCell>
-                      {getStatusBadge(req.db_status)}
-                    </TableCell>
-                    <TableCell>
-                      {getPaymentBadge(req.payments?.[0])}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end items-center gap-2">
-                        <StatusActionCell id={req.id} currentStatus={req.db_status || "Menunggu Verifikasi"} />
-                        <RequestDetailSheet req={req} />
-                        <a 
-                          href={getWhatsAppLink(req)} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="p-1.5 bg-green-50 text-green-600 rounded-md hover:bg-green-100 transition-colors border border-green-200 flex-shrink-0"
-                          title="Hubungi WA"
-                        >
-                          <MessageCircle className="w-4 h-4" />
-                        </a>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+          <h3 className="text-lg font-bold text-slate-900 mb-6">Booking Activity</h3>
+          <div className="h-80">
+             <OverviewClient />
+          </div>
+        </div>
+        
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+          <h3 className="text-lg font-bold text-slate-900 mb-6">Quick Actions</h3>
+          <div className="space-y-3 flex-1">
+            <a href="/admin/konseling/bookings" className="flex items-center justify-between p-4 rounded-xl bg-amber-50 border border-amber-100 hover:bg-amber-100 transition-colors group">
+              <div className="flex items-center">
+                <div className="w-10 h-10 rounded-full bg-white text-amber-500 flex items-center justify-center mr-3 shadow-sm">
+                  <Activity className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="font-semibold text-amber-900">Review Bookings</p>
+                  <p className="text-xs text-amber-600">{pendingBookings} pending approvals</p>
+                </div>
+              </div>
+              <span className="text-amber-500 transform group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+            
+            <a href="/admin/konseling/calendar" className="flex items-center justify-between p-4 rounded-xl bg-blue-50 border border-blue-100 hover:bg-blue-100 transition-colors group">
+              <div className="flex items-center">
+                <div className="w-10 h-10 rounded-full bg-white text-blue-500 flex items-center justify-center mr-3 shadow-sm">
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="font-semibold text-blue-900">View Calendar</p>
+                  <p className="text-xs text-blue-600">Check upcoming sessions</p>
+                </div>
+              </div>
+              <span className="text-blue-500 transform group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+
+             <a href="/admin/konseling/payments" className="flex items-center justify-between p-4 rounded-xl bg-emerald-50 border border-emerald-100 hover:bg-emerald-100 transition-colors group">
+              <div className="flex items-center">
+                <div className="w-10 h-10 rounded-full bg-white text-emerald-500 flex items-center justify-center mr-3 shadow-sm">
+                  <CreditCard className="w-5 h-5" />
+                </div>
+                <div>
+                  <p className="font-semibold text-emerald-900">Manage Payments</p>
+                  <p className="text-xs text-emerald-600">Review transactions</p>
+                </div>
+              </div>
+              <span className="text-emerald-500 transform group-hover:translate-x-1 transition-transform">→</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

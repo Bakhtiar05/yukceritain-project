@@ -4,10 +4,11 @@ import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import { CheckCircle2, ArrowRight, Calendar, Clock, Video, MapPin, Copy, CreditCard, Loader2, RefreshCcw } from "lucide-react";
+import { CheckCircle2, ArrowRight, Calendar, Clock, Video, MapPin, Copy, CreditCard, Loader2, RefreshCcw, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { getPaymentAndBookingDetails } from "@/app/actions/payment";
+import { cn } from "@/lib/utils";
 
 function SuccessPageContent() {
   const router = useRouter();
@@ -35,7 +36,6 @@ function SuccessPageContent() {
       const requestNumber = searchParams.get("request_number");
       
       if (requestNumber) {
-        // Fetch from server
         const res = await getPaymentAndBookingDetails(requestNumber);
         if (res.success && res.data) {
           setSuccessData(res.data);
@@ -44,13 +44,10 @@ function SuccessPageContent() {
         }
         setLoading(false);
       } else {
-        // Try fallback to sessionStorage for edge cases where URL doesn't have it
         let sessionData = null;
         try {
           sessionData = sessionStorage.getItem("booking-success");
-        } catch (e) {
-          console.warn("sessionStorage is not available", e);
-        }
+        } catch (e) {}
         
         if (sessionData) {
           setSuccessData(JSON.parse(sessionData));
@@ -60,7 +57,6 @@ function SuccessPageContent() {
         setLoading(false);
       }
     }
-
     fetchData();
   }, [searchParams, router, toast]);
 
@@ -78,18 +74,18 @@ function SuccessPageContent() {
     if (successData?.requestNumber) {
       navigator.clipboard.writeText(successData.requestNumber);
       toast({
-        title: "Tersalin!",
-        description: "Nomor permohonan disalin ke clipboard.",
+        title: "Copied!",
+        description: "Booking ID has been copied to clipboard.",
       });
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-50 pt-16 pb-12 md:pt-24 md:pb-20 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 pt-24 pb-12 flex items-center justify-center">
         <div className="flex flex-col items-center">
           <Loader2 className="w-8 h-8 text-blue-600 animate-spin mb-4" />
-          <p className="text-neutral-500 font-medium">Memuat data permohonan...</p>
+          <p className="text-slate-500 font-medium">Memuat detail jadwal Anda...</p>
         </div>
       </div>
     );
@@ -99,115 +95,127 @@ function SuccessPageContent() {
 
   const isPaid = successData.paymentStatus === "PAID";
   const isPending = successData.paymentStatus === "PENDING";
+  const amount = successData.amount || 20000;
 
   return (
-    <div className="min-h-screen bg-neutral-50 pt-16 pb-12 md:pt-24 md:pb-20 flex items-center justify-center">
-      <div className="max-w-xl w-full mx-auto px-4">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-neutral-100 animate-fade-enter">
-          {/* Header */}
-          <div className={`py-4 px-4 md:py-8 md:px-6 text-center border-b ${isPending ? 'bg-amber-50 border-amber-100' : 'bg-success/10 border-success/20'}`}>
-            <div className={`mx-auto w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 md:mb-4 shadow-sm ${isPending ? 'bg-amber-500' : 'bg-success'}`}>
-              <CheckCircle2 className="w-6 h-6 md:w-8 md:h-8 text-white" />
-            </div>
-            <h1 className={`text-xl md:text-3xl font-display font-bold mb-1 md:mb-2 ${isPending ? 'text-amber-600' : 'text-success'}`}>
-              {isPending ? 'Menunggu Pembayaran' : 'Pembayaran Berhasil'}
-            </h1>
-            <p className={`text-sm md:text-base font-medium ${isPending ? 'text-amber-700/80' : 'text-success/80'}`}>
-              Terima kasih telah mempercayakan YukceritaIN.
-            </p>
+    <div className="min-h-screen bg-slate-50 pt-20 md:pt-32 pb-12 px-4 flex items-start justify-center">
+      <div className="max-w-2xl w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+        
+        <div className="text-center mb-8">
+          <div className={cn(
+            "mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-6 shadow-sm",
+            isPending ? "bg-amber-100 text-amber-600" : "bg-emerald-100 text-emerald-600"
+          )}>
+            {isPending ? <Wallet className="w-8 h-8" /> : <CheckCircle2 className="w-8 h-8" />}
           </div>
+          <h1 className="text-3xl md:text-4xl font-display font-bold text-slate-900 mb-3 tracking-tight">
+            {isPending ? "Selesaikan Pembayaran Anda" : "Jadwal Terkonfirmasi!"}
+          </h1>
+          <p className="text-slate-500 text-lg">
+            {isPending 
+              ? "Sesi Anda telah direservasi. Silakan selesaikan pembayaran untuk mengonfirmasi jadwal Anda." 
+              : "Terima kasih telah mempercayakan YukCeritaIN. Sampai jumpa segera."}
+          </p>
+        </div>
 
-          {/* Body */}
-          <div className="p-4 md:p-8 flex-1 flex flex-col justify-center">
-            <p className="text-center text-sm md:text-base text-neutral-600 mb-4 md:mb-8 leading-relaxed">
-              {isPending ? (
-                "Silakan selesaikan pembayaran Anda agar permohonan dapat diproses."
-              ) : (
-                <>Tim admin kami akan segera meninjau permohonan Anda dan menghubungi via <strong>WhatsApp</strong> dalam waktu <span className="font-semibold text-neutral-900">1×24 jam</span> untuk konfirmasi sesi konsultasi Anda.</>
-              )}
-            </p>
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+          
+          <div className="p-6 md:p-8 space-y-8">
+            <div className="text-center pb-8 border-b border-slate-100">
+              <p className="text-sm font-medium text-slate-500 mb-2 uppercase tracking-wider">Total Tagihan</p>
+              <div className="text-4xl font-bold text-slate-900">
+                Rp {amount.toLocaleString('id-ID')}
+              </div>
+            </div>
 
-            {/* Summary Card */}
-            <div className="bg-neutral-50 rounded-xl p-4 md:p-6 border border-neutral-200 mb-4 md:mb-8 relative h-auto overflow-visible flex-1">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 md:px-4 text-[10px] md:text-xs font-semibold tracking-wider text-neutral-500 uppercase rounded-full border border-neutral-200 whitespace-nowrap">
-                Detail Permohonan
+            {/* Booking Summary */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold text-slate-900">Ringkasan Jadwal</h3>
+                <span className={cn(
+                  "px-3 py-1 text-xs font-semibold rounded-full",
+                  isPaid ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
+                )}>
+                  {isPaid ? "Lunas" : "Menunggu Pembayaran"}
+                </span>
               </div>
               
-              <div className="space-y-2 md:space-y-4 mt-2">
-                <div>
-                  <p className="text-[10px] md:text-xs text-neutral-500 uppercase font-semibold mb-0.5 md:mb-1">Nomor Permohonan</p>
-                  <div className="flex items-center justify-between bg-white border border-neutral-200 rounded-lg px-3 py-1.5 md:px-4 md:py-2">
-                    <span className="font-mono font-bold text-base md:text-lg text-blue-600">{successData.requestNumber}</span>
-                    <Button variant="ghost" size="icon" onClick={handleCopyRequestNumber} className="h-8 w-8 text-neutral-400 hover:text-blue-600">
-                      <Copy className="h-4 w-4" />
-                    </Button>
+              <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-500 text-sm">Booking ID</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono font-semibold text-slate-900">{successData.requestNumber}</span>
+                    <button onClick={handleCopyRequestNumber} className="text-slate-400 hover:text-blue-600 transition-colors">
+                      <Copy className="w-4 h-4" />
+                    </button>
                   </div>
-                  <p className="text-[10px] text-neutral-400 mt-1">*Simpan nomor ini untuk keperluan pelacakan status di halaman Cek Status.</p>
+                </div>
+                
+                <div className="flex justify-between items-center pt-3 border-t border-slate-200">
+                  <span className="text-slate-500 text-sm flex items-center gap-2"><Calendar className="w-4 h-4" /> Tanggal</span>
+                  <span className="font-medium text-slate-900">{format(new Date(successData.date), "dd MMM yyyy", { locale: id })}</span>
+                </div>
+                
+                <div className="flex justify-between items-center pt-3 border-t border-slate-200">
+                  <span className="text-slate-500 text-sm flex items-center gap-2"><Clock className="w-4 h-4" /> Waktu</span>
+                  <span className="font-medium text-slate-900">{successData.time} WIB</span>
+                </div>
+                
+                <div className="flex justify-between items-center pt-3 border-t border-slate-200">
+                  <span className="text-slate-500 text-sm flex items-center gap-2">
+                    {successData.method === "Online" ? <Video className="w-4 h-4" /> : <MapPin className="w-4 h-4" />} 
+                    Metode
+                  </span>
+                  <span className="font-medium text-slate-900">{successData.method}</span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 md:gap-4 pt-2 md:pt-4 border-t border-neutral-200">
-                  <div>
-                    <p className="text-[10px] md:text-xs text-neutral-500 uppercase font-semibold mb-0.5 md:mb-1 flex items-center gap-1">
-                      <Calendar className="w-3 h-3" /> Tanggal
-                    </p>
-                    <p className="text-sm md:text-base font-medium text-neutral-900">
-                      {format(new Date(successData.date), "dd MMM yyyy", { locale: id })}
-                    </p>
+                {isPaid && successData.paymentMethod && (
+                  <div className="flex justify-between items-center pt-3 border-t border-slate-200">
+                    <span className="text-slate-500 text-sm flex items-center gap-2"><CreditCard className="w-4 h-4" /> Metode Pembayaran</span>
+                    <span className="font-medium text-slate-900">{successData.paymentMethod}</span>
                   </div>
-                  <div>
-                    <p className="text-[10px] md:text-xs text-neutral-500 uppercase font-semibold mb-0.5 md:mb-1 flex items-center gap-1">
-                      <Clock className="w-3 h-3" /> Waktu (WIB)
-                    </p>
-                    <p className="text-sm md:text-base font-medium text-neutral-900">
-                      {successData.time}
-                    </p>
-                  </div>
-                  <div className="col-span-2">
-                    <p className="text-[10px] md:text-xs text-neutral-500 uppercase font-semibold mb-0.5 md:mb-1 flex items-center gap-1">
-                      {successData.method === "Online" ? <Video className="w-3 h-3" /> : <MapPin className="w-3 h-3" />} 
-                      Metode
-                    </p>
-                    <p className="text-sm md:text-base font-medium text-neutral-900">
-                      {successData.method} {successData.method === "Online" ? "(Google Meet)" : "(Kota Serang)"}
-                    </p>
-                  </div>
-                  
-                  {isPaid && (
-                    <div className="col-span-2 pt-2 border-t border-neutral-100 mt-1 md:mt-2">
-                      <p className="text-[10px] md:text-xs text-neutral-500 uppercase font-semibold mb-0.5 md:mb-1 flex items-center gap-1">
-                        <CreditCard className="w-3 h-3" /> Metode Pembayaran
-                      </p>
-                      <p className="text-sm md:text-base font-medium text-neutral-900">
-                        {successData.paymentMethod || "Telah Dibayar"}
-                      </p>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
             </div>
+          </div>
 
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 md:gap-3 w-full justify-center items-center mt-2 md:mt-4">
+          {/* Action Buttons */}
+          <div className="bg-slate-50 p-6 md:p-8 border-t border-slate-200 flex flex-col sm:flex-row gap-4 items-center justify-between">
+            {isPending && successData.invoiceUrl && (
+              <a 
+                href={successData.invoiceUrl}
+                className="w-full sm:w-auto inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-2xl px-8 h-14 text-lg font-semibold shadow-xl shadow-blue-600/20 transition-all hover:scale-[1.02]"
+              >
+                Lanjut ke Pembayaran
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </a>
+            )}
+            
+            <div className="flex w-full sm:w-auto gap-3">
               {isPending && (
-                <Button onClick={fetchStatus} disabled={isRefreshing} variant="outline" className="rounded-full px-4 md:px-6 py-4 md:py-5 h-auto text-sm sm:text-base font-semibold shadow-sm w-full sm:w-auto">
-                  {isRefreshing ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCcw className="w-4 h-4 mr-2" />}
+                <Button 
+                  onClick={fetchStatus} 
+                  disabled={isRefreshing} 
+                  variant="outline" 
+                  className="flex-1 sm:flex-none rounded-2xl h-14 px-6 text-slate-700 font-semibold"
+                >
+                  {isRefreshing ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <RefreshCcw className="w-5 h-5 mr-2" />}
                   Cek Status
                 </Button>
               )}
-              {isPending && successData.invoiceUrl && (
-                <a 
-                  href={successData.invoiceUrl}
-                  className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full px-4 md:px-6 py-4 md:py-5 h-auto text-sm sm:text-base font-semibold shadow-blue w-full sm:w-auto transition-colors"
-                >
-                  Bayar Sekarang
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </a>
-              )}
-              <Button onClick={() => router.push("/")} variant={isPending ? "outline" : "default"} className={`${!isPending && "bg-blue-600 hover:bg-blue-700 text-white"} rounded-full px-4 md:px-6 py-4 md:py-5 h-auto text-sm sm:text-base font-semibold shadow-sm w-full sm:w-auto`}>
-                Kembali
+              <Button 
+                onClick={() => router.push("/")} 
+                variant={isPending ? "ghost" : "default"} 
+                className={cn(
+                  "flex-1 sm:flex-none rounded-2xl h-14 px-6 font-semibold",
+                  !isPending && "bg-slate-900 hover:bg-slate-800 text-white"
+                )}
+              >
+                Kembali ke Beranda
               </Button>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -217,10 +225,10 @@ function SuccessPageContent() {
 export default function BookingSuccessPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-neutral-50 pt-16 pb-12 md:pt-24 md:pb-20 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 pt-24 pb-12 flex items-center justify-center">
         <div className="flex flex-col items-center">
           <Loader2 className="w-8 h-8 text-blue-600 animate-spin mb-4" />
-          <p className="text-neutral-500 font-medium">Memuat...</p>
+          <p className="text-slate-500 font-medium">Memuat...</p>
         </div>
       </div>
     }>
