@@ -33,14 +33,14 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
     ? [
         { label: 'Layanan', href: '/#layanan' },
         { label: 'Cara Kerja', href: '/#cara-kerja' },
-        { label: 'Testimoni', href: '/#testimoni' },
+        { label: 'Yuk Ceritain', href: '/community', isFeature: true },
         { label: 'FAQ', href: '/#faq' },
         { label: 'Blog', href: '/blog', active: true },
       ]
     : [
         { label: 'Layanan', href: '#layanan' },
         { label: 'Cara Kerja', href: '#cara-kerja' },
-        { label: 'Testimoni', href: '#testimoni' },
+        { label: 'Yuk Ceritain', href: '/community', isFeature: true },
         { label: 'FAQ', href: '#faq' },
         { label: 'Blog', href: '/blog' },
       ]
@@ -80,12 +80,17 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
               <Link
                 key={link.label}
                 href={link.href}
-                className={`relative px-3.5 lg:px-4 py-2 text-[0.875rem] lg:text-[0.925rem] font-medium rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 ${
-                  link.active
-                    ? 'text-blue-600 bg-blue-50'
-                    : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50'
-                }`}
+                className={
+                  link.isFeature
+                    ? `relative flex items-center justify-center px-4 py-2 text-[0.875rem] lg:text-[0.925rem] font-bold text-blue-700 bg-blue-100 border-2 border-blue-200 rounded-full hover:bg-blue-200 hover:scale-105 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 shadow-sm mx-1`
+                    : `relative px-3.5 lg:px-4 py-2 text-[0.875rem] lg:text-[0.925rem] font-medium rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 ${
+                        link.active
+                          ? 'text-blue-600 bg-blue-50'
+                          : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50'
+                      }`
+                }
               >
+                {link.isFeature && <span className="mr-1.5 text-base leading-none">🌿</span>}
                 {link.label}
               </Link>
             ))}

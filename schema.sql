@@ -332,4 +332,149 @@ CREATE POLICY "Authenticated users can manage payments"
   USING (true)
   WITH CHECK (true);
 
+-- ============================================
+-- 8. COMMUNITY MODULE TABLES
+-- ============================================
 
+-- PROFILES TABLE
+CREATE TABLE IF NOT EXISTS profiles (
+  id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+  username TEXT UNIQUE NOT NULL,
+  display_name TEXT NOT NULL,
+  avatar_url TEXT,
+  bio TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Auto-update updated_at timestamp for profiles
+CREATE TRIGGER set_updated_at_profiles
+  BEFORE UPDATE ON profiles
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- COMMUNITY POSTS TABLE
+CREATE TABLE IF NOT EXISTS community_posts (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  is_anonymous BOOLEAN DEFAULT FALSE,
+  is_hidden BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Auto-update updated_at timestamp for community_posts
+CREATE TRIGGER set_updated_at_community_posts
+  BEFORE UPDATE ON community_posts
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- COMMUNITY COMMENTS TABLE
+CREATE TABLE IF NOT EXISTS community_comments (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  post_id UUID NOT NULL REFERENCES community_posts(id) ON DELETE CASCADE,
+  profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  is_hidden BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- COMMUNITY LIKES TABLE
+CREATE TABLE IF NOT EXISTS community_likes (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  post_id UUID NOT NULL REFERENCES community_posts(id) ON DELETE CASCADE,
+  profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(post_id, profile_id)
+);
+
+-- COMMUNITY REPORTS TABLE
+CREATE TABLE IF NOT EXISTS community_reports (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  post_id UUID REFERENCES community_posts(id) ON DELETE CASCADE,
+  comment_id UUID REFERENCES community_comments(id) ON DELETE CASCADE,
+  profile_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  reason TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  CHECK (
+    (post_id IS NOT NULL AND comment_id IS NULL) OR 
+    (post_id IS NULL AND comment_id IS NOT NULL)
+  )
+);
+
+-- ============================================
+-- 9. COMMUNITY INDEXES
+-- ============================================
+CREATE INDEX IF NOT EXISTS idx_profiles_username ON profiles(username);
+CREATE INDEX IF NOT EXISTS idx_community_posts_profile_id ON community_posts(profile_id);
+CREATE INDEX IF NOT EXISTS idx_community_posts_created_at ON community_posts(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_community_comments_post_id ON community_comments(post_id);
+CREATE INDEX IF NOT EXISTS idx_community_comments_profile_id ON community_comments(profile_id);
+CREATE INDEX IF NOT EXISTS idx_community_likes_post_id ON community_likes(post_id);
+CREATE INDEX IF NOT EXISTS idx_community_reports_post_id ON community_reports(post_id);
+CREATE INDEX IF NOT EXISTS idx_community_reports_comment_id ON community_reports(comment_id);
+
+-- ============================================
+-- 10. COMMUNITY AUTO-MODERATION TRIGGERS
+-- ============================================
+
+-- Function to hide post/comment if >= 3 reports
+CREATE OR REPLACE FUNCTION check_reports_threshold()
+RETURNS TRIGGER AS $$
+DECLARE
+  report_count INTEGER;
+BEGIN
+  IF NEW.post_id IS NOT NULL THEN
+    SELECT COUNT(*) INTO report_count FROM community_reports WHERE post_id = NEW.post_id;
+    IF report_count >= 3 THEN
+      UPDATE community_posts SET is_hidden = TRUE WHERE id = NEW.post_id;
+    END IF;
+  ELSIF NEW.comment_id IS NOT NULL THEN
+    SELECT COUNT(*) INTO report_count FROM community_reports WHERE comment_id = NEW.comment_id;
+    IF report_count >= 3 THEN
+      UPDATE community_comments SET is_hidden = TRUE WHERE id = NEW.comment_id;
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER check_reports_after_insert
+  AFTER INSERT ON community_reports
+  FOR EACH ROW
+  EXECUTE FUNCTION check_reports_threshold();
+
+-- ============================================
+-- 11. ROW LEVEL SECURITY (RLS) — COMMUNITY
+-- ============================================
+
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE community_posts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE community_comments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE community_likes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE community_reports ENABLE ROW LEVEL SECURITY;
+
+-- PROFILES RLS
+CREATE POLICY "Public can view profiles" ON profiles FOR SELECT USING (true);
+CREATE POLICY "Users can insert their own profile" ON profiles FOR INSERT TO authenticated WITH CHECK (auth.uid() = id);
+CREATE POLICY "Users can update their own profile" ON profiles FOR UPDATE TO authenticated USING (auth.uid() = id) WITH CHECK (auth.uid() = id);
+
+-- COMMUNITY POSTS RLS
+CREATE POLICY "Public can view visible posts" ON community_posts FOR SELECT USING (is_hidden = false);
+CREATE POLICY "Authenticated users can create posts" ON community_posts FOR INSERT TO authenticated WITH CHECK (auth.uid() = profile_id);
+CREATE POLICY "Users can update their own posts" ON community_posts FOR UPDATE TO authenticated USING (auth.uid() = profile_id) WITH CHECK (auth.uid() = profile_id);
+CREATE POLICY "Users can delete their own posts" ON community_posts FOR DELETE TO authenticated USING (auth.uid() = profile_id);
+
+-- COMMUNITY COMMENTS RLS
+CREATE POLICY "Public can view visible comments" ON community_comments FOR SELECT USING (is_hidden = false);
+CREATE POLICY "Authenticated users can create comments" ON community_comments FOR INSERT TO authenticated WITH CHECK (auth.uid() = profile_id);
+CREATE POLICY "Users can delete their own comments or comments on their posts" ON community_comments FOR DELETE TO authenticated USING (auth.uid() = profile_id OR auth.uid() = (SELECT profile_id FROM community_posts WHERE id = community_comments.post_id));
+
+-- COMMUNITY LIKES RLS
+CREATE POLICY "Public can view likes" ON community_likes FOR SELECT USING (true);
+CREATE POLICY "Authenticated users can like posts" ON community_likes FOR INSERT TO authenticated WITH CHECK (auth.uid() = profile_id);
+CREATE POLICY "Users can unlike posts" ON community_likes FOR DELETE TO authenticated USING (auth.uid() = profile_id);
+
+-- COMMUNITY REPORTS RLS
+CREATE POLICY "Authenticated users can create reports" ON community_reports FOR INSERT TO authenticated WITH CHECK (auth.uid() = profile_id);

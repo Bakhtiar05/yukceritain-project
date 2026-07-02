@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Search, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Navbar from "@/components/layout/Navbar";
 
 export default function CekStatusPage() {
   const router = useRouter();
@@ -24,7 +25,9 @@ export default function CekStatusPage() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 pt-24 pb-20">
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-neutral-50 pt-24 pb-20">
       <div className="max-w-xl mx-auto px-4">
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl font-display font-bold text-neutral-900 mb-4 animate-fade-enter">
@@ -76,5 +79,6 @@ export default function CekStatusPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
