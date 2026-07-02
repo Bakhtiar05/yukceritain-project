@@ -34,6 +34,7 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
     .from('community_comments')
     .select(`
       id,
+      profile_id,
       content,
       created_at,
       profile:profiles(display_name, username, avatar_url)
