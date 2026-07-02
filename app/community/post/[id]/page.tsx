@@ -88,13 +88,14 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
         ) : (
           comments?.map((comment) => {
             const canDeleteComment = session?.user?.id === comment.profile_id || session?.user?.id === post.profile_id
+            const profile = Array.isArray(comment.profile) ? comment.profile[0] : comment.profile
             return (
               <div key={comment.id} className="p-4 sm:p-6 flex space-x-3 sm:space-x-4 hover:bg-slate-50/50 transition-colors group/comment">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <Link href={`/community/user/${comment.profile.username}`} className="flex items-center space-x-1 group truncate">
-                      <span className="font-bold text-slate-900 text-sm truncate group-hover:text-blue-600 group-hover:underline transition-colors">{comment.profile.display_name}</span>
-                      <span className="text-slate-500 text-xs truncate group-hover:text-blue-500 transition-colors">@{comment.profile.username}</span>
+                    <Link href={`/community/user/${profile.username}`} className="flex items-center space-x-1 group truncate">
+                      <span className="font-bold text-slate-900 text-sm truncate group-hover:text-blue-600 group-hover:underline transition-colors">{profile.display_name}</span>
+                      <span className="text-slate-500 text-xs truncate group-hover:text-blue-500 transition-colors">@{profile.username}</span>
                     </Link>
                     {canDeleteComment && (
                       <div className="opacity-0 group-hover/comment:opacity-100 transition-opacity">
