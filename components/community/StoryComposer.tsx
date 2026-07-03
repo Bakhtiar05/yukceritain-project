@@ -86,24 +86,24 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
   }
 
   return (
-    <div className="bg-white px-3 sm:px-6 pt-2 pb-4 sm:pb-8 transition-all duration-300">
-      <div className="flex gap-3 sm:gap-5">
+    <div className="bg-white px-4 sm:px-6 pt-2 pb-2 sm:pb-4 transition-all duration-300">
+      <div className="flex gap-3">
         {/* Avatar */}
         <div className="flex-shrink-0">
-          <div className="w-10 h-10 sm:w-[48px] sm:h-[48px] bg-slate-50 rounded-full flex items-center justify-center text-slate-300 border border-slate-200/60 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+          <div className="w-[48px] h-[48px] bg-slate-50 rounded-full flex items-center justify-center text-slate-300 border border-slate-200/60 shadow-sm">
             <User className="w-5 h-5 sm:w-[22px] sm:h-[22px]" />
           </div>
         </div>
         
-        <div className="flex-1 min-w-0 flex flex-col gap-4 sm:gap-6">
+        <div className="flex-1 min-w-0 flex flex-col gap-3">
           
           {/* Textarea Container */}
           <div 
-            className={`w-full bg-[#F8FAFC] rounded-[16px] sm:rounded-[20px] px-4 py-2.5 sm:px-5 sm:py-3.5 transition-all duration-200 border-[1.5px] ${isFocused ? 'border-blue-500 shadow-[0_0_0_4px_rgba(59,130,246,0.12)]' : 'border-transparent hover:bg-slate-100/60'} cursor-text`}
+            className={`w-full bg-[#F8FAFC] rounded-2xl px-4 py-3 transition-all duration-200 border ${isFocused ? 'border-blue-500 shadow-sm bg-white' : 'border-slate-200 hover:bg-slate-100/60 hover:border-slate-300'} cursor-text`}
             onClick={!isExpanded ? handleFocusClick : undefined}
           >
             {!isExpanded ? (
-              <div className="text-slate-400 text-[15px] sm:text-[16px] select-none py-1 transition-opacity opacity-80">
+              <div className="text-slate-500 font-medium text-[15px] select-none transition-opacity opacity-90">
                 Bagikan ceritamu di ruang yang aman...
               </div>
             ) : (
@@ -114,7 +114,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                 onFocus={() => setIsFocused(true)}
                 onBlur={handleBlur}
                 placeholder="Bagikan ceritamu di ruang yang aman..."
-                className="w-full bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-slate-800 text-[15px] sm:text-[16px] leading-[1.6] resize-none p-0 py-1 placeholder:text-slate-400 placeholder:font-normal placeholder:opacity-80 custom-scrollbar"
+                className="w-full bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-slate-900 text-[15px] sm:text-[16px] leading-[1.5] resize-none p-0 placeholder:text-slate-400 placeholder:font-medium placeholder:opacity-90 custom-scrollbar"
                 style={{ minHeight: '44px' }}
               />
             )}
@@ -167,19 +167,19 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                 </label>
                 
                 <div className="flex items-center space-x-3 sm:space-x-5">
-                  <span className={`text-[12px] sm:text-[12.5px] font-semibold tracking-wide ${remaining < 100 ? 'text-rose-500' : 'text-slate-300'}`}>
+                  <span className={`text-[13px] font-semibold tracking-wide ${remaining < 100 ? 'text-rose-500' : 'text-slate-400'}`}>
                     {remaining}
                   </span>
                   <button 
                     onClick={handleCancel}
-                    className="text-[13px] sm:text-[14px] font-semibold text-slate-400 hover:text-slate-600 transition-colors px-1"
+                    className="h-9 px-3 flex items-center justify-center rounded-full text-[14px] font-semibold text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors"
                   >
                     Batal
                   </button>
                   <Button 
                     onClick={handleSubmit} 
                     disabled={!content.trim() || isSubmitting}
-                    className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full px-5 sm:px-7 h-[38px] sm:h-[44px] text-[13px] sm:text-[14px] font-bold shadow-[0_4px_14px_rgba(37,99,235,0.25)] hover:shadow-[0_6px_20px_rgba(37,99,235,0.35)] transition-all disabled:opacity-50 border-none hover:scale-[1.02] active:scale-[0.98]"
+                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 h-9 text-[14px] font-semibold transition-all disabled:opacity-50 hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {isSubmitting ? '...' : 'Bagikan'}
                   </Button>

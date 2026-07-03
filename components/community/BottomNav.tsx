@@ -17,7 +17,7 @@ export default function BottomNav() {
     { name: 'Eksplor', href: '/community/explore', icon: Compass },
     { name: 'Tulis', href: '/community/create', icon: Plus, isAction: true },
     { name: 'Konseling', href: '/konsultasi', icon: Calendar },
-    { name: 'Profil', href: '/community/profile', icon: User },
+    { name: 'Profil', href: '/community/profile', icon: User, requiresAuth: true },
   ]
 
   return (
@@ -45,16 +45,40 @@ export default function BottomNav() {
           )
         }
 
+        if (item.requiresAuth) {
+          return (
+            <button
+              key={item.name}
+              onClick={async (e) => {
+                e.preventDefault()
+                const supabase = createClient()
+                const { data: { session } } = await supabase.auth.getSession()
+                if (!session) {
+                  openModal()
+                } else {
+                  router.push(item.href)
+                }
+              }}
+              className={`flex flex-col items-center justify-center w-16 h-full space-y-1 transition-all duration-200 ${
+                isActive ? 'text-blue-700 scale-110' : 'text-slate-400 hover:text-slate-600 scale-100'
+              }`}
+            >
+              <item.icon className={`w-6 h-6 transition-all duration-200 ${isActive ? 'fill-blue-50 stroke-blue-700 stroke-[2.5px]' : 'stroke-slate-400 stroke-2'}`} />
+              <span className={`text-[10px] transition-all duration-200 ${isActive ? 'font-bold' : 'font-medium'}`}>{item.name}</span>
+            </button>
+          )
+        }
+
         return (
           <Link
             key={item.name}
             href={item.href}
-            className={`flex flex-col items-center justify-center w-16 h-full space-y-1 ${
-              isActive ? 'text-blue-600' : 'text-slate-400 hover:text-slate-600'
+            className={`flex flex-col items-center justify-center w-16 h-full space-y-1 transition-all duration-200 ${
+              isActive ? 'text-blue-700 scale-110' : 'text-slate-400 hover:text-slate-600 scale-100'
             }`}
           >
-            <item.icon className={`w-6 h-6 ${isActive ? 'fill-blue-50' : ''}`} />
-            <span className="text-[10px] font-medium">{item.name}</span>
+            <item.icon className={`w-6 h-6 transition-all duration-200 ${isActive ? 'fill-blue-50 stroke-blue-700 stroke-[2.5px]' : 'stroke-slate-400 stroke-2'}`} />
+            <span className={`text-[10px] transition-all duration-200 ${isActive ? 'font-bold' : 'font-medium'}`}>{item.name}</span>
           </Link>
         )
       })}

@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import * as Dialog from '@radix-ui/react-dialog'
-import { HeartHandshake, MessageCircle, Share2, MoreHorizontal, Edit2, Trash2, X, Check, AlertCircle } from 'lucide-react'
+import { HeartHandshake, MessageCircle, Share, MoreHorizontal, Edit2, Trash2, X, Check, AlertCircle, Link as LinkIcon } from 'lucide-react'
 import { useAuthModal } from './AuthModalProvider'
 import { toggleLike, deleteStory, updateStory } from '@/lib/actions/community'
 
@@ -26,6 +26,7 @@ type StoryCardProps = {
   isAuthenticated: boolean
   isOwner?: boolean
   disableCommentNavigation?: boolean
+  index?: number
 }
 
 export default function StoryCard({
@@ -39,7 +40,8 @@ export default function StoryCard({
   is_liked_by_me,
   isAuthenticated,
   isOwner = false,
-  disableCommentNavigation = false
+  disableCommentNavigation = false,
+  index = 0
 }: StoryCardProps) {
   const { openModal } = useAuthModal()
   const router = useRouter()
@@ -52,6 +54,33 @@ export default function StoryCard({
   
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false)
+      }
+    }
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isMenuOpen])
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.origin}/community/post/${id}`)
+      setIsMenuOpen(false)
+      // Optional: Add toast here
+    } catch (err) {
+      console.error('Failed to copy link')
+    }
+  }
 
   const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -63,6 +92,12 @@ export default function StoryCard({
     // Optimistic update
     setIsLiked(!isLiked)
     setLikesCount(prev => isLiked ? prev - 1 : prev + 1)
+    
+    // Heart bounce animation trigger
+    const btn = e.currentTarget
+    btn.classList.remove('animate-heart-bounce')
+    void btn.offsetWidth // trigger reflow
+    btn.classList.add('animate-heart-bounce')
 
     try {
       await toggleLike(id)
@@ -136,41 +171,70 @@ export default function StoryCard({
   return (
     <article 
       onClick={() => !disableCommentNavigation && router.push(`/community/post/${id}`)}
-      className={`px-5 sm:px-8 py-4 sm:py-6 transition-colors group cursor-pointer ${!disableCommentNavigation ? 'hover:bg-slate-50/50 rounded-2xl mx-2 my-2' : ''}`}
+      className={`px-3 sm:px-5 pt-3 pb-2 transition-colors cursor-pointer border-b border-slate-100/80 last:border-0 animate-feed-slide-up ${!disableCommentNavigation ? 'hover:bg-slate-50/50' : ''}`}
+      style={{ animationDelay: `${index * 60}ms` }}
     >
-      <div className="flex space-x-4 sm:space-x-5">
+      <div className="flex gap-3">
         {/* Avatar */}
-        <div className="flex-shrink-0 pt-0.5">
-          <div className="relative">
-            <img src={avatarUrl} alt={displayName} className="w-11 h-11 rounded-full object-cover bg-slate-100 ring-1 ring-slate-200/50" />
-          </div>
+        <div className="flex-shrink-0">
+          <img src={avatarUrl} alt={displayName} className="w-[48px] h-[48px] rounded-full object-cover bg-slate-100 ring-1 ring-slate-200/50" />
         </div>
         
         {/* Content */}
-        <div className="flex-1 min-w-0 pb-2 sm:pb-4 group-last:border-0">
+        <div className="flex-1 min-w-0 pb-1">
           <div className="flex items-start justify-between">
-            <div className="flex items-center space-x-1 truncate">
+            <div className="flex items-center gap-1.5 truncate pt-0.5">
               {is_anonymous ? (
-                <span className="font-bold text-slate-900 truncate">{displayName}</span>
+                <span className="font-bold text-[15px] text-slate-900 truncate">{displayName}</span>
               ) : (
-                <Link href={`/community/user/${username}`} onClick={(e) => e.stopPropagation()} className="flex items-center space-x-1 group truncate cursor-pointer">
-                  <span className="font-bold text-slate-900 truncate group-hover:text-blue-600 group-hover:underline transition-colors">{displayName}</span>
-                  <span className="text-slate-500 text-sm truncate group-hover:text-blue-500 transition-colors">@{username}</span>
+                <Link href={`/community/user/${username}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1.5 group truncate cursor-pointer">
+                  <span className="font-bold text-[15px] text-slate-900 truncate group-hover:text-blue-600 transition-colors">{displayName}</span>
+                  <span className="text-slate-500 font-medium text-[13px] truncate group-hover:text-blue-500 transition-colors">@{username}</span>
                 </Link>
               )}
-              <span className="text-slate-400 mx-1">·</span>
-              <span className="text-slate-500 text-sm whitespace-nowrap">{formatDate(created_at)}</span>
+              <span className="text-slate-300 text-[13px]">·</span>
+              <span className="text-slate-400 text-[13px] whitespace-nowrap">{formatDate(created_at)}</span>
             </div>
-            {isOwner && !isEditing && (
-              <div className="flex items-center space-x-2">
-                <button onClick={(e) => { e.stopPropagation(); setIsEditing(true); }} className="text-slate-400 hover:text-blue-600 transition-colors p-1">
-                  <Edit2 className="w-4 h-4" />
-                </button>
-                <button onClick={(e) => { e.stopPropagation(); setIsDeleteModalOpen(true); }} className="text-slate-400 hover:text-red-600 transition-colors p-1">
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            )}
+            
+            <div className="relative" ref={menuRef}>
+              <button 
+                onClick={(e) => { e.stopPropagation(); setIsMenuOpen(!isMenuOpen); }} 
+                className="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors active:scale-95"
+              >
+                <MoreHorizontal className="w-5 h-5" />
+              </button>
+              
+              {isMenuOpen && (
+                <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-1.5 z-10 animate-menu-slide-up">
+                  {isOwner && (
+                    <>
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); setIsEditing(true); setIsMenuOpen(false); }}
+                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                      >
+                        <Edit2 className="w-4 h-4 text-slate-400" />
+                        Edit Post
+                      </button>
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); setIsDeleteModalOpen(true); setIsMenuOpen(false); }}
+                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4 text-red-500" />
+                        Delete Post
+                      </button>
+                      <div className="h-px bg-slate-100 my-1 mx-3" />
+                    </>
+                  )}
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); copyLink(); }}
+                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                  >
+                    <LinkIcon className="w-4 h-4 text-slate-400" />
+                    Copy Link
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           {isEditing ? (
@@ -190,42 +254,42 @@ export default function StoryCard({
               </div>
             </div>
           ) : (
-            <p className="mt-1 text-slate-800 text-[15px] sm:text-[16px] leading-[1.65] whitespace-pre-wrap break-words max-w-2xl">
+            <p className="text-slate-900 text-[15px] sm:text-[16px] leading-[1.5] whitespace-pre-wrap break-words max-w-2xl">
               {content}
             </p>
           )}
 
           {/* Action Buttons */}
-          <div className="mt-5 flex items-center space-x-8 text-slate-500">
+          <div className="mt-2 flex items-center justify-start gap-4 sm:gap-6 text-slate-500">
             <button 
               onClick={handleLike}
-              className={`flex items-center space-x-2 group transition-all duration-200 active:scale-95 ${isLiked ? 'text-emerald-500' : 'hover:text-emerald-500'}`}
+              className={`flex items-center gap-1.5 h-10 min-w-[44px] group transition-colors duration-200 ${isLiked ? 'text-emerald-500' : 'hover:text-emerald-500'}`}
               title="Kirim Pelukan"
             >
-              <div className={`p-2 -ml-2 rounded-full group-hover:bg-emerald-50 transition-colors ${isLiked ? 'bg-emerald-50' : ''}`}>
-                <HeartHandshake className={`w-[20px] h-[20px] ${isLiked ? 'stroke-emerald-500 text-emerald-500 fill-emerald-50' : ''}`} />
+              <div className={`flex items-center justify-center w-9 h-9 -ml-2 rounded-full group-hover:bg-emerald-50 transition-colors ${isLiked ? 'bg-emerald-50' : ''}`}>
+                <HeartHandshake className={`w-5 h-5 ${isLiked ? 'stroke-emerald-500 text-emerald-500 fill-emerald-50' : ''}`} />
               </div>
-              <span className="text-[13px] font-semibold">{likesCount > 0 ? likesCount : ''}</span>
+              {likesCount > 0 && <span className="text-[13px] font-semibold -ml-0.5">{likesCount}</span>}
             </button>
 
             <button 
               onClick={handleComment}
-              className="flex items-center space-x-2 group hover:text-blue-500 transition-all duration-200 active:scale-95"
+              className="flex items-center gap-1.5 h-10 min-w-[44px] group hover:text-blue-500 transition-all duration-200 active:scale-95"
               title="Komentar"
             >
-              <div className="p-2 -ml-2 rounded-full group-hover:bg-blue-50 transition-colors">
-                <MessageCircle className="w-[20px] h-[20px]" />
+              <div className="flex items-center justify-center w-9 h-9 -ml-2 rounded-full group-hover:bg-blue-50 transition-colors">
+                <MessageCircle className="w-5 h-5" />
               </div>
-              <span className="text-[13px] font-semibold">{comments_count > 0 ? comments_count : ''}</span>
+              {comments_count > 0 && <span className="text-[13px] font-semibold -ml-0.5">{comments_count}</span>}
             </button>
 
             <button 
               onClick={(e) => e.stopPropagation()}
-              className="flex items-center space-x-2 group hover:text-indigo-500 transition-all duration-200 active:scale-95 ml-auto"
+              className="flex items-center gap-1.5 h-10 min-w-[44px] group hover:text-indigo-500 transition-all duration-200 active:scale-95"
               title="Share"
             >
-              <div className="p-2 -mr-2 rounded-full group-hover:bg-indigo-50 transition-colors">
-                <Share2 className="w-[20px] h-[20px]" />
+              <div className="flex items-center justify-center w-9 h-9 -ml-2 rounded-full group-hover:bg-indigo-50 transition-colors">
+                <Share className="w-5 h-5" />
               </div>
             </button>
           </div>

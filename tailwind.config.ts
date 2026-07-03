@@ -109,6 +109,20 @@ const config: Config = {
           '0%': { opacity: '0', transform: 'translateY(16px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        'heart-bounce': {
+          '0%': { transform: 'scale(1)' },
+          '30%': { transform: 'scale(0.95)' },
+          '60%': { transform: 'scale(1.08)' },
+          '100%': { transform: 'scale(1)' },
+        },
+        'menu-slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(6px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'feed-slide-up': {
+          '0%': { opacity: '0', transform: 'translateY(6px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
       animation: {
         'float-1': 'float-1 5s ease-in-out infinite',
@@ -120,6 +134,9 @@ const config: Config = {
         'pulse-dot': 'pulse-dot 2s ease-in-out infinite',
         'gentle-bounce': 'gentle-bounce 3s ease-in-out infinite',
         'fade-enter': 'fade-enter 0.32s ease-out forwards',
+        'heart-bounce': 'heart-bounce 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        'menu-slide-up': 'menu-slide-up 0.18s ease-out forwards',
+        'feed-slide-up': 'feed-slide-up 0.25s ease-out both',
       },
     },
   },

@@ -70,7 +70,7 @@ export default async function ProfilePage() {
         </div>
       </div>
 
-      <div className="divide-y divide-slate-100 pb-20">
+      <div className="flex flex-col pb-20">
         {posts?.length === 0 ? (
           <div className="p-12 text-center text-slate-500">
             You haven't shared any stories yet.

@@ -27,15 +27,15 @@ export default async function ForYouPage() {
   return (
     <div className="w-full">
       {/* Welcome Section */}
-      <div className="px-4 sm:px-6 pt-3 pb-1">
+      <div className="px-4 sm:px-6 pt-6 sm:pt-8 pb-1">
         {/* Mobile View: Logo and Tagline Only */}
-        <div className="sm:hidden flex items-center space-x-3 mb-1">
-          <div className="w-8 h-8 flex items-center justify-center flex-shrink-0 overflow-hidden rounded-[10px]">
+        <div className="sm:hidden flex items-center gap-3 mb-2">
+          <div className="w-[48px] h-[48px] flex items-center justify-center flex-shrink-0 overflow-hidden rounded-[12px] bg-slate-50 border border-slate-100">
             <Image 
               src="/assets/navbar-bawah.png" 
               alt="Logo" 
-              width={32} 
-              height={32} 
+              width={40} 
+              height={40} 
               className="w-full h-full object-cover" 
             />
           </div>
@@ -65,11 +65,11 @@ export default async function ForYouPage() {
         </div>
       </div>
 
-      <div className="pt-2 sm:pt-4">
+      <div className="pt-1 sm:pt-2">
         <StoryComposer isAuthenticated={isAuthenticated} />
       </div>
 
-      <div className="flex flex-col gap-6 sm:gap-8 pt-4 pb-8 min-h-screen">
+      <div className="flex flex-col pt-2 pb-8 min-h-screen">
         {error ? (
           <div className="p-8 text-center text-slate-500">
             Failed to load stories. Please try again later.
@@ -79,7 +79,7 @@ export default async function ForYouPage() {
             No stories yet. Be the first to share!
           </div>
         ) : (
-          posts?.map((post) => {
+          posts?.map((post, index) => {
             const isLikedByMe = session ? post.likes.some((like: any) => like.profile_id === session.user.id) : false
             const commentsCount = post.comments[0]?.count || 0
 
@@ -96,6 +96,7 @@ export default async function ForYouPage() {
                 is_liked_by_me={isLikedByMe}
                 isAuthenticated={isAuthenticated}
                 isOwner={session?.user?.id === post.profile_id}
+                index={index}
               />
             )
           })

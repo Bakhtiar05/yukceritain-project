@@ -71,7 +71,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
         </div>
       </div>
 
-      <div className="divide-y divide-slate-100 pb-20">
+      <div className="flex flex-col pb-20">
         {posts?.filter(p => !p.is_anonymous).length === 0 ? (
           <div className="p-12 text-center text-slate-500">
             This user hasn't shared any public stories yet.
