@@ -476,5 +476,71 @@ CREATE POLICY "Public can view likes" ON community_likes FOR SELECT USING (true)
 CREATE POLICY "Authenticated users can like posts" ON community_likes FOR INSERT TO authenticated WITH CHECK (auth.uid() = profile_id);
 CREATE POLICY "Users can unlike posts" ON community_likes FOR DELETE TO authenticated USING (auth.uid() = profile_id);
 
+
 -- COMMUNITY REPORTS RLS
 CREATE POLICY "Authenticated users can create reports" ON community_reports FOR INSERT TO authenticated WITH CHECK (auth.uid() = profile_id);
+
+-- ============================================
+-- 12. COUNSELORS TABLE
+-- ============================================
+CREATE TABLE IF NOT EXISTS counselors (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  slug TEXT UNIQUE NOT NULL,
+  full_name TEXT NOT NULL,
+  title TEXT,
+  profession TEXT NOT NULL,
+  photo_url TEXT,
+  gender TEXT,
+  specialization TEXT NOT NULL,
+  short_bio TEXT NOT NULL,
+  full_bio TEXT,
+  education TEXT,
+  experience_years INTEGER DEFAULT 0,
+  languages TEXT[] DEFAULT ARRAY['Indonesia'],
+  rating NUMERIC(2,1) DEFAULT 5.0,
+  total_reviews INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT true,
+  is_public BOOLEAN DEFAULT true,
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes for fast lookup
+CREATE INDEX IF NOT EXISTS idx_counselors_slug ON counselors(slug);
+CREATE INDEX IF NOT EXISTS idx_counselors_active_public ON counselors(is_active, is_public);
+CREATE INDEX IF NOT EXISTS idx_counselors_display_order ON counselors(display_order);
+
+-- Auto-update updated_at timestamp
+CREATE TRIGGER set_updated_at_counselors
+  BEFORE UPDATE ON counselors
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
+-- 13. ROW LEVEL SECURITY (RLS) — COUNSELORS
+-- ============================================
+ALTER TABLE counselors ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can read public, active counselors
+CREATE POLICY "Public can view active and public counselors"
+  ON counselors
+  FOR SELECT
+  USING (is_active = true AND is_public = true);
+
+-- Authenticated admins can do anything
+CREATE POLICY "Authenticated users can manage counselors"
+  ON counselors
+  FOR ALL
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
+
+-- ============================================
+-- 14. UPDATE CONSULTATION REQUESTS
+-- ============================================
+-- Add counselor_id column to existing table
+ALTER TABLE consultation_requests
+ADD COLUMN IF NOT EXISTS counselor_id UUID REFERENCES counselors(id) ON DELETE SET NULL;
+
+CREATE INDEX IF NOT EXISTS idx_consultation_requests_counselor_id ON consultation_requests(counselor_id);

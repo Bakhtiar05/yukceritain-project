@@ -23,7 +23,7 @@ export function MethodDateStep() {
 
   const isDateDisabled = (date: Date) => {
     const day = getDay(date);
-    if (day < 2 || day > 5) return true; // Selasa(2) - Jumat(5)
+    if (day === 1) return true; // Senin libur
     if (isBefore(date, minDate)) return true;
     return false;
   };
@@ -56,7 +56,7 @@ export function MethodDateStep() {
 
       <div className="pt-6 border-t border-slate-100">
         <h2 className="text-2xl font-display font-bold text-slate-900 mb-2">Kapan Anda ingin menjadwalkan sesi?</h2>
-        <p className="text-slate-500">Konsultasi tersedia hari Selasa - Jumat.</p>
+        <p className="text-slate-500">Konsultasi tersedia hari Selasa - Minggu.</p>
         <div className="mt-4">
           <Controller
             control={control}

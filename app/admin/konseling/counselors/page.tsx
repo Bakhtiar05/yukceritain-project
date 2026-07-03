@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { getUserRole } from "@/lib/auth/roles"
 import CounselorsClient from "./CounselorsClient"
+import { getAllCounselorsAdmin } from "@/lib/actions/counselors"
 
 export const metadata = {
   title: 'Counselors | Admin YukCeritain',
@@ -16,8 +17,8 @@ export default async function CounselorsPage() {
     redirect('/admin')
   }
 
-  // Currently we mock counselors data since there is no `counselors` table in the DB.
-  // In a real application, you would fetch this from Supabase.
+  const counselors = await getAllCounselorsAdmin()
 
-  return <CounselorsClient />
+  return <CounselorsClient initialCounselors={counselors} />
 }
+

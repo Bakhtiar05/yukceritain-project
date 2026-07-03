@@ -72,6 +72,14 @@ export default function BookingsClient({ initialData }: BookingsClientProps) {
       accessor: 'metode_konsultasi',
     },
     {
+      header: 'Counselor',
+      render: (item) => (
+        <span className="text-sm font-medium text-slate-700">
+          {item.counselors?.full_name || 'Menunggu Auto-Match'}
+        </span>
+      )
+    },
+    {
       header: 'Booking Status',
       render: (item) => {
         const status = item.db_status || 'Menunggu Verifikasi'

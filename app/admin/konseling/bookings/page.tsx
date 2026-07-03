@@ -20,7 +20,7 @@ export default async function BookingsPage() {
 
   const { data: requests, error } = await supabase
     .from("consultation_requests")
-    .select("*, payments(*)")
+    .select("*, payments(*), counselors(full_name)")
     .order("created_at", { ascending: false })
 
   if (error) {

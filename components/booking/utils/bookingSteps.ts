@@ -1,4 +1,5 @@
 import { WelcomeStep } from "../steps/WelcomeStep";
+import { CounselorSelectionStep } from "../steps/CounselorSelectionStep";
 import { FullNameStep } from "../steps/FullNameStep";
 import { PreferredNameStep } from "../steps/PreferredNameStep";
 import { EmailStep } from "../steps/EmailStep";
@@ -20,6 +21,11 @@ export const BOOKING_STEPS: StepConfig[] = [
     id: "welcome",
     component: WelcomeStep,
     fieldsToValidate: [],
+  },
+  {
+    id: "counselor",
+    component: CounselorSelectionStep,
+    fieldsToValidate: ["counselor_id"],
   },
   {
     id: "full_name",

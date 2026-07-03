@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSearchParams } from "next/navigation";
 import { bookingSchema, BookingFormData, defaultBookingValues } from "@/lib/schemas/booking";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
@@ -19,9 +20,18 @@ const REFLECTIONS = [
 ];
 
 export function BookingWizard() {
+  const searchParams = useSearchParams();
+  const preselectedCounselorId = searchParams.get("counselor");
+
   const methods = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
-    defaultValues: defaultBookingValues,
+    defaultValues: {
+      ...defaultBookingValues,
+      ...(preselectedCounselorId ? { 
+        counselor_preference: "manual",
+        counselor_id: preselectedCounselorId 
+      } : {})
+    },
     mode: "onTouched",
   });
 
@@ -85,7 +95,10 @@ export function BookingWizard() {
           
           <div className="flex-1 w-full flex flex-col justify-center">
             {CurrentStepComponent && (
-              <CurrentStepComponent onStart={() => jumpToStep(1)} onEdit={(step) => jumpToStep(step)} />
+              <CurrentStepComponent 
+                onStart={() => jumpToStep(preselectedCounselorId ? 2 : 1)} 
+                onEdit={(step) => jumpToStep(step)} 
+              />
             )}
           </div>
 

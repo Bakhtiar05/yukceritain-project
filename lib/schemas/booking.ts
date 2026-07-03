@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 export const bookingSchema = z.object({
+  // Step Counselor Selection
+  counselor_preference: z.enum(["auto", "manual"]),
+  counselor_id: z.string().optional(),
+
   // Step 1
   email: z.string().email("Email tidak valid"),
   nama_lengkap: z.string().min(2, "Nama lengkap wajib diisi"),
@@ -35,26 +39,33 @@ export const bookingSchema = z.object({
   sumber_informasi: z.enum(["WhatsApp", "Instagram", "Campaign", "Teman", "Lainnya"], { message: "Pilih sumber informasi" }),
   sumber_informasi_lainnya: z.string().optional(),
 }).superRefine((data, ctx) => {
+  // Counselor Preference Refinements
+  if (data.counselor_preference === "manual" && (!data.counselor_id || data.counselor_id.trim().length === 0)) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["counselor_id"], message: "Silakan pilih konselor terlebih dahulu" });
+  }
+
   // Step 2 Refinements
   if (data.status === "Lainnya" && (!data.status_lainnya || data.status_lainnya.trim().length === 0)) {
-    ctx.addIssue({ code: "custom", path: ["status_lainnya"], message: "Isi status lainnya" });
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["status_lainnya"], message: "Isi status lainnya" });
   }
   if (data.alasan === "Lainnya" && (!data.alasan_lainnya || data.alasan_lainnya.trim().length === 0)) {
-    ctx.addIssue({ code: "custom", path: ["alasan_lainnya"], message: "Isi alasan lainnya" });
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["alasan_lainnya"], message: "Isi alasan lainnya" });
   }
   if (data.topik_permasalahan.includes("Lainnya") && (!data.topik_lainnya || data.topik_lainnya.trim().length === 0)) {
-    ctx.addIssue({ code: "custom", path: ["topik_lainnya"], message: "Isi topik lainnya" });
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["topik_lainnya"], message: "Isi topik lainnya" });
   }
   
   // Step 4 Refinements
   if (data.sumber_informasi === "Lainnya" && (!data.sumber_informasi_lainnya || data.sumber_informasi_lainnya.trim().length === 0)) {
-    ctx.addIssue({ code: "custom", path: ["sumber_informasi_lainnya"], message: "Isi sumber informasi lainnya" });
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["sumber_informasi_lainnya"], message: "Isi sumber informasi lainnya" });
   }
 });
 
 export type BookingFormData = z.infer<typeof bookingSchema>;
 
 export const defaultBookingValues: Partial<BookingFormData> = {
+  counselor_preference: "auto",
+  counselor_id: "",
   email: "",
   nama_lengkap: "",
   nama_panggilan: "",
@@ -77,3 +88,4 @@ export const defaultBookingValues: Partial<BookingFormData> = {
   sumber_informasi: undefined,
   sumber_informasi_lainnya: "",
 };
+

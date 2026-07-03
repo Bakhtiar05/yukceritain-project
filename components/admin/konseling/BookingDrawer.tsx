@@ -110,6 +110,10 @@ Metode: ${req.metode_konsultasi}`;
                 <span className="text-blue-600">Method</span>
                 <span className="col-span-2 font-semibold text-blue-900">{booking.metode_konsultasi}</span>
               </div>
+              <div className="grid grid-cols-3">
+                <span className="text-blue-600">Counselor</span>
+                <span className="col-span-2 font-semibold text-blue-900">{booking.counselors?.full_name || 'Menunggu Auto-Match'}</span>
+              </div>
             </div>
           </div>
 

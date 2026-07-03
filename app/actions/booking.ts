@@ -5,6 +5,59 @@ import { bookingSchema, BookingFormData } from "@/lib/schemas/booking";
 import { format } from "date-fns";
 import { createXenditInvoice } from "@/lib/services/xendit";
 
+async function assignCounselor(dateStr: string, timeStr: string, supabase: any): Promise<string | null> {
+  // Priority: Active, Public, lowest current booking count (for that date), lowest display_order
+  
+  // 1. Fetch all active and public counselors
+  const { data: counselors, error: counselorError } = await supabase
+    .from("counselors")
+    .select("id, display_order")
+    .eq("is_active", true)
+    .eq("is_public", true)
+    .order("display_order", { ascending: true });
+    
+  if (counselorError || !counselors || counselors.length === 0) return null;
+  
+  // 2. Fetch all bookings for the specified date and time to check availability and count
+  const { data: bookings, error: bookingError } = await supabase
+    .from("consultation_requests")
+    .select("counselor_id")
+    .eq("tanggal_konsultasi", dateStr)
+    .eq("waktu_konsultasi", timeStr)
+    .in("db_status", ["Menunggu Verifikasi", "Disetujui", "Waiting Payment", "Waiting Admin Confirmation", "Processing"]);
+    
+  const bookedCounselorIds = new Set(bookings?.map((b: any) => b.counselor_id).filter(Boolean));
+  
+  // Filter out counselors who are already booked at this exact time
+  const availableCounselors = counselors.filter((c: any) => !bookedCounselorIds.has(c.id));
+  
+  if (availableCounselors.length === 0) return null;
+  
+  // 3. For the remaining available counselors, count their total active bookings for the *entire day*
+  const { data: dayBookings } = await supabase
+    .from("consultation_requests")
+    .select("counselor_id")
+    .eq("tanggal_konsultasi", dateStr)
+    .in("db_status", ["Menunggu Verifikasi", "Disetujui", "Waiting Payment", "Waiting Admin Confirmation", "Processing"]);
+    
+  const bookingCounts: Record<string, number> = {};
+  dayBookings?.forEach((b: any) => {
+    if (b.counselor_id) {
+      bookingCounts[b.counselor_id] = (bookingCounts[b.counselor_id] || 0) + 1;
+    }
+  });
+  
+  // 4. Sort by lowest booking count, then lowest display order
+  availableCounselors.sort((a: any, b: any) => {
+    const countA = bookingCounts[a.id] || 0;
+    const countB = bookingCounts[b.id] || 0;
+    if (countA !== countB) return countA - countB;
+    return a.display_order - b.display_order;
+  });
+  
+  return availableCounselors[0].id;
+}
+
 export async function submitBooking(data: BookingFormData) {
   try {
     console.log("[submitBooking] Server action called");
@@ -46,6 +99,22 @@ export async function submitBooking(data: BookingFormData) {
     // table has RLS enabled but no INSERT policy for anonymous/public users.
     const supabase = createAdminClient();
 
+    const formattedTanggalKonsultasi = format(parsedData.tanggal_konsultasi, "yyyy-MM-dd");
+
+    // Auto-assign counselor if preference is auto
+    let finalCounselorId = parsedData.counselor_id;
+    if (parsedData.counselor_preference === "auto") {
+      console.log("[submitBooking] Auto-assigning counselor...");
+      const assignedId = await assignCounselor(formattedTanggalKonsultasi, parsedData.waktu_konsultasi, supabase);
+      if (assignedId) {
+        finalCounselorId = assignedId;
+        console.log("[submitBooking] Assigned counselor:", assignedId);
+      } else {
+        console.warn("[submitBooking] Failed to auto-assign counselor, no availability.");
+        // We could throw an error, but let's allow it to proceed with NULL counselor so admin can assign later
+      }
+    }
+
     // Generate request number ATM-YYYYMMDD-XXXX
     const todayStr = format(new Date(), "yyyyMMdd");
     
@@ -58,6 +127,7 @@ export async function submitBooking(data: BookingFormData) {
       .from("consultation_requests")
       .insert({
         request_number: requestNumber,
+        counselor_id: finalCounselorId || null,
         
         email: parsedData.email,
         nama_lengkap: parsedData.nama_lengkap,
@@ -160,39 +230,7 @@ export async function submitBooking(data: BookingFormData) {
   }
 }
 
-const TIME_SLOTS = [
-  "09:00 - 10:00 WIB",
-  "10:00 - 11:00 WIB",
-  "11:00 - 12:00 WIB",
-  "13:00 - 14:00 WIB",
-  "14:00 - 15:00 WIB",
-  "15:00 - 16:00 WIB",
-];
 
-export async function getBookedSlots(date: Date) {
-  try {
-    const supabase = createAdminClient();
-    const dateStr = format(date, "yyyy-MM-dd");
-
-    const { data, error } = await supabase
-      .from("consultation_requests")
-      .select("waktu_konsultasi")
-      .eq("tanggal_konsultasi", dateStr)
-      .in("db_status", ["Menunggu Verifikasi", "Disetujui"]);
-
-    if (error) throw error;
-
-    const bookedSlots: string[] = [];
-    data.forEach((row: any) => {
-      bookedSlots.push(row.waktu_konsultasi);
-    });
-
-    return bookedSlots;
-  } catch (error) {
-    console.error("Failed to fetch booked slots:", error);
-    return [];
-  }
-}
 
 import { revalidatePath } from "next/cache";
 
