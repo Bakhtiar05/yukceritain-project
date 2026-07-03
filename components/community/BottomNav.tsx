@@ -13,11 +13,11 @@ export default function BottomNav() {
   const { openModal } = useAuthModal()
 
   const navItems = [
-    { name: 'Home', href: '/community/for-you', icon: Home },
-    { name: 'Explore', href: '/community/explore', icon: Compass },
-    { name: 'Create', href: '/community/create', icon: Plus, isAction: true },
-    { name: 'Booking', href: '/konsultasi', icon: Calendar },
-    { name: 'Profile', href: '/community/profile', icon: User },
+    { name: 'Beranda', href: '/community/for-you', icon: Home },
+    { name: 'Eksplor', href: '/community/explore', icon: Compass },
+    { name: 'Tulis', href: '/community/create', icon: Plus, isAction: true },
+    { name: 'Konseling', href: '/konsultasi', icon: Calendar },
+    { name: 'Profil', href: '/community/profile', icon: User },
   ]
 
   return (

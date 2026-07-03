@@ -6,6 +6,7 @@ import FilterBar from '@/components/admin/ui/FilterBar'
 import EmptyState from '@/components/admin/ui/EmptyState'
 import { createClient } from '@/lib/supabase/client'
 import { EyeOff, Trash2, RotateCcw } from 'lucide-react'
+import { adminDeleteComment, adminUpdateCommentStatus } from '@/app/actions/adminCommunity'
 
 export default function CommentsClient({ initialComments }: { initialComments: any[] }) {
   const [comments, setComments] = useState(initialComments)
@@ -26,7 +27,7 @@ export default function CommentsClient({ initialComments }: { initialComments: a
     if (action === 'delete') {
       if (!confirm('Permanently delete this comment?')) return
       setComments(comments.filter(c => c.id !== id))
-      await supabase.from('community_comments').delete().eq('id', id)
+      await adminDeleteComment(id)
       return
     }
 
@@ -34,7 +35,7 @@ export default function CommentsClient({ initialComments }: { initialComments: a
     const isHidden = action === 'hide'
 
     setComments(comments.map(c => c.id === id ? { ...c, status: newStatus, is_hidden: isHidden } : c))
-    await supabase.from('community_comments').update({ status: newStatus, is_hidden: isHidden }).eq('id', id)
+    await adminUpdateCommentStatus(id, newStatus, isHidden)
   }
 
   const columns: Column<any>[] = [

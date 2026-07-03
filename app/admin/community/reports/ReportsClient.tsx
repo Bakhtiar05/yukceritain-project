@@ -6,6 +6,7 @@ import FilterBar from '@/components/admin/ui/FilterBar'
 import EmptyState from '@/components/admin/ui/EmptyState'
 import ReportModal from '@/components/admin/community/ReportModal'
 import { createClient } from '@/lib/supabase/client'
+import { adminResolveReport } from '@/app/actions/adminCommunity'
 
 export default function ReportsClient({ initialReports, adminId }: { initialReports: any[], adminId: string }) {
   const [reports, setReports] = useState(initialReports)
@@ -26,33 +27,9 @@ export default function ReportsClient({ initialReports, adminId }: { initialRepo
     const report = reports.find(r => r.id === id)
     if (!report) return
 
-    // Update Report Status
-    await supabase.from('community_reports').update({ 
-      status: 'Resolved', 
-      description: note ? `[${action.toUpperCase()}] ${note}` : `[${action.toUpperCase()}]`
-    }).eq('id', id)
-
-    // Log Activity
-    await supabase.from('community_activity_logs').insert({
-      admin_id: adminId,
-      action: `resolve_report_${action}`,
-      target_type: 'report',
-      target_id: id,
-    })
-
-    // Action specific logic
-    if (action === 'delete_content') {
-      if (report.post_id) {
-        await supabase.from('community_posts').delete().eq('id', report.post_id)
-      } else if (report.comment_id) {
-        await supabase.from('community_comments').delete().eq('id', report.comment_id)
-      }
-    } else if (action === 'ban_user') {
-      const targetUserId = report.post?.profile?.id || report.comment?.profile?.id
-      if (targetUserId) {
-         await supabase.from('profiles').update({ status: 'Banned' }).eq('id', targetUserId)
-      }
-    }
+    // DB Update (Admin Action bypasses RLS)
+    const targetUserId = report.post?.profile?.id || report.comment?.profile?.id
+    await adminResolveReport(id, action, note, adminId, report.post_id, report.comment_id, targetUserId)
 
     setReports(reports.map(r => r.id === id ? { ...r, status: 'Resolved' } : r))
     setSelectedReport(null)

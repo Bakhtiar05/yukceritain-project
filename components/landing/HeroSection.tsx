@@ -19,11 +19,11 @@ const DynamicTextSwap = () => {
 
   return (
     <div className="flex flex-col items-center lg:items-start w-full">
-      <span className="text-slate-800 text-[2.5rem] md:text-[clamp(2.5rem,5vw,4rem)] font-extrabold leading-[1.05] tracking-tight">
+      <span className="text-slate-800 text-[2rem] md:text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight">
         Ceritamu Layak
       </span>
       {/* Stable container height to prevent layout shift */}
-      <div className="relative h-[48px] md:h-[64px] lg:h-[80px] w-full flex justify-center lg:justify-start mt-1 md:mt-3">
+      <div className="relative h-[40px] md:h-[56px] lg:h-[64px] w-full flex justify-center lg:justify-start mt-1 md:mt-3">
         <AnimatePresence>
           <motion.span
             key={index}
@@ -31,7 +31,7 @@ const DynamicTextSwap = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -25, opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute font-bold text-[2.5rem] md:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 pb-2 md:pb-3 lg:pb-4"
+            className="absolute font-bold text-[2rem] md:text-4xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 pb-2 md:pb-3 lg:pb-4"
           >
             {dynamicWords[index]}
           </motion.span>
@@ -202,7 +202,7 @@ export default function HeroSection() {
         </motion.div>
       )}
 
-      <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 h-full flex flex-col lg:flex-row items-center justify-center lg:justify-between flex-1 pb-16 lg:py-0">
+      <div className="relative z-10 w-full max-w-[1280px] mx-auto px-8 md:px-12 lg:px-20 xl:px-24 h-full flex flex-col lg:flex-row items-center justify-center lg:justify-between flex-1 pb-16 lg:py-0">
 
         {/* LEFT COLUMN: TEXT & CTA */}
         <motion.div
@@ -220,34 +220,35 @@ export default function HeroSection() {
 
           <motion.p
             variants={fadeUpVariants}
-            className="text-neutral-500 text-base md:text-xl leading-relaxed mb-5 md:mb-10 max-w-[520px]"
+            className="text-neutral-500 text-sm md:text-base lg:text-lg leading-relaxed mb-5 md:mb-10 max-w-[520px]"
           >
-            Ruang aman untuk setiap ceritamu🤗. Konseling bersama konselor &amp; psikolog klinis profesional.
+            Ruang aman untuk setiap ceritamu, Konseling <br />
+            bersama konselor &amp; psikolog klinis profesional.
           </motion.p>
 
           <motion.div variants={fadeUpVariants} className="flex flex-row gap-3 md:gap-4 justify-center lg:justify-start w-full">
             <Link
               href="/konsultasi"
-              className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-5 md:px-8 py-3.5 md:py-4 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-full font-bold text-[15px] md:text-lg shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:-translate-y-1 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-6 py-2.5 md:py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-full font-bold text-sm md:text-base shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:-translate-y-1 whitespace-nowrap"
             >
               Mulai Konseling
-              <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </Link>
             <Link
               href="#cara-kerja"
-              className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-5 md:px-8 py-3.5 md:py-4 bg-transparent border-2 border-[#BFDBFE] hover:border-[#2563EB] hover:bg-[#EFF6FF] text-[#2563EB] rounded-full font-bold text-[15px] md:text-lg transition-all duration-300 hover:-translate-y-1 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-6 py-2.5 md:py-3 bg-transparent border-2 border-[#BFDBFE] hover:border-[#2563EB] hover:bg-[#EFF6FF] text-[#2563EB] rounded-full font-bold text-sm md:text-base transition-all duration-300 hover:-translate-y-1 whitespace-nowrap"
             >
               Lihat Cara Kerja
             </Link>
           </motion.div>
 
-          <motion.div variants={fadeUpVariants} className="mt-4 md:mt-6 flex items-center justify-center lg:justify-start gap-2 text-[0.95rem] text-neutral-500 font-medium">
-            <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <motion.div variants={fadeUpVariants} className="mt-4 md:mt-6 flex items-center justify-center lg:justify-start gap-1.5 text-xs md:text-sm text-neutral-500 font-medium">
+            <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Mulai dari <span className="text-[#2563EB] font-extrabold">Rp20.000</span> per sesi
+            Mulai dari <span className="text-[#2563EB] font-extrabold text-sm md:text-base">Rp20.000</span> per sesi
           </motion.div>
         </motion.div>
       </div>

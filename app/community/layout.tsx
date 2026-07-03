@@ -8,32 +8,33 @@ import AuthModalProvider from '@/components/community/AuthModalProvider'
 export default function CommunityLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthModalProvider>
-      <div className="min-h-screen bg-[#F8FAFC] flex flex-col md:flex-row justify-center font-sans text-slate-900">
+      <div className="min-h-screen bg-[#F8FAFC] flex justify-center font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
         
-        {/* Desktop Left Sidebar */}
-        <div className="hidden md:flex w-64 xl:w-72 flex-shrink-0 border-r border-slate-200 bg-white sticky top-0 h-screen overflow-y-auto">
-          <LeftSidebar />
-        </div>
-
-        {/* Main Feed Column */}
-        <div className="flex-1 w-full max-w-2xl min-h-screen flex flex-col bg-white border-x-0 md:border-x border-slate-200 relative">
-          {/* Mobile Top Bar */}
-          <div className="md:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200">
-            <TopBar />
-          </div>
+        <div className="w-full max-w-[1600px] flex flex-col md:flex-row md:px-4 xl:px-8 gap-6 xl:gap-8">
           
-          <main className="flex-1 pb-20 md:pb-0">
-            {children}
-          </main>
-        </div>
+          {/* Desktop Left Sidebar */}
+          <div className="hidden md:flex w-72 xl:w-[300px] flex-shrink-0 bg-white rounded-3xl shadow-[0_2px_20px_-4px_rgba(0,0,0,0.02)] border border-slate-100/60 my-4 sticky top-4 h-[calc(100vh-32px)] overflow-y-auto custom-scrollbar">
+            <LeftSidebar />
+          </div>
 
-        {/* Desktop Right Sidebar */}
-        <div className="hidden lg:flex w-80 xl:w-96 flex-shrink-0 sticky top-0 h-screen overflow-y-auto px-6 py-8">
-          <RightSidebar />
+          {/* Main Feed Column */}
+          <div className="flex-1 w-full max-w-3xl min-h-screen flex flex-col bg-white md:rounded-3xl shadow-[0_2px_20px_-4px_rgba(0,0,0,0.02)] border border-slate-100/60 my-0 md:my-4 relative">
+            {/* Mobile Top Bar (Removed to maximize feed visibility) */}
+            
+            <main className="flex-1 pb-28 md:pb-0">
+              {children}
+            </main>
+          </div>
+
+          {/* Desktop Right Sidebar */}
+          <div className="hidden lg:flex w-80 xl:w-[340px] flex-shrink-0 sticky top-4 h-[calc(100vh-32px)] overflow-y-auto custom-scrollbar py-4">
+            <RightSidebar />
+          </div>
+
         </div>
 
         {/* Mobile Bottom Navigation */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-t border-slate-200 safe-area-pb">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl border-t border-slate-100/60 safe-area-pb">
           <BottomNav />
         </div>
 

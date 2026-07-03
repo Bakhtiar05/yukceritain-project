@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useAuthModal } from './AuthModalProvider'
 import { Button } from '@/components/ui/button'
 import { addComment } from '@/lib/actions/community'
@@ -32,31 +32,49 @@ export default function CommentComposer({ postId, isAuthenticated }: { postId: s
     }
   }
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`
+    }
+  }, [content])
+
   return (
-    <div className="bg-slate-50/50 p-4 sm:p-6 border-b border-slate-200">
-      <div className="flex space-x-3 sm:space-x-4">
-        <div className="flex-1">
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value.slice(0, maxLength))}
-            placeholder="Write a supportive reply..."
-            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 text-sm sm:text-base resize-none min-h-[80px] placeholder:text-slate-400"
-            onClick={() => {
-              if (!isAuthenticated) openModal()
-            }}
-          />
-          
-          <div className="flex items-center justify-between mt-3">
-            <span className={`text-xs ${remaining < 50 ? 'text-amber-500' : 'text-slate-400'}`}>
-              {remaining} characters left
-            </span>
-            <Button 
+    <div className="bg-white px-4 sm:px-8 py-6 mb-2">
+      <div className="flex flex-col">
+        <textarea
+          ref={textareaRef}
+          value={content}
+          onChange={(e) => setContent(e.target.value.slice(0, maxLength))}
+          placeholder="Write a supportive reply..."
+          className="w-full bg-slate-50 border-0 rounded-2xl px-5 py-4 focus:ring-2 focus:ring-blue-100 text-slate-900 text-base resize-none min-h-[56px] placeholder:text-slate-400 transition-all shadow-inner"
+          onClick={() => {
+            if (!isAuthenticated) openModal()
+          }}
+          rows={1}
+        />
+        
+        {/* Actions bar appears when typing or focused */}
+        <div className={`flex items-center justify-between mt-3 transition-opacity duration-200 ${content.length > 0 ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
+          <span className={`text-[11px] font-medium tracking-wide uppercase ${remaining < 50 ? 'text-amber-500' : 'text-slate-400'}`}>
+            {remaining} left
+          </span>
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setContent('')} 
+              className="text-slate-400 hover:text-slate-600 font-medium text-sm px-3 py-1.5 rounded-full transition-colors"
+            >
+              Cancel
+            </button>
+            <button 
               onClick={handleSubmit} 
               disabled={!content.trim() || isSubmitting}
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 h-9 text-sm font-semibold shadow-sm disabled:opacity-50 transition-colors"
+              className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white rounded-full px-6 py-2 text-sm font-semibold shadow-md shadow-blue-500/20 disabled:opacity-50 transition-all"
             >
-              {isSubmitting ? 'Replying...' : 'Reply'}
-            </Button>
+              {isSubmitting ? '...' : 'Reply'}
+            </button>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import * as Dialog from '@radix-ui/react-dialog'
-import { Heart, MessageCircle, Share2, MoreHorizontal, Edit2, Trash2, X, Check, AlertCircle } from 'lucide-react'
+import { HeartHandshake, MessageCircle, Share2, MoreHorizontal, Edit2, Trash2, X, Check, AlertCircle } from 'lucide-react'
 import { useAuthModal } from './AuthModalProvider'
 import { toggleLike, deleteStory, updateStory } from '@/lib/actions/community'
 
@@ -53,7 +53,8 @@ export default function StoryCard({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
-  const handleLike = async () => {
+  const handleLike = async (e: React.MouseEvent) => {
+    e.stopPropagation()
     if (!isAuthenticated) {
       openModal()
       return
@@ -72,7 +73,8 @@ export default function StoryCard({
     }
   }
 
-  const handleComment = () => {
+  const handleComment = (e: React.MouseEvent) => {
+    e.stopPropagation()
     if (!isAuthenticated) {
       openModal()
       return
@@ -116,6 +118,10 @@ export default function StoryCard({
   const displayName = is_anonymous ? 'Anonymous' : profile.display_name
   const username = is_anonymous ? 'anonymous' : profile.username
   
+  const avatarUrl = is_anonymous 
+    ? 'https://api.dicebear.com/7.x/notionists/svg?seed=anonymous' 
+    : profile.avatar_url || `https://api.dicebear.com/7.x/notionists/svg?seed=${username}`
+  
   // Format date relative (e.g., "2h", "5d")
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr)
@@ -128,10 +134,20 @@ export default function StoryCard({
   }
 
   return (
-    <article className="p-4 sm:p-6 bg-white border-b border-slate-200 transition-colors hover:bg-slate-50/50">
-      <div className="flex space-x-3 sm:space-x-4">
+    <article 
+      onClick={() => !disableCommentNavigation && router.push(`/community/post/${id}`)}
+      className={`px-5 sm:px-8 py-4 sm:py-6 transition-colors group cursor-pointer ${!disableCommentNavigation ? 'hover:bg-slate-50/50 rounded-2xl mx-2 my-2' : ''}`}
+    >
+      <div className="flex space-x-4 sm:space-x-5">
+        {/* Avatar */}
+        <div className="flex-shrink-0 pt-0.5">
+          <div className="relative">
+            <img src={avatarUrl} alt={displayName} className="w-11 h-11 rounded-full object-cover bg-slate-100 ring-1 ring-slate-200/50" />
+          </div>
+        </div>
+        
         {/* Content */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 pb-2 sm:pb-4 group-last:border-0">
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-1 truncate">
               {is_anonymous ? (
@@ -147,10 +163,10 @@ export default function StoryCard({
             </div>
             {isOwner && !isEditing && (
               <div className="flex items-center space-x-2">
-                <button onClick={() => setIsEditing(true)} className="text-slate-400 hover:text-blue-600 transition-colors p-1">
+                <button onClick={(e) => { e.stopPropagation(); setIsEditing(true); }} className="text-slate-400 hover:text-blue-600 transition-colors p-1">
                   <Edit2 className="w-4 h-4" />
                 </button>
-                <button onClick={() => setIsDeleteModalOpen(true)} className="text-slate-400 hover:text-red-600 transition-colors p-1">
+                <button onClick={(e) => { e.stopPropagation(); setIsDeleteModalOpen(true); }} className="text-slate-400 hover:text-red-600 transition-colors p-1">
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
@@ -165,45 +181,51 @@ export default function StoryCard({
                 className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none min-h-[80px]"
               />
               <div className="flex justify-end space-x-2 mt-2">
-                <button onClick={() => { setIsEditing(false); setEditContent(content); }} className="px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+                <button onClick={(e) => { e.stopPropagation(); setIsEditing(false); setEditContent(content); }} className="px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
                   Cancel
                 </button>
-                <button onClick={handleEditSave} disabled={isSubmitting} className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-full transition-colors disabled:opacity-50">
+                <button onClick={(e) => { e.stopPropagation(); handleEditSave(); }} disabled={isSubmitting} className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-full transition-colors disabled:opacity-50">
                   {isSubmitting ? 'Saving...' : 'Save'}
                 </button>
               </div>
             </div>
           ) : (
-            <p className="mt-1 sm:mt-2 text-slate-800 text-base sm:text-[17px] leading-relaxed whitespace-pre-wrap break-words">
+            <p className="mt-1 text-slate-800 text-[15px] sm:text-[16px] leading-[1.65] whitespace-pre-wrap break-words max-w-2xl">
               {content}
             </p>
           )}
 
           {/* Action Buttons */}
-          <div className="mt-4 sm:mt-5 flex items-center space-x-6 text-slate-500">
+          <div className="mt-5 flex items-center space-x-8 text-slate-500">
             <button 
               onClick={handleLike}
-              className={`flex items-center space-x-2 group transition-colors ${isLiked ? 'text-rose-500' : 'hover:text-rose-500'}`}
+              className={`flex items-center space-x-2 group transition-all duration-200 active:scale-95 ${isLiked ? 'text-emerald-500' : 'hover:text-emerald-500'}`}
+              title="Kirim Pelukan"
             >
-              <div className={`p-1.5 sm:p-2 rounded-full group-hover:bg-rose-50 transition-colors ${isLiked ? 'bg-rose-50' : ''}`}>
-                <Heart className={`w-4 h-4 sm:w-5 sm:h-5 ${isLiked ? 'fill-rose-500' : ''}`} />
+              <div className={`p-2 -ml-2 rounded-full group-hover:bg-emerald-50 transition-colors ${isLiked ? 'bg-emerald-50' : ''}`}>
+                <HeartHandshake className={`w-[20px] h-[20px] ${isLiked ? 'stroke-emerald-500 text-emerald-500 fill-emerald-50' : ''}`} />
               </div>
-              <span className="text-sm font-medium">{likesCount > 0 ? likesCount : ''}</span>
+              <span className="text-[13px] font-semibold">{likesCount > 0 ? likesCount : ''}</span>
             </button>
 
             <button 
               onClick={handleComment}
-              className="flex items-center space-x-2 group hover:text-blue-500 transition-colors"
+              className="flex items-center space-x-2 group hover:text-blue-500 transition-all duration-200 active:scale-95"
+              title="Komentar"
             >
-              <div className="p-1.5 sm:p-2 rounded-full group-hover:bg-blue-50 transition-colors">
-                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="p-2 -ml-2 rounded-full group-hover:bg-blue-50 transition-colors">
+                <MessageCircle className="w-[20px] h-[20px]" />
               </div>
-              <span className="text-sm font-medium">{comments_count > 0 ? comments_count : ''}</span>
+              <span className="text-[13px] font-semibold">{comments_count > 0 ? comments_count : ''}</span>
             </button>
 
-            <button className="flex items-center space-x-2 group hover:text-green-500 transition-colors ml-auto">
-              <div className="p-1.5 sm:p-2 rounded-full group-hover:bg-green-50 transition-colors">
-                <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            <button 
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center space-x-2 group hover:text-indigo-500 transition-all duration-200 active:scale-95 ml-auto"
+              title="Share"
+            >
+              <div className="p-2 -mr-2 rounded-full group-hover:bg-indigo-50 transition-colors">
+                <Share2 className="w-[20px] h-[20px]" />
               </div>
             </button>
           </div>

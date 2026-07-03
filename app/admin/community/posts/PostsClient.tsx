@@ -6,6 +6,7 @@ import FilterBar from '@/components/admin/ui/FilterBar'
 import PostDrawer from '@/components/admin/community/PostDrawer'
 import EmptyState from '@/components/admin/ui/EmptyState'
 import { createClient } from '@/lib/supabase/client'
+import { adminDeletePost, adminUpdatePostStatus } from '@/app/actions/adminCommunity'
 
 export default function PostsClient({ initialPosts }: { initialPosts: any[] }) {
   const [posts, setPosts] = useState(initialPosts)
@@ -89,23 +90,23 @@ export default function PostsClient({ initialPosts }: { initialPosts: any[] }) {
     setPosts(posts.map(p => p.id === id ? { ...p, status: 'Hidden', is_hidden: true } : p))
     setSelectedPost((prev: any) => prev?.id === id ? { ...prev, status: 'Hidden', is_hidden: true } : prev)
     
-    // DB Update
-    await supabase.from('community_posts').update({ status: 'Hidden', is_hidden: true }).eq('id', id)
-    // Add activity log...
+    // DB Update (Admin Action bypasses RLS)
+    await adminUpdatePostStatus(id, 'Hidden', true)
   }
   
   const handleRestore = async (id: string) => {
     setPosts(posts.map(p => p.id === id ? { ...p, status: 'Published', is_hidden: false } : p))
     setSelectedPost((prev: any) => prev?.id === id ? { ...prev, status: 'Published', is_hidden: false } : prev)
     
-    await supabase.from('community_posts').update({ status: 'Published', is_hidden: false }).eq('id', id)
+    await adminUpdatePostStatus(id, 'Published', false)
   }
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to permanently delete this post?')) return
     setIsDrawerOpen(false)
     setPosts(posts.filter(p => p.id !== id))
-    await supabase.from('community_posts').delete().eq('id', id)
+    
+    await adminDeletePost(id)
   }
 
   return (
