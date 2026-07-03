@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Suspense } from "react";
 import { BookingWizard } from "@/components/booking/BookingWizard";
 
 export const metadata: Metadata = {
@@ -14,10 +15,11 @@ export default function KonsultasiPage() {
           <h1 className="text-3xl md:text-[42px] font-display font-bold text-[#0F172A] animate-fade-enter leading-snug md:leading-tight tracking-tight max-w-[300px] md:max-w-none">
             Daftar Jadwal Konseling
           </h1>
-
         </div>
 
-        <BookingWizard />
+        <Suspense fallback={<div className="p-8 text-center text-slate-500">Memuat formulir pendaftaran...</div>}>
+          <BookingWizard />
+        </Suspense>
       </div>
     </div>
   );

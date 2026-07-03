@@ -4,6 +4,8 @@ import { getUserRole } from '@/lib/auth/roles'
 import AdminSidebar from '@/components/admin/ui/AdminSidebar'
 import AdminTopNav from '@/components/admin/ui/AdminTopNav'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
