@@ -6,7 +6,7 @@ import { Lock } from "lucide-react";
 
 export function WelcomeStep({ onStart }: BookingStepProps) {
   return (
-    <StepTransition className="relative flex flex-col items-center justify-center text-center space-y-4 md:space-y-6 py-4 md:py-12 w-full">
+    <StepTransition className="relative flex flex-col items-center justify-center text-center space-y-4 md:space-y-6 py-4 md:py-6 w-full">
       {/* Decorative Background Circles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 rounded-3xl md:rounded-[40px]">
         <div className="absolute top-[-10%] left-[-10%] w-64 h-64 md:w-96 md:h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float-1" />

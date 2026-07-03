@@ -69,7 +69,7 @@ export function BookingWizard() {
 
       {/* Daily Reflection Card (Only on Welcome Step) */}
       {currentStep === 0 && reflection && (
-        <div className="mb-4 w-full max-w-[95%] md:max-w-md mx-auto bg-white/80 backdrop-blur-md border border-slate-100 shadow-sm rounded-2xl p-3 md:p-4 animate-in fade-in slide-in-from-top-4 duration-700 delay-150">
+        <div className="mb-2 md:mb-4 w-full max-w-[95%] md:max-w-md mx-auto bg-white/80 backdrop-blur-md border border-slate-100 shadow-sm rounded-2xl p-3 md:p-4 animate-in fade-in slide-in-from-top-4 duration-700 delay-150">
           <p className="text-[10px] md:text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-1 md:mb-2 flex items-center justify-center gap-1 text-center">
             <span>✨</span> Refleksi Hari Ini
           </p>
@@ -81,7 +81,7 @@ export function BookingWizard() {
 
       {/* Main Form Content */}
       <FormProvider {...methods}>
-        <div className="bg-white min-h-[300px] md:min-h-[500px] flex flex-col rounded-3xl md:rounded-[40px] shadow-sm border border-slate-100 p-5 py-8 md:p-12 md:py-16 relative overflow-hidden">
+        <div className="bg-white min-h-[300px] md:min-h-[400px] flex flex-col rounded-3xl md:rounded-[40px] shadow-sm border border-slate-100 p-5 py-8 md:p-10 md:py-10 relative overflow-hidden">
           
           <div className="flex-1 w-full flex flex-col justify-center">
             {CurrentStepComponent && (
