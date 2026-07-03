@@ -94,7 +94,7 @@ export default function StoryCard({
     setLikesCount(prev => isLiked ? prev - 1 : prev + 1)
     
     // Heart bounce animation trigger
-    const btn = e.currentTarget
+    const btn = e.currentTarget as HTMLButtonElement
     btn.classList.remove('animate-heart-bounce')
     void btn.offsetWidth // trigger reflow
     btn.classList.add('animate-heart-bounce')
