@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X, Home, HeartHandshake, Activity, BookOpen, MoreHorizontal } from 'lucide-react'
+import { Menu, X, Home, HeartHandshake, Activity, BookOpen, Calendar, MoreHorizontal } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
 interface NavbarProps {
@@ -117,23 +117,23 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
 
       {/* Mobile Bottom Navigation */}
       <nav className="md:hidden fixed bottom-4 inset-x-4 z-[998] bg-white/85 backdrop-blur-xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-[24px] px-2 py-2 flex items-center justify-between pb-safe">
-        <Link href="/konsultasi" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
-          <HeartHandshake size={22} className={pathname === '/konsultasi' ? 'text-blue-600' : ''} />
-          <span className={`text-[10px] font-medium ${pathname === '/konsultasi' ? 'text-blue-600' : ''}`}>Konseling</span>
+        <Link href="/" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
+          <Home size={22} className={pathname === '/' ? 'text-blue-600' : ''} />
+          <span className={`text-[10px] font-medium ${pathname === '/' ? 'text-blue-600' : ''}`}>Beranda</span>
         </Link>
         <Link href="/cek-status" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
           <Activity size={22} className={pathname === '/cek-status' ? 'text-blue-600' : ''} />
           <span className={`text-[10px] font-medium ${pathname === '/cek-status' ? 'text-blue-600' : ''}`}>Status</span>
         </Link>
-        <Link href="/" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors group">
-          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white shadow-[0_8px_20px_rgba(0,0,0,0.12)] border-2 ${pathname === '/' ? 'border-blue-50' : 'border-neutral-50'} transition-transform duration-300 group-hover:-translate-y-1`}>
-            <Image src="/assets/navbar-bawah.png" alt="Beranda" width={36} height={36} className={`object-contain transition-all duration-300 ${pathname === '/' ? 'opacity-100 scale-105 drop-shadow-md' : 'opacity-80'}`} />
+        <Link href="/community" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors group">
+          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white shadow-[0_8px_20px_rgba(0,0,0,0.12)] border-2 ${pathname?.startsWith('/community') ? 'border-blue-50' : 'border-neutral-50'} transition-transform duration-300 group-hover:-translate-y-1`}>
+            <Image src="/assets/navbar-bawah.png" alt="Yukceritain" width={36} height={36} className={`object-contain transition-all duration-300 ${pathname?.startsWith('/community') ? 'opacity-100 scale-105 drop-shadow-md' : 'opacity-80'}`} />
           </div>
-          <span className={`text-[10px] font-medium ${pathname === '/' ? 'text-blue-600' : ''}`}>Beranda</span>
+          <span className={`text-[10px] font-medium ${pathname?.startsWith('/community') ? 'text-blue-600' : ''}`}>Yukceritain</span>
         </Link>
-        <Link href="/blog" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
-          <BookOpen size={22} className={pathname?.startsWith('/blog') ? 'text-blue-600' : ''} />
-          <span className={`text-[10px] font-medium ${pathname?.startsWith('/blog') ? 'text-blue-600' : ''}`}>Blog</span>
+        <Link href="/event" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
+          <Calendar size={22} className={pathname?.startsWith('/event') ? 'text-blue-600' : ''} />
+          <span className={`text-[10px] font-medium ${pathname?.startsWith('/event') ? 'text-blue-600' : ''}`}>Event</span>
         </Link>
         <button onClick={() => setMenuOpen(true)} className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
           <MoreHorizontal size={22} className={menuOpen ? 'text-blue-600' : ''} />
@@ -156,7 +156,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
         
         <div className="flex flex-col gap-2 overflow-y-auto max-h-[60vh]">
           {navLinks.map((link) => (
-            link.label !== 'Blog' && (
+            link.label !== 'Yuk Ceritain' && (
               <Link
                 key={link.label}
                 href={link.href}

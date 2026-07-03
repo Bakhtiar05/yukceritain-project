@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { BookingStepProps } from "../types/booking";
 import { StepTransition } from "../components/StepTransition";
 import { Lock } from "lucide-react";
+import Image from "next/image";
 
 export function WelcomeStep({ onStart }: BookingStepProps) {
   return (
@@ -13,9 +14,17 @@ export function WelcomeStep({ onStart }: BookingStepProps) {
         <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 md:w-96 md:h-96 bg-emerald-50 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float-2" />
       </div>
 
-      {/* Floating Welcome Icon */}
-      <div className="w-20 h-20 md:w-24 md:h-24 bg-blue-50/80 backdrop-blur-sm text-blue-600 rounded-full flex items-center justify-center text-4xl md:text-5xl mb-2 md:mb-4 shadow-sm animate-gentle-bounce ring-4 ring-white">
-        🌿
+      {/* Floating Welcome Icon Wrapper */}
+      <div className="-translate-y-6 md:-translate-y-8 mb-2 md:mb-4">
+        <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl flex items-center justify-center animate-gentle-bounce">
+          <Image 
+            src="/assets/logo-v5.png" 
+            alt="YukCeritain Logo" 
+            width={180} 
+            height={180} 
+            className="w-[125%] h-[125%] max-w-none object-contain scale-110 md:scale-125"
+          />
+        </div>
       </div>
 
       {/* Main Copy */}
