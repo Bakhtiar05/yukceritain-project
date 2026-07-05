@@ -113,6 +113,37 @@ export default function AdminSidebar({ role }: AdminSidebarProps) {
             </Link>
           </div>
         )}
+
+        {/* Events Module */}
+        {(role === 'super_admin' || role === 'admin_events') && (
+          <div className="space-y-1">
+            <p className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Events</p>
+            <Link href="/admin/events" className={linkClass('/admin/events')}>
+              <LayoutDashboard className="w-4 h-4" />
+              Dashboard
+            </Link>
+            <Link href="/admin/events/list" className={linkClass('/admin/events/list')}>
+              <Calendar className="w-4 h-4" />
+              All Events
+            </Link>
+            <Link href="/admin/events/create" className={linkClass('/admin/events/create')}>
+              <PenTool className="w-4 h-4" />
+              Create Event
+            </Link>
+            <Link href="/admin/events/registrations" className={linkClass('/admin/events/registrations')}>
+              <UsersRound className="w-4 h-4" />
+              Registrations
+            </Link>
+            <Link href="/admin/events/check-in" className={linkClass('/admin/events/check-in')}>
+              <ShieldAlert className="w-4 h-4" />
+              Check In
+            </Link>
+            <Link href="/admin/events/reports" className={linkClass('/admin/events/reports')}>
+              <LineChart className="w-4 h-4" />
+              Reports
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="p-4 border-t border-slate-200">

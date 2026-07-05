@@ -34,6 +34,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
         { label: 'Layanan', href: '/#layanan' },
         { label: 'Cara Kerja', href: '/#cara-kerja' },
         { label: 'Yuk Ceritain', href: '/community', isFeature: true },
+        { label: 'Event', href: '/events' },
         { label: 'FAQ', href: '/#faq' },
         { label: 'Blog', href: '/blog', active: true },
       ]
@@ -41,6 +42,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
         { label: 'Layanan', href: '#layanan' },
         { label: 'Cara Kerja', href: '#cara-kerja' },
         { label: 'Yuk Ceritain', href: '/community', isFeature: true },
+        { label: 'Event', href: '/events' },
         { label: 'FAQ', href: '#faq' },
         { label: 'Blog', href: '/blog' },
       ]
@@ -131,9 +133,9 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           </div>
           <span className={`text-[10px] font-medium ${pathname?.startsWith('/community') ? 'text-blue-600' : ''}`}>Yukceritain</span>
         </Link>
-        <Link href="/event" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
-          <Calendar size={22} className={pathname?.startsWith('/event') ? 'text-blue-600' : ''} />
-          <span className={`text-[10px] font-medium ${pathname?.startsWith('/event') ? 'text-blue-600' : ''}`}>Event</span>
+        <Link href="/events" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
+          <Calendar size={22} className={pathname?.startsWith('/events') ? 'text-blue-600' : ''} />
+          <span className={`text-[10px] font-medium ${pathname?.startsWith('/events') ? 'text-blue-600' : ''}`}>Event</span>
         </Link>
         <button onClick={() => setMenuOpen(true)} className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
           <MoreHorizontal size={22} className={menuOpen ? 'text-blue-600' : ''} />

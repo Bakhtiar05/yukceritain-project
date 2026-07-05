@@ -21,7 +21,60 @@ export async function POST(req: Request) {
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Get existing payment
+    // Route based on external_id prefix
+    if (payload.external_id.startsWith("evt_")) {
+      // EVENT PAYMENT LOGIC
+      const { data: eventPayment, error: eventPaymentError } = await supabase
+        .from("event_payments")
+        .select("*")
+        .eq("external_id", payload.external_id)
+        .single();
+
+      if (eventPaymentError || !eventPayment) {
+        return NextResponse.json({ message: "Event payment not found" }, { status: 404 });
+      }
+
+      if (eventPayment.payment_status === "PAID" && payload.status === "PAID") {
+        return NextResponse.json({ message: "Already processed" }, { status: 200 });
+      }
+
+      const paymentUpdate: any = {
+        payment_status: payload.status,
+        updated_at: new Date().toISOString(),
+      };
+      if (payload.payment_method) paymentUpdate.payment_method = payload.payment_method;
+      if (payload.paid_at) paymentUpdate.paid_at = payload.paid_at;
+
+      const { error: updateError } = await supabase
+        .from("event_payments")
+        .update(paymentUpdate)
+        .eq("id", eventPayment.id);
+
+      if (updateError) {
+        return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+      }
+
+      if (payload.status === "PAID") {
+        // Find registration code to generate QR code URL (we could also fetch it)
+        const { data: regData } = await supabase
+          .from("event_registrations")
+          .select("registration_code")
+          .eq("id", eventPayment.registration_id)
+          .single();
+
+        await supabase
+          .from("event_registrations")
+          .update({
+            payment_status: "PAID",
+            qr_code: regData ? `QR-${regData.registration_code}` : null
+          })
+          .eq("id", eventPayment.registration_id);
+      }
+
+      return NextResponse.json({ message: "Success" }, { status: 200 });
+    }
+
+    // EXISTING COUNSELING PAYMENT LOGIC
     const { data: payment, error: paymentError } = await supabase
       .from("payments")
       .select("*")

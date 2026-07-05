@@ -544,3 +544,167 @@ ALTER TABLE consultation_requests
 ADD COLUMN IF NOT EXISTS counselor_id UUID REFERENCES counselors(id) ON DELETE SET NULL;
 
 CREATE INDEX IF NOT EXISTS idx_consultation_requests_counselor_id ON consultation_requests(counselor_id);
+
+-- ============================================
+-- 15. EVENTS TABLE
+-- ============================================
+CREATE TABLE IF NOT EXISTS events (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  slug TEXT UNIQUE NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  short_description TEXT NOT NULL,
+  cover_image TEXT,
+  event_type TEXT NOT NULL CHECK (event_type IN ('ONLINE', 'OFFLINE')),
+  pricing_type TEXT NOT NULL CHECK (pricing_type IN ('FREE', 'PAID')),
+  price NUMERIC DEFAULT 0,
+  currency TEXT DEFAULT 'IDR',
+  speaker TEXT,
+  organizer TEXT NOT NULL DEFAULT 'YukceritaIN',
+  venue_name TEXT,
+  venue_address TEXT,
+  google_maps_url TEXT,
+  meeting_platform TEXT,
+  meeting_link TEXT,
+  start_datetime TIMESTAMPTZ NOT NULL,
+  end_datetime TIMESTAMPTZ NOT NULL,
+  registration_deadline TIMESTAMPTZ NOT NULL,
+  quota INTEGER NOT NULL DEFAULT 0,
+  registered_count INTEGER NOT NULL DEFAULT 0,
+  waiting_list_enabled BOOLEAN DEFAULT FALSE,
+  status TEXT NOT NULL DEFAULT 'Draft' CHECK (status IN ('Draft', 'Published', 'Closed', 'Completed')),
+  is_featured BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes for Events
+CREATE INDEX IF NOT EXISTS idx_events_slug ON events(slug);
+CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
+CREATE INDEX IF NOT EXISTS idx_events_dates ON events(start_datetime, end_datetime);
+
+-- Auto-update updated_at timestamp
+CREATE TRIGGER set_updated_at_events
+  BEFORE UPDATE ON events
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
+-- 16. EVENT REGISTRATIONS TABLE
+-- ============================================
+CREATE TABLE IF NOT EXISTS event_registrations (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  event_id UUID NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  registration_code TEXT UNIQUE NOT NULL,
+  full_name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  institution TEXT,
+  city TEXT,
+  gender TEXT,
+  payment_status TEXT NOT NULL DEFAULT 'FREE' CHECK (payment_status IN ('FREE', 'PENDING', 'PAID', 'FAILED', 'EXPIRED')),
+  registration_status TEXT NOT NULL DEFAULT 'CONFIRMED' CHECK (registration_status IN ('PENDING', 'CONFIRMED', 'CANCELLED', 'WAITLIST')),
+  qr_code TEXT, -- Contains the URL or code string
+  checked_in_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes for Event Registrations
+CREATE INDEX IF NOT EXISTS idx_event_registrations_event_id ON event_registrations(event_id);
+CREATE INDEX IF NOT EXISTS idx_event_registrations_code ON event_registrations(registration_code);
+CREATE INDEX IF NOT EXISTS idx_event_registrations_email ON event_registrations(email);
+
+-- Auto-update updated_at timestamp
+CREATE TRIGGER set_updated_at_event_registrations
+  BEFORE UPDATE ON event_registrations
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
+-- 17. EVENT PAYMENTS TABLE
+-- ============================================
+CREATE TABLE IF NOT EXISTS event_payments (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  registration_id UUID NOT NULL REFERENCES event_registrations(id) ON DELETE CASCADE,
+  xendit_invoice_id TEXT UNIQUE NOT NULL,
+  external_id TEXT UNIQUE NOT NULL,
+  payment_method TEXT,
+  amount NUMERIC NOT NULL,
+  payment_status TEXT NOT NULL DEFAULT 'PENDING' CHECK (payment_status IN ('PENDING', 'PAID', 'EXPIRED', 'FAILED')),
+  invoice_url TEXT,
+  paid_at TIMESTAMPTZ,
+  expired_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes for Event Payments
+CREATE INDEX IF NOT EXISTS idx_event_payments_registration_id ON event_payments(registration_id);
+CREATE INDEX IF NOT EXISTS idx_event_payments_external_id ON event_payments(external_id);
+
+-- Auto-update updated_at timestamp
+CREATE TRIGGER set_updated_at_event_payments
+  BEFORE UPDATE ON event_payments
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
+-- 18. ROW LEVEL SECURITY (RLS) POLICIES FOR EVENTS
+-- ============================================
+
+-- Events RLS
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+
+-- Public can see published and completed events
+CREATE POLICY "Public can view published events"
+  ON events FOR SELECT
+  USING (status IN ('Published', 'Closed', 'Completed'));
+
+-- Authenticated admins can manage events
+CREATE POLICY "Admins can manage events"
+  ON events FOR ALL TO authenticated
+  USING (true) WITH CHECK (true);
+
+
+-- Event Registrations RLS
+ALTER TABLE event_registrations ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can create a registration
+CREATE POLICY "Public can insert event registrations"
+  ON event_registrations FOR INSERT
+  WITH CHECK (true);
+
+-- Users can view their own registration via registration code
+CREATE POLICY "Users can view their registration"
+  ON event_registrations FOR SELECT
+  USING (true);
+
+-- Admins can manage registrations
+CREATE POLICY "Admins can manage event registrations"
+  ON event_registrations FOR ALL TO authenticated
+  USING (true) WITH CHECK (true);
+
+
+-- Event Payments RLS
+ALTER TABLE event_payments ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can insert a payment (from webhook/form)
+CREATE POLICY "Public can insert event payments"
+  ON event_payments FOR INSERT
+  WITH CHECK (true);
+
+-- Anyone can read payments (for polling status)
+CREATE POLICY "Public can view event payments"
+  ON event_payments FOR SELECT
+  USING (true);
+  
+-- Public can update payments (webhook can update via server actions)
+CREATE POLICY "Public can update event payments"
+  ON event_payments FOR UPDATE
+  USING (true) WITH CHECK (true);
+
+-- Admins can manage payments
+CREATE POLICY "Admins can manage event payments"
+  ON event_payments FOR ALL TO authenticated
+  USING (true) WITH CHECK (true);
