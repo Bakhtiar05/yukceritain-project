@@ -189,6 +189,16 @@ export async function registerForEvent(data: RegistrationFormValues) {
   // 6. If PAID, integrate with Xendit
   try {
     const external_id = `evt_${registration.id}_${Date.now()}`;
+    
+    const getBaseUrl = () => {
+      if (process.env.NEXT_PUBLIC_BASE_URL) return process.env.NEXT_PUBLIC_BASE_URL;
+      if (process.env.VERCEL_PROJECT_PRODUCTION_URL) return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+      if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+      return 'http://localhost:3000';
+    };
+    
+    const baseUrl = getBaseUrl();
+
     const invoice = await createXenditInvoice({
       external_id,
       amount: event.price,
@@ -198,8 +208,8 @@ export async function registerForEvent(data: RegistrationFormValues) {
         email: data.email,
         mobile_number: data.phone,
       },
-      success_redirect_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/events/ticket/${registrationCode}`,
-      failure_redirect_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/events/${event.slug}`,
+      success_redirect_url: `${baseUrl}/events/ticket/${registrationCode}`,
+      failure_redirect_url: `${baseUrl}/events/${event.slug}`,
       currency: event.currency,
     });
 
