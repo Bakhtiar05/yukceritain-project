@@ -30,6 +30,9 @@ export async function getPaymentAndBookingDetails(requestNumber: string) {
         invoiceUrl: payment?.invoice_url || null,
         paymentMethod: payment?.payment_method || null,
         amount: payment?.amount || null,
+        fullName: booking.nama_lengkap,
+        email: booking.email,
+        whatsappNumber: booking.nomor_hp,
       },
     };
   } catch (error) {

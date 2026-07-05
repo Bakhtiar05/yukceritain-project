@@ -4,7 +4,13 @@ export const counselorSchema = z.object({
   full_name: z.string().min(2, "Nama lengkap wajib diisi"),
   title: z.string().optional(),
   profession: z.string().min(2, "Profesi wajib diisi"),
-  photo_url: z.string().url("URL foto tidak valid").optional().or(z.literal("")),
+  photo_url: z.string().optional().or(z.literal("")),
+  photo_file: z.any()
+    .refine((files) => {
+      if (!files || files.length === 0) return true;
+      return files[0]?.size <= 5 * 1024 * 1024;
+    }, "Ukuran maksimal foto adalah 5 MB")
+    .optional(),
   gender: z.enum(["Laki-laki", "Perempuan"]).optional(),
   specialization: z.string().min(2, "Spesialisasi wajib diisi"),
   short_bio: z.string().min(10, "Bio singkat wajib diisi").max(200, "Bio singkat maksimal 200 karakter"),

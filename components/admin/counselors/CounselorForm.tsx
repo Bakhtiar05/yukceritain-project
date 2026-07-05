@@ -18,6 +18,7 @@ export default function CounselorForm({ counselor }: CounselorFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [photoPreview, setPhotoPreview] = useState<string | null>(counselor?.photo_url || null)
 
   const isEditing = !!counselor
 
@@ -74,6 +75,7 @@ export default function CounselorForm({ counselor }: CounselorFormProps) {
     if (data.title) formData.append('title', data.title)
     formData.append('profession', data.profession)
     if (data.photo_url) formData.append('photo_url', data.photo_url)
+    if (data.photo_file && data.photo_file.length > 0) formData.append('photo_file', data.photo_file[0])
     if (data.gender) formData.append('gender', data.gender)
     formData.append('specialization', data.specialization)
     formData.append('short_bio', data.short_bio)
@@ -196,14 +198,49 @@ export default function CounselorForm({ counselor }: CounselorFormProps) {
                 {errors.gender && <p className="text-red-500 text-xs">{errors.gender.message}</p>}
               </div>
               
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700">Photo URL</label>
-                <input
-                  {...register('photo_url')}
-                  className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition-all"
-                  placeholder="https://example.com/photo.jpg"
-                />
-                {errors.photo_url && <p className="text-red-500 text-xs">{errors.photo_url.message}</p>}
+              <div className="space-y-2 col-span-1 md:col-span-2">
+                <label className="text-sm font-medium text-slate-700">Photo</label>
+                <div className="flex items-start gap-6">
+                  {photoPreview && (
+                    <div className="w-24 h-24 shrink-0 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200">
+                      <img src={photoPreview} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                  <div className="flex-1 space-y-4">
+                    <div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        {...register('photo_file')}
+                        onChange={(e) => {
+                          register('photo_file').onChange(e)
+                          const file = e.target.files?.[0]
+                          if (file) setPhotoPreview(URL.createObjectURL(file))
+                        }}
+                        className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition-all"
+                      />
+                      <p className="text-xs text-slate-500 mt-1">Maksimal ukuran 5 MB. Format: JPG, PNG, WEBP.</p>
+                      {errors.photo_file && <p className="text-red-500 text-xs mt-1">{errors.photo_file.message?.toString()}</p>}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="h-px bg-slate-200 flex-1"></div>
+                      <span className="text-xs text-slate-400 font-medium uppercase">ATAU GUNAKAN URL</span>
+                      <div className="h-px bg-slate-200 flex-1"></div>
+                    </div>
+                    <div>
+                      <input
+                        {...register('photo_url')}
+                        className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition-all"
+                        placeholder="https://example.com/photo.jpg"
+                        onChange={(e) => {
+                          register('photo_url').onChange(e)
+                          if (e.target.value) setPhotoPreview(e.target.value)
+                        }}
+                      />
+                      {errors.photo_url && <p className="text-red-500 text-xs mt-1">{errors.photo_url.message}</p>}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

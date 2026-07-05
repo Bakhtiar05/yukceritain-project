@@ -38,9 +38,8 @@ export default async function CounselorProfilePage({ params }: ProfilePageProps)
           
           {/* Hero Section */}
           <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden mb-8">
-            <div className="h-32 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
-            <div className="px-8 pb-8">
-              <div className="flex flex-col md:flex-row gap-8 items-start relative -mt-16">
+            <div className="p-8">
+              <div className="flex flex-col md:flex-row gap-8 items-start relative">
                 
                 <div className="w-32 h-32 md:w-40 md:h-40 shrink-0 relative">
                   <img 
@@ -51,7 +50,7 @@ export default async function CounselorProfilePage({ params }: ProfilePageProps)
                   <div className="absolute -bottom-2 -right-2 bg-emerald-500 w-6 h-6 md:w-8 md:h-8 rounded-full border-4 border-white" title="Active"></div>
                 </div>
 
-                <div className="flex-1 pt-2 md:pt-20">
+                <div className="flex-1 pt-2">
                   <h1 className="text-3xl font-bold text-slate-900 leading-tight">
                     {counselor.full_name}
                   </h1>

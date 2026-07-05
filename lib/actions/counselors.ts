@@ -133,7 +133,30 @@ export async function createCounselor(formData: FormData): Promise<ActionResult>
   const slug = (formData.get('slug') as string) || generateSlug(full_name)
   const title = formData.get('title') as string
   const profession = formData.get('profession') as string
-  const photo_url = formData.get('photo_url') as string
+  let photo_url = formData.get('photo_url') as string
+  const photo_file = formData.get('photo_file') as File | null
+  
+  if (photo_file && photo_file.size > 0) {
+    const fileExt = photo_file.name.split('.').pop()
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+    const filePath = `profiles/${fileName}`
+    
+    const { error: uploadError } = await supabase.storage
+      .from('counselors')
+      .upload(filePath, photo_file)
+      
+    if (uploadError) {
+      console.error('Error uploading photo:', uploadError)
+      return { success: false, error: 'Failed to upload photo' }
+    }
+    
+    const { data: publicUrlData } = supabase.storage
+      .from('counselors')
+      .getPublicUrl(filePath)
+      
+    photo_url = publicUrlData.publicUrl
+  }
+
   const gender = formData.get('gender') as string
   const specialization = formData.get('specialization') as string
   const short_bio = formData.get('short_bio') as string
@@ -187,7 +210,30 @@ export async function updateCounselor(id: string, formData: FormData): Promise<A
   const slug = (formData.get('slug') as string) || generateSlug(full_name)
   const title = formData.get('title') as string
   const profession = formData.get('profession') as string
-  const photo_url = formData.get('photo_url') as string
+  let photo_url = formData.get('photo_url') as string
+  const photo_file = formData.get('photo_file') as File | null
+
+  if (photo_file && photo_file.size > 0) {
+    const fileExt = photo_file.name.split('.').pop()
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+    const filePath = `profiles/${fileName}`
+    
+    const { error: uploadError } = await supabase.storage
+      .from('counselors')
+      .upload(filePath, photo_file)
+      
+    if (uploadError) {
+      console.error('Error uploading photo:', uploadError)
+      return { success: false, error: 'Failed to upload photo' }
+    }
+    
+    const { data: publicUrlData } = supabase.storage
+      .from('counselors')
+      .getPublicUrl(filePath)
+      
+    photo_url = publicUrlData.publicUrl
+  }
+
   const gender = formData.get('gender') as string
   const specialization = formData.get('specialization') as string
   const short_bio = formData.get('short_bio') as string

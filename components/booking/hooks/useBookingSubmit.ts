@@ -16,10 +16,14 @@ export function useBookingSubmit(methods: UseFormReturn<BookingFormData>, clearD
     
     const isValid = await methods.trigger();
     if (!isValid) {
+      const errors = methods.formState.errors;
+      const firstError = Object.values(errors)[0];
+      const errorMessage = firstError?.message || "Ada isian yang belum lengkap.";
+      
       toast({
         variant: "destructive",
         title: "Validasi Gagal",
-        description: "Ada isian yang belum lengkap. Mohon periksa kembali semua langkah.",
+        description: `${errorMessage} Mohon periksa kembali langkah-langkah sebelumnya.`,
       });
       return;
     }
