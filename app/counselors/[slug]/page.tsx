@@ -33,7 +33,7 @@ export default async function CounselorProfilePage({ params }: ProfilePageProps)
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-slate-50 pt-28 pb-20">
+      <main className="min-h-screen bg-slate-50 pt-28 md:pt-36 pb-20">
         <div className="max-w-5xl mx-auto px-6">
           
           {/* Hero Section */}

@@ -101,6 +101,25 @@ export async function submitBooking(data: BookingFormData) {
 
     const formattedTanggalKonsultasi = format(parsedData.tanggal_konsultasi, "yyyy-MM-dd");
 
+    // Validate that the user hasn't already booked a session on this date
+    // We check by NIK and Email to ensure 1 day = 1 session per user
+    const { data: existingUserBooking, error: existingUserBookingError } = await supabase
+      .from("consultation_requests")
+      .select("id")
+      .eq("tanggal_konsultasi", formattedTanggalKonsultasi)
+      .or(`nik.eq.${parsedData.nik},email.eq.${parsedData.email}`)
+      .in("db_status", ["Menunggu Verifikasi", "Disetujui", "Waiting Payment", "Waiting Admin Confirmation", "Processing"])
+      .limit(1);
+
+    if (existingUserBookingError) {
+      console.error("[submitBooking] Error checking existing user booking:", existingUserBookingError);
+      return { success: false, error: "Gagal memverifikasi jadwal pengguna." };
+    }
+
+    if (existingUserBooking && existingUserBooking.length > 0) {
+      return { success: false, error: "Anda hanya dapat melakukan 1 sesi konseling dalam 1 hari." };
+    }
+
     // Auto-assign counselor if preference is auto
     let finalCounselorId = parsedData.counselor_id;
     if (parsedData.counselor_preference === "auto") {

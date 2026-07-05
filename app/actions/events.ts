@@ -8,19 +8,6 @@ import { Event, EventRegistration, EventPayment } from "@/types/events";
 
 // --- Admin Actions ---
 
-export async function getEvents(): Promise<Event[]> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("events")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Error fetching events:", error);
-    return [];
-  }
-  return data as Event[];
-}
 
 export async function createEvent(data: EventFormValues) {
   const supabase = await createClient();
@@ -57,38 +44,7 @@ export async function updateEvent(id: string, data: Partial<EventFormValues>) {
   return { data: updatedEvent };
 }
 
-export async function deleteEvent(id: string) {
-  const supabase = await createClient();
-  
-  const { error } = await supabase
-    .from("events")
-    .delete()
-    .eq("id", id);
 
-  if (error) {
-    console.error("Error deleting event:", error);
-    return { error: error.message };
-  }
-
-  return { success: true };
-}
-
-export async function getRegistrations(eventId?: string): Promise<EventRegistration[]> {
-  const supabase = await createClient();
-  let query = supabase.from("event_registrations").select("*").order("created_at", { ascending: false });
-  
-  if (eventId) {
-    query = query.eq("event_id", eventId);
-  }
-
-  const { data, error } = await query;
-
-  if (error) {
-    console.error("Error fetching registrations:", error);
-    return [];
-  }
-  return data as EventRegistration[];
-}
 
 // --- Public Actions ---
 

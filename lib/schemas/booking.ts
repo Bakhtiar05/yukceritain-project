@@ -59,6 +59,23 @@ export const bookingSchema = z.object({
   if (data.sumber_informasi === "Lainnya" && (!data.sumber_informasi_lainnya || data.sumber_informasi_lainnya.trim().length === 0)) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["sumber_informasi_lainnya"], message: "Isi sumber informasi lainnya" });
   }
+
+  // Time-based online only restriction (15:00 - 22:00)
+  if (data.waktu_konsultasi && data.metode_konsultasi) {
+    const timeMatch = data.waktu_konsultasi.match(/^(\d{2}):\d{2}/);
+    if (timeMatch) {
+      const hour = parseInt(timeMatch[1], 10);
+      if (hour >= 15 && hour < 22) {
+        if (data.metode_konsultasi !== "Online") {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["waktu_konsultasi"],
+            message: "Konseling pada pukul 15:00 - 22:00 hanya tersedia secara Online (Google Meet)"
+          });
+        }
+      }
+    }
+  }
 });
 
 export type BookingFormData = z.infer<typeof bookingSchema>;

@@ -97,31 +97,6 @@ export async function addComment(postId: string, content: string) {
   return data
 }
 
-export async function reportContent(postId: string | null, commentId: string | null, reason: string) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
-    throw new Error('Not authenticated')
-  }
-
-  const { data, error } = await supabase
-    .from('community_reports')
-    .insert({
-      post_id: postId,
-      comment_id: commentId,
-      profile_id: user.id,
-      reason,
-    })
-    .select()
-    .single()
-
-  if (error) {
-    throw new Error(error.message)
-  }
-
-  return data
-}
 
 export async function updateProfile(displayName: string, username: string, bio: string) {
   const supabase = await createClient()

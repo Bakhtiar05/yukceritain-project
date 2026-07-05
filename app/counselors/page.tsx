@@ -30,7 +30,7 @@ export default async function CounselorsPage({ searchParams }: CounselorsPagePro
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-slate-50 pt-28 pb-20">
+      <main className="min-h-screen bg-slate-50 pt-28 md:pt-36 pb-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="mb-12">
             <h1 className="text-4xl font-bold text-slate-900 mb-4">Counselors Directory</h1>
