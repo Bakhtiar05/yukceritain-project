@@ -2,9 +2,12 @@
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
+import { getUserRole } from "@/lib/auth/roles";
 
 // Posts
 export async function adminDeletePost(id: string) {
+  const role = await getUserRole();
+  if (!role || (role !== "super_admin" && role !== "admin_community")) throw new Error("Unauthorized");
   const supabase = createAdminClient();
   const { error } = await supabase.from('community_posts').delete().eq('id', id);
   if (error) throw new Error(error.message);
@@ -12,6 +15,8 @@ export async function adminDeletePost(id: string) {
 }
 
 export async function adminUpdatePostStatus(id: string, status: string, is_hidden: boolean) {
+  const role = await getUserRole();
+  if (!role || (role !== "super_admin" && role !== "admin_community")) throw new Error("Unauthorized");
   const supabase = createAdminClient();
   const { error } = await supabase.from('community_posts').update({ status, is_hidden }).eq('id', id);
   if (error) throw new Error(error.message);
@@ -20,6 +25,8 @@ export async function adminUpdatePostStatus(id: string, status: string, is_hidde
 
 // Comments
 export async function adminDeleteComment(id: string) {
+  const role = await getUserRole();
+  if (!role || (role !== "super_admin" && role !== "admin_community")) throw new Error("Unauthorized");
   const supabase = createAdminClient();
   const { error } = await supabase.from('community_comments').delete().eq('id', id);
   if (error) throw new Error(error.message);
@@ -27,6 +34,8 @@ export async function adminDeleteComment(id: string) {
 }
 
 export async function adminUpdateCommentStatus(id: string, status: string, is_hidden: boolean) {
+  const role = await getUserRole();
+  if (!role || (role !== "super_admin" && role !== "admin_community")) throw new Error("Unauthorized");
   const supabase = createAdminClient();
   const { error } = await supabase.from('community_comments').update({ status, is_hidden }).eq('id', id);
   if (error) throw new Error(error.message);
@@ -35,6 +44,8 @@ export async function adminUpdateCommentStatus(id: string, status: string, is_hi
 
 // Reports
 export async function adminResolveReport(id: string, action: string, note: string, adminId: string, targetPostId?: string | null, targetCommentId?: string | null, targetUserId?: string | null) {
+  const role = await getUserRole();
+  if (!role || (role !== "super_admin" && role !== "admin_community")) throw new Error("Unauthorized");
   const supabase = createAdminClient();
   
   // 1. Update report

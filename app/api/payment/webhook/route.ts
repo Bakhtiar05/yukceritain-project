@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     const xenditToken = process.env.XENDIT_WEBHOOK_VERIFICATION_TOKEN;
     const reqToken = req.headers.get("x-callback-token");
 
-    if (xenditToken && reqToken !== xenditToken) {
+    if (!xenditToken || reqToken !== xenditToken) {
       return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 

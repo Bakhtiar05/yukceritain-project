@@ -272,6 +272,19 @@ ON consultation_requests(tanggal_konsultasi, waktu_konsultasi)
 WHERE db_status IN ('Menunggu Verifikasi', 'Disetujui', 'Waiting Payment', 'Waiting Admin Confirmation', 'Processing', 'Completed');
 
 -- ============================================
+-- 5B. ROW LEVEL SECURITY (RLS) — CONSULTATION REQUESTS
+-- ============================================
+ALTER TABLE consultation_requests ENABLE ROW LEVEL SECURITY;
+
+-- Admins can manage consultation requests
+CREATE POLICY "Authenticated users can manage consultation requests"
+  ON consultation_requests
+  FOR ALL
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
+
+-- ============================================
 -- 6. PAYMENTS TABLE
 -- ============================================
 CREATE TABLE IF NOT EXISTS payments (
@@ -305,24 +318,11 @@ CREATE TRIGGER set_updated_at_payments
 -- ============================================
 ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
 
--- Anyone can create a payment record (when submitting form)
-CREATE POLICY "Public can insert payments"
-  ON payments
-  FOR INSERT
-  WITH CHECK (true);
-
 -- Anyone can read payment records (for checking status)
 CREATE POLICY "Public can read payments"
   ON payments
   FOR SELECT
   USING (true);
-
--- Anyone can update payments (for webhook to update status)
-CREATE POLICY "Public can update payments"
-  ON payments
-  FOR UPDATE
-  USING (true)
-  WITH CHECK (true);
 
 -- Authenticated admins can manage payments
 CREATE POLICY "Authenticated users can manage payments"
@@ -689,21 +689,11 @@ CREATE POLICY "Admins can manage event registrations"
 -- Event Payments RLS
 ALTER TABLE event_payments ENABLE ROW LEVEL SECURITY;
 
--- Anyone can insert a payment (from webhook/form)
-CREATE POLICY "Public can insert event payments"
-  ON event_payments FOR INSERT
-  WITH CHECK (true);
-
 -- Anyone can read payments (for polling status)
 CREATE POLICY "Public can view event payments"
   ON event_payments FOR SELECT
   USING (true);
   
--- Public can update payments (webhook can update via server actions)
-CREATE POLICY "Public can update event payments"
-  ON event_payments FOR UPDATE
-  USING (true) WITH CHECK (true);
-
 -- Admins can manage payments
 CREATE POLICY "Admins can manage event payments"
   ON event_payments FOR ALL TO authenticated

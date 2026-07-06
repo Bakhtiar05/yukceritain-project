@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { bookingSchema, BookingFormData } from "@/lib/schemas/booking";
 import { format } from "date-fns";
 import { createXenditInvoice } from "@/lib/services/xendit";
+import { getUserRole } from "@/lib/auth/roles";
 
 async function assignCounselor(dateStr: string, timeStr: string, supabase: any): Promise<string | null> {
   // Priority: Active, Public, lowest current booking count (for that date), lowest display_order
@@ -255,6 +256,11 @@ import { revalidatePath } from "next/cache";
 
 export async function updateBookingStatus(id: string, status: string) {
   try {
+    const role = await getUserRole();
+    if (!role || (role !== "super_admin" && role !== "admin_konseling")) {
+      throw new Error("Unauthorized: Hanya admin konseling yang dapat mengubah status");
+    }
+
     const supabase = createAdminClient();
     const { error } = await supabase
       .from("consultation_requests")

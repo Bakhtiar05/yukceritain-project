@@ -1,4 +1,5 @@
 import React from 'react'
+import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getUserRole } from '@/lib/auth/roles'
 import AdminSidebar from '@/components/admin/ui/AdminSidebar'
@@ -12,11 +13,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const role = await getUserRole()
 
   if (!user) {
-    return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-        {children}
-      </div>
-    )
+    redirect('/admin/login')
   }
 
   return (
