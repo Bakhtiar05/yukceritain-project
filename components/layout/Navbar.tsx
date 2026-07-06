@@ -29,7 +29,14 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const navLinks = variant === 'blog'
+  interface NavLink {
+    label: string
+    href: string
+    active?: boolean
+    isFeature?: boolean
+  }
+
+  const navLinks: NavLink[] = variant === 'blog'
     ? [
         { label: 'Layanan', href: '/#layanan' },
         { label: 'Event', href: '/events' },
