@@ -6,8 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { eventSchema, EventFormValues } from "@/lib/validations/events";
 import { createEvent, updateEvent } from "@/app/actions/events";
 import { useRouter } from "next/navigation";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2, Upload } from "lucide-react";
 import { format } from "date-fns";
+import { createClient } from "@/lib/supabase/client";
 
 interface EventFormProps {
   initialData?: any; // To be typed properly later
@@ -16,7 +17,9 @@ interface EventFormProps {
 export default function EventForm({ initialData }: EventFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const supabase = createClient();
 
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventSchema) as any,
@@ -70,6 +73,42 @@ export default function EventForm({ initialData }: EventFormProps) {
     }
   }
 
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      alert("Ukuran file tidak boleh lebih dari 10MB");
+      return;
+    }
+
+    setIsUploading(true);
+    setError(null);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+      
+      const { error: uploadError, data } = await supabase.storage
+        .from('events')
+        .upload(fileName, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('events')
+        .getPublicUrl(fileName);
+
+      form.setValue('cover_image', publicUrl, { shouldValidate: true });
+    } catch (err: any) {
+      console.error('Error uploading image:', err);
+      setError('Gagal mengunggah gambar: ' + err.message);
+    } finally {
+      setIsUploading(false);
+    }
+  }
+
   // Simplified form for generation - in production use Shadcn UI components properly.
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 bg-white p-6 rounded-xl border border-slate-200">
@@ -106,8 +145,20 @@ export default function EventForm({ initialData }: EventFormProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Cover Image URL</label>
-            <input {...form.register("cover_image")} className="w-full border rounded-lg p-2" />
+            <label className="block text-sm font-medium mb-1">Cover Image</label>
+            <div className="flex gap-2">
+              <input {...form.register("cover_image")} className="w-full border rounded-lg p-2" placeholder="https://... atau klik upload" />
+              <label className={`flex items-center justify-center gap-2 px-4 py-2 bg-slate-100 border rounded-lg cursor-pointer hover:bg-slate-200 shrink-0 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                <span className="text-sm font-medium hidden sm:inline">{isUploading ? 'Uploading...' : 'Upload'}</span>
+                <input type="file" accept="image/png, image/jpeg, image/webp" className="hidden" onChange={handleImageUpload} disabled={isUploading} />
+              </label>
+            </div>
+            {form.watch("cover_image") && (
+              <div className="mt-2 text-xs text-slate-500 truncate">
+                Preview URL: <a href={form.watch("cover_image")!} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline">{form.watch("cover_image")}</a>
+              </div>
+            )}
             {form.formState.errors.cover_image && <p className="text-red-500 text-xs mt-1">{form.formState.errors.cover_image.message}</p>}
           </div>
         </div>

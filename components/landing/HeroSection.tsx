@@ -240,7 +240,7 @@ export default function HeroSection() {
               href="#cara-kerja"
               className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-6 py-2.5 md:py-3 bg-transparent border-2 border-[#BFDBFE] hover:border-[#2563EB] hover:bg-[#EFF6FF] text-[#2563EB] rounded-full font-bold text-sm md:text-base transition-all duration-300 hover:-translate-y-1 whitespace-nowrap"
             >
-              Lihat Cara Kerja
+              Panduan Sesi
             </Link>
           </motion.div>
 

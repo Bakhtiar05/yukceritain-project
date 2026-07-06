@@ -27,7 +27,7 @@ export default function CekStatusPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-neutral-50 pt-24 pb-20">
+      <div className="min-h-screen bg-neutral-50 pt-28 md:pt-36 lg:pt-40 pb-20">
       <div className="max-w-xl mx-auto px-4">
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl font-display font-bold text-neutral-900 mb-4 animate-fade-enter">

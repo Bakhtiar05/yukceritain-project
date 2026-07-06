@@ -44,7 +44,21 @@ export async function updateEvent(id: string, data: Partial<EventFormValues>) {
   return { data: updatedEvent };
 }
 
+export async function deleteEvent(id: string) {
+  const supabase = await createClient();
+  
+  const { error } = await supabase
+    .from("events")
+    .delete()
+    .eq("id", id);
 
+  if (error) {
+    console.error("Error deleting event:", error);
+    return { error: error.message };
+  }
+
+  return { success: true };
+}
 
 // --- Public Actions ---
 

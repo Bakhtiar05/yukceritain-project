@@ -37,6 +37,27 @@ async function setupStorage() {
   } else {
     console.log("'counselors' bucket already exists.");
   }
+
+  // --- EVENTS BUCKET SETUP ---
+  console.log("Checking if 'events' bucket exists...");
+  const bucketEventsExists = buckets.some(b => b.name === 'events');
+
+  if (!bucketEventsExists) {
+    console.log("Creating 'events' bucket...");
+    const { data: eventsData, error: eventsError } = await supabase.storage.createBucket('events', {
+      public: true,
+      allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+      fileSizeLimit: 10485760 // 10MB
+    });
+
+    if (eventsError) {
+      console.error("Error creating 'events' bucket:", eventsError);
+      process.exit(1);
+    }
+    console.log("'events' bucket created successfully:", eventsData);
+  } else {
+    console.log("'events' bucket already exists.");
+  }
 }
 
 setupStorage();

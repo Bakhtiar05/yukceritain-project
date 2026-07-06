@@ -4,6 +4,8 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { Search, Filter, PenTool, Trash2, Eye } from "lucide-react";
 
+import DeleteEventButton from "@/components/admin/events/DeleteEventButton";
+
 export const dynamic = 'force-dynamic';
 
 export default async function AdminEventsListPage() {
@@ -94,9 +96,7 @@ export default async function AdminEventsListPage() {
                       <Link href={`/admin/events/edit/${event.id}`} className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                         <PenTool className="w-4 h-4" />
                       </Link>
-                      <button className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      <DeleteEventButton id={event.id} />
                     </div>
                   </td>
                 </tr>

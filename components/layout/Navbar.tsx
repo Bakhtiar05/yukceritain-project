@@ -32,18 +32,12 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
   const navLinks = variant === 'blog'
     ? [
         { label: 'Layanan', href: '/#layanan' },
-        { label: 'Cara Kerja', href: '/#cara-kerja' },
-        { label: 'Yuk Ceritain', href: '/community', isFeature: true },
         { label: 'Event', href: '/events' },
-        { label: 'FAQ', href: '/#faq' },
         { label: 'Blog', href: '/blog', active: true },
       ]
     : [
         { label: 'Layanan', href: '#layanan' },
-        { label: 'Cara Kerja', href: '#cara-kerja' },
-        { label: 'Yuk Ceritain', href: '/community', isFeature: true },
         { label: 'Event', href: '/events' },
-        { label: 'FAQ', href: '#faq' },
         { label: 'Blog', href: '/blog' },
       ]
 
@@ -62,7 +56,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           }`}
         >
           {/* Logo */}
-          <div className="flex-1 flex justify-start items-center">
+          <div className="flex justify-start items-center mr-auto">
             <Link href="/" className="flex items-center gap-3 flex-shrink-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg">
               <Image
                 src="/assets/logo-v4.png"
@@ -77,7 +71,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex flex-none items-center justify-center gap-1 lg:gap-2">
+          <nav className="hidden md:flex flex-none items-center justify-end gap-1 lg:gap-2 mr-4 lg:mr-8">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
@@ -88,7 +82,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
                     : `relative px-3.5 lg:px-4 py-2 text-[0.875rem] lg:text-[0.925rem] font-medium rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 ${
                         link.active
                           ? 'text-blue-600 bg-blue-50'
-                          : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50'
+                          : 'text-neutral-500 hover:text-blue-600 hover:bg-blue-50'
                       }`
                 }
               >
@@ -99,7 +93,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
           </nav>
 
           {/* Actions */}
-          <div className="flex-1 hidden md:flex justify-end items-center gap-3 lg:gap-4">
+          <div className="hidden md:flex justify-end items-center gap-3 lg:gap-4">
             <Link
               href="/cek-status"
               className="text-[0.875rem] font-medium text-neutral-500 hover:text-blue-600 transition-colors px-3 py-2 rounded-full hover:bg-blue-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
@@ -108,17 +102,17 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
             </Link>
 
             <Link
-              href="/konsultasi"
+              href="/community"
               className="flex items-center justify-center px-5 lg:px-6 py-2.5 text-[0.875rem] lg:text-[0.925rem] font-semibold text-white bg-blue-600 rounded-full shadow-[0_2px_8px_rgba(37,99,235,0.25)] hover:bg-blue-700 hover:shadow-[0_4px_16px_rgba(37,99,235,0.35)] hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
             >
-              Mulai Konseling
+              Yuk Ceritain
             </Link>
           </div>
         </div>
       </header>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-4 inset-x-4 z-[998] bg-white/85 backdrop-blur-xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-[24px] px-2 py-2 flex items-center justify-between pb-safe">
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-[998] bg-white/95 backdrop-blur-xl border-t border-white/50 shadow-[0_-8px_32px_rgba(0,0,0,0.08)] rounded-t-[32px] px-4 py-2 flex items-center justify-between pb-safe">
         <Link href="/" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
           <Home size={22} className={pathname === '/' ? 'text-blue-600' : ''} />
           <span className={`text-[10px] font-medium ${pathname === '/' ? 'text-blue-600' : ''}`}>Beranda</span>

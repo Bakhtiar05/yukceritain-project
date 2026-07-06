@@ -38,7 +38,9 @@ export default function EventSearchAndFilters() {
   };
 
   const filters = [
-    { id: "upcoming", label: "Upcoming" },
+    { id: "workshop", label: "Workshop" },
+    { id: "webinar", label: "Webinar" },
+    { id: "community", label: "Community" },
     { id: "online", label: "Online" },
     { id: "offline", label: "Offline" },
     { id: "free", label: "Free" },
@@ -47,17 +49,17 @@ export default function EventSearchAndFilters() {
   ];
 
   return (
-    <section className="pb-12 max-w-7xl mx-auto px-4 md:px-8">
-      <div className="flex flex-col lg:flex-row items-center gap-6 justify-between bg-white p-4 rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+    <section className="relative -mt-8 max-w-5xl mx-auto px-4 md:px-8 z-40">
+      <div className="flex flex-col lg:flex-row items-center gap-4 justify-between bg-white p-3 rounded-[28px] border border-[#E5E7EB] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] backdrop-blur-xl transition-all hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.08)]">
         
         {/* Search */}
-        <div className="relative w-full lg:w-1/3 flex-shrink-0">
-          <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-slate-400" />
+        <div className="relative w-full lg:w-[35%] flex-shrink-0">
+          <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-[#64748B]" />
           </div>
           <input
             type="text"
-            className="w-full pl-14 pr-6 py-4 bg-slate-50 border-transparent rounded-[1.5rem] text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-blue-200 focus:ring-4 focus:ring-blue-50 transition-all outline-none"
+            className="w-full pl-12 pr-6 py-3.5 bg-[#F8FAFC] border-transparent rounded-[20px] text-[#0F172A] placeholder:text-[#64748B] focus:bg-white focus:border-[#60A5FA] focus:ring-4 focus:ring-[#EFF6FF] transition-all outline-none font-medium"
             placeholder="Search events..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -65,14 +67,14 @@ export default function EventSearchAndFilters() {
         </div>
 
         {/* Filters */}
-        <div className="w-full lg:w-auto overflow-x-auto pb-2 lg:pb-0 hide-scrollbar">
-          <div className="flex items-center gap-2 px-2">
+        <div className="w-full lg:w-auto overflow-x-auto hide-scrollbar flex-grow">
+          <div className="flex items-center gap-1.5 px-1 py-1">
             <button
               onClick={() => handleFilterClick("all")}
-              className={`whitespace-nowrap px-6 py-3 rounded-full text-sm font-semibold transition-all ${
+              className={`whitespace-nowrap px-5 py-2.5 rounded-[16px] text-sm font-semibold transition-all duration-300 ${
                 !searchParams.get("filter") || searchParams.get("filter") === "all"
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                  ? "bg-[#2563EB] text-white shadow-md shadow-blue-500/20"
+                  : "bg-transparent text-[#64748B] hover:bg-[#EFF6FF] hover:text-[#0F172A]"
               }`}
             >
               All
@@ -83,10 +85,10 @@ export default function EventSearchAndFilters() {
                 <button
                   key={filter.id}
                   onClick={() => handleFilterClick(filter.id)}
-                  className={`whitespace-nowrap px-6 py-3 rounded-full text-sm font-semibold transition-all ${
+                  className={`whitespace-nowrap px-5 py-2.5 rounded-[16px] text-sm font-semibold transition-all duration-300 ${
                     isActive
-                      ? "bg-blue-600 text-white shadow-md"
-                      : "bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                      ? "bg-[#2563EB] text-white shadow-md shadow-blue-500/20"
+                      : "bg-transparent text-[#64748B] hover:bg-[#EFF6FF] hover:text-[#0F172A]"
                   }`}
                 >
                   {filter.label}

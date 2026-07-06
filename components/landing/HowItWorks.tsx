@@ -34,7 +34,7 @@ export default function HowItWorks() {
     <section id="cara-kerja" className="scroll-mt-24 py-20 md:py-28 bg-neutral-50">
       <div className="max-w-container mx-auto px-6">
         <ScrollReveal variant="fade-up" className="text-center mb-16">
-          <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest mb-3">Cara Kerja</p>
+          <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest mb-3">Panduan Sesi</p>
           <h2 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold text-neutral-900 mb-4">
             Semudah 4 Langkah
           </h2>

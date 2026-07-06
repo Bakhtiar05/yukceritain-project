@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
-import { CalendarDays, MapPin, Video, ArrowRight } from "lucide-react";
+import { CalendarDays, MapPin, Video, ArrowRight, CheckCircle2, Users, Star } from "lucide-react";
 import { Event } from "@/types/events";
 
 interface EventCardProps {
@@ -14,90 +14,98 @@ export default function EventCard({ event, featured = false }: EventCardProps) {
   const isOnline = event.event_type === "ONLINE";
   const isFree = event.pricing_type === "FREE";
   
-  // Format the date properly
   const eventDate = new Date(event.start_datetime);
   const formattedDate = format(eventDate, "dd MMM yyyy");
   const formattedTime = format(eventDate, "HH:mm");
   
-  // Calculate remaining seats
   const remainingSeats = event.quota > 0 ? event.quota - event.registered_count : null;
   const isSoldOut = event.quota > 0 && remainingSeats !== null && remainingSeats <= 0;
 
   if (featured) {
     return (
-      <div className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col md:flex-row mb-12 transition-transform hover:-translate-y-1 duration-300">
-        <div className="relative w-full md:w-5/12 aspect-[16/9] md:aspect-auto bg-slate-100">
+      <div className="bg-white rounded-[32px] overflow-hidden border border-[#E5E7EB] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] flex flex-col lg:flex-row mb-12 group transition-all duration-500 hover:shadow-[0_25px_50px_-12px_rgba(37,99,235,0.1)]">
+        <div className="relative w-full lg:w-[55%] aspect-[4/3] lg:aspect-auto overflow-hidden bg-slate-100">
           {event.cover_image ? (
             <Image 
               src={event.cover_image} 
               alt={event.title} 
               fill 
-              className="object-cover"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-slate-400">
+            <div className="w-full h-full flex items-center justify-center text-slate-400 bg-slate-200">
               <span className="text-sm font-medium">No Image Available</span>
             </div>
           )}
-          <div className="absolute top-4 left-4 flex gap-2">
-            <span className="bg-white/90 backdrop-blur-sm text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm">
-              {event.event_type}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+          <div className="absolute top-6 left-6 flex gap-2">
+            <span className="bg-[#2563EB]/90 backdrop-blur-md text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg flex items-center gap-1">
+              <Star className="w-3 h-3 fill-white" />
+              FEATURED
             </span>
+          </div>
+          <div className="absolute bottom-6 left-6 right-6">
+            <div className="flex gap-2">
+              <span className="bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-[12px] shadow-sm">
+                {event.event_type}
+              </span>
+              <span className={`backdrop-blur-md border border-white/30 text-white text-xs font-bold px-3 py-1.5 rounded-[12px] shadow-sm ${isFree ? 'bg-emerald-500/80' : 'bg-[#60A5FA]/80'}`}>
+                {isFree ? 'FREE' : 'PAID'}
+              </span>
+            </div>
           </div>
         </div>
-        <div className="p-6 md:p-10 flex-1 flex flex-col justify-center">
-          <div className="flex items-center gap-3 mb-4">
-            <span className={`text-xs font-bold px-3 py-1 rounded-full ${isFree ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}>
-              {isFree ? 'FREE' : 'PAID'}
-            </span>
-            {remainingSeats !== null && (
-              <span className={`text-xs font-medium px-3 py-1 rounded-full ${isSoldOut ? 'bg-red-50 text-red-600' : 'bg-slate-100 text-slate-600'}`}>
-                {isSoldOut ? 'Sold Out' : `${remainingSeats} seats left`}
-              </span>
-            )}
+        
+        <div className="p-8 lg:p-12 flex-1 flex flex-col justify-center bg-white">
+          <div className="flex items-center gap-3 mb-6">
+             <div className="flex items-center gap-2 text-[#2563EB] bg-[#EFF6FF] px-3 py-1.5 rounded-full text-sm font-semibold">
+                <CalendarDays className="w-4 h-4" />
+                <span>{formattedDate} • {formattedTime} WIB</span>
+             </div>
+             {remainingSeats !== null && (
+               <span className={`text-sm font-semibold px-3 py-1.5 rounded-full ${isSoldOut ? 'bg-red-50 text-red-600' : 'bg-[#F8FAFC] text-[#64748B] border border-[#E5E7EB]'}`}>
+                 {isSoldOut ? 'Sold Out' : `${remainingSeats} Seats Left`}
+               </span>
+             )}
           </div>
           
-          <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4 leading-tight">
+          <h3 className="text-3xl md:text-4xl font-extrabold text-[#0F172A] mb-4 leading-tight tracking-tight">
             {event.title}
           </h3>
           
-          <p className="text-slate-600 mb-8 line-clamp-2 md:line-clamp-3 leading-relaxed">
+          <p className="text-[#64748B] text-lg mb-8 line-clamp-3 leading-relaxed">
             {event.short_description}
           </p>
+
+          <div className="flex items-center gap-2 mb-8">
+            <div className="w-10 h-10 rounded-full bg-[#EFF6FF] flex items-center justify-center text-[#2563EB] font-bold text-sm">
+              {event.speaker?.charAt(0) || 'U'}
+            </div>
+            <div>
+              <p className="text-sm font-bold text-[#0F172A]">{event.speaker || 'YukCeritain Organizer'}</p>
+              <p className="text-xs text-[#64748B]">Event Speaker</p>
+            </div>
+          </div>
           
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="flex items-start gap-3">
-              <CalendarDays className="w-5 h-5 text-slate-400 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-slate-900">{formattedDate}</p>
-                <p className="text-sm text-slate-500">{formattedTime} WIB</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              {isOnline ? (
-                <Video className="w-5 h-5 text-slate-400 mt-0.5" />
-              ) : (
-                <MapPin className="w-5 h-5 text-slate-400 mt-0.5" />
-              )}
-              <div>
-                <p className="text-sm font-medium text-slate-900 line-clamp-1">{isOnline ? event.meeting_platform || 'Online Meeting' : event.venue_name || 'Location TBA'}</p>
-                <p className="text-sm text-slate-500">{isOnline ? 'Link provided after registration' : 'Offline Event'}</p>
-              </div>
-            </div>
+          <div className="grid grid-cols-2 gap-4 mb-10 text-sm font-medium text-[#0F172A]">
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-[#22C55E]" /> E-Certificate</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-[#22C55E]" /> Networking</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-[#22C55E]" /> Live Q&A Session</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-[#22C55E]" /> Session Recording</div>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 mt-auto">
             <Link 
               href={`/events/${event.slug}/register`} 
-              className="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors"
+              className="inline-flex items-center justify-center px-8 h-[52px] text-base font-semibold text-white bg-gradient-to-r from-[#2563EB] to-[#3b82f6] rounded-[14px] shadow-lg shadow-blue-500/25 hover:translate-y-[-2px] hover:shadow-blue-500/40 transition-all duration-300"
             >
               Register Now
             </Link>
             <Link 
               href={`/events/${event.slug}`} 
-              className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
+              className="inline-flex items-center justify-center px-8 h-[52px] text-base font-medium text-[#0F172A] bg-white border border-[#E5E7EB] rounded-[14px] hover:bg-[#F8FAFC] transition-colors duration-300"
             >
-              View Details
+              Learn More
             </Link>
           </div>
         </div>
@@ -109,62 +117,82 @@ export default function EventCard({ event, featured = false }: EventCardProps) {
   return (
     <Link 
       href={`/events/${event.slug}`} 
-      className="group bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_4px_25px_rgb(0,0,0,0.06)] transition-all duration-300 flex flex-col h-full"
+      className="group bg-white rounded-[24px] border border-[#E5E7EB] overflow-hidden shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_20px_40px_-15px_rgba(37,99,235,0.15)] hover:border-blue-100 hover:-translate-y-2 transition-all duration-300 flex flex-col h-full"
     >
-      <div className="relative aspect-[16/9] md:aspect-[4/3] overflow-hidden bg-slate-100">
+      <div className="relative aspect-[16/9] overflow-hidden bg-[#F8FAFC]">
         {event.cover_image ? (
           <Image 
             src={event.cover_image} 
             alt={event.title} 
             fill 
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-300">
+          <div className="w-full h-full flex items-center justify-center text-slate-300 bg-slate-100">
             <span className="text-sm font-medium">No Image</span>
           </div>
         )}
-        <div className="absolute top-4 left-4 flex gap-2">
-          <span className="bg-white/90 backdrop-blur-sm text-slate-700 text-[10px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full shadow-sm">
+        <div className="absolute top-4 left-4">
+          <span className="bg-white/95 backdrop-blur-sm text-[#0F172A] text-xs font-bold px-3 py-1.5 rounded-[10px] shadow-sm">
             {event.event_type}
           </span>
-          <span className={`text-[10px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full shadow-sm ${isFree ? 'bg-emerald-500 text-white' : 'bg-blue-600 text-white'}`}>
+        </div>
+        <div className="absolute bottom-4 right-4">
+          <span className={`text-xs font-bold px-3 py-1.5 rounded-[10px] shadow-sm ${isFree ? 'bg-[#22C55E] text-white' : 'bg-[#2563EB] text-white'}`}>
             {isFree ? 'FREE' : 'PAID'}
           </span>
         </div>
       </div>
 
-      <div className="p-4 md:p-6 flex-1 flex flex-col">
-        <div className="flex items-center text-slate-500 text-xs font-medium gap-3 mb-3">
+      <div className="p-6 flex-1 flex flex-col">
+        <div className="flex items-center text-[#2563EB] text-xs font-semibold gap-4 mb-3">
           <div className="flex items-center gap-1.5">
-            <CalendarDays className="w-3.5 h-3.5" />
+            <CalendarDays className="w-4 h-4" />
             <span>{formattedDate} • {formattedTime}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-[#64748B]">
+             {isOnline ? <Video className="w-4 h-4" /> : <MapPin className="w-4 h-4" />}
+             <span className="line-clamp-1 max-w-[100px]">{isOnline ? 'Online' : 'Offline'}</span>
           </div>
         </div>
 
-        <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors leading-snug">
+        <h3 className="text-xl font-bold text-[#0F172A] mb-2 line-clamp-2 group-hover:text-[#2563EB] transition-colors leading-tight">
           {event.title}
         </h3>
         
-        <p className="text-slate-500 text-xs md:text-sm mb-6 line-clamp-2 md:line-clamp-3 leading-relaxed flex-1">
+        <p className="text-[#64748B] text-sm mb-6 line-clamp-2 leading-relaxed flex-1">
           {event.short_description}
         </p>
 
-        <div className="flex items-center justify-between pt-5 border-t border-slate-100 mt-auto">
-          <div className="flex flex-col gap-1">
-             <div className="flex items-center text-slate-600 text-xs font-medium gap-1.5">
-                {isOnline ? <Video className="w-3.5 h-3.5 text-slate-400" /> : <MapPin className="w-3.5 h-3.5 text-slate-400" />}
-                <span className="line-clamp-1 max-w-[120px]">{isOnline ? event.meeting_platform || 'Online' : event.venue_name || 'TBA'}</span>
-             </div>
+        <div className="flex flex-col gap-4 mt-auto">
+          {/* Organizers and Avatars */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-[#EFF6FF] border border-[#E5E7EB] flex items-center justify-center text-[#2563EB] font-bold text-xs shadow-sm">
+                {event.speaker?.charAt(0) || 'Y'}
+              </div>
+              <span className="text-sm font-semibold text-[#0F172A] line-clamp-1 max-w-[100px]">{event.speaker || 'Organizer'}</span>
+            </div>
+            
+            <div className="flex -space-x-2">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="w-7 h-7 rounded-full border-2 border-white bg-[#F8FAFC] flex items-center justify-center">
+                  <Users className="w-3 h-3 text-[#64748B]" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between pt-4 border-t border-[#F8FAFC]">
              {remainingSeats !== null && (
-                <span className={`text-[10px] font-medium ${isSoldOut ? 'text-red-500' : 'text-slate-400'}`}>
+                <span className={`text-xs font-medium px-2.5 py-1 rounded-[8px] ${isSoldOut ? 'bg-red-50 text-red-600' : 'bg-[#EFF6FF] text-[#2563EB]'}`}>
                   {isSoldOut ? 'Sold Out' : `${remainingSeats} seats left`}
                 </span>
              )}
+            <span className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-[#0F172A] bg-[#F8FAFC] rounded-[10px] group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300">
+              Register <ArrowRight className="w-4 h-4 ml-1" />
+            </span>
           </div>
-          <span className="inline-flex items-center justify-center p-2 rounded-full bg-slate-50 text-slate-600 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
-            <ArrowRight className="w-4 h-4" />
-          </span>
         </div>
       </div>
     </Link>
