@@ -4,6 +4,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { CalendarDays, MapPin, Video, ArrowRight, CheckCircle2, Users, Star } from "lucide-react";
 import { Event } from "@/types/events";
+import ShareButton from "./ShareButton";
 
 interface EventCardProps {
   event: Event;
@@ -107,6 +108,7 @@ export default function EventCard({ event, featured = false }: EventCardProps) {
             >
               Learn More
             </Link>
+            <ShareButton title={event.title} slug={event.slug} />
           </div>
         </div>
       </div>
@@ -189,9 +191,12 @@ export default function EventCard({ event, featured = false }: EventCardProps) {
                   {isSoldOut ? 'Sold Out' : `${remainingSeats} seats left`}
                 </span>
              )}
-            <span className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-[#0F172A] bg-[#F8FAFC] rounded-[10px] group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300">
-              Register <ArrowRight className="w-4 h-4 ml-1" />
-            </span>
+            <div className="flex items-center gap-2 ml-auto">
+              <ShareButton title={event.title} slug={event.slug} />
+              <span className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-[#0F172A] bg-[#F8FAFC] rounded-[10px] group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300">
+                Register <ArrowRight className="w-4 h-4 ml-1" />
+              </span>
+            </div>
           </div>
         </div>
       </div>

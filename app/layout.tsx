@@ -55,6 +55,9 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: 'YukceritaIN',
     statusBarStyle: 'default',
+    startupImage: [
+      '/assets/logo-v5.png'
+    ],
   },
   openGraph: {
     type: 'website',
@@ -65,7 +68,7 @@ export const metadata: Metadata = {
       'Terhubung dengan psikolog profesional untuk konseling online yang aman, nyaman, dan terjangkau.',
     images: [
       {
-        url: '/og-image.png',
+        url: '/assets/logo-v5.png',
         width: 1200,
         height: 630,
         alt: 'YukceritaIN Logo',
@@ -77,7 +80,7 @@ export const metadata: Metadata = {
     title: 'YukceritaIN | Cerita. Didengar. Dimengerti.',
     description:
       'Terhubung dengan psikolog profesional untuk konseling online yang aman, nyaman, dan terjangkau.',
-    images: ['/og-image.png'],
+    images: ['/assets/logo-v5.png'],
   },
 }
 

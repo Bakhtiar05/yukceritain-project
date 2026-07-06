@@ -39,11 +39,13 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
   const navLinks: NavLink[] = variant === 'blog'
     ? [
         { label: 'Layanan', href: '/#layanan' },
+        { label: 'Tentang Kami', href: '/about', active: pathname === '/about' },
         { label: 'Event', href: '/events' },
         { label: 'Blog', href: '/blog', active: true },
       ]
     : [
         { label: 'Layanan', href: '#layanan' },
+        { label: 'Tentang Kami', href: '/about', active: pathname === '/about' },
         { label: 'Event', href: '/events' },
         { label: 'Blog', href: '/blog' },
       ]

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { CalendarIcon, Loader2, Upload } from "lucide-react";
 import { format } from "date-fns";
 import { createClient } from "@/lib/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface EventFormProps {
   initialData?: any; // To be typed properly later
@@ -16,6 +17,7 @@ interface EventFormProps {
 
 export default function EventForm({ initialData }: EventFormProps) {
   const router = useRouter();
+  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -60,16 +62,31 @@ export default function EventForm({ initialData }: EventFormProps) {
       if (initialData?.id) {
         const res = await updateEvent(initialData.id, data);
         if (res.error) throw new Error(res.error);
+        toast({
+          title: "Berhasil!",
+          description: "Event berhasil diperbarui.",
+        });
       } else {
         const res = await createEvent(data);
         if (res.error) throw new Error(res.error);
+        toast({
+          title: "Berhasil!",
+          description: "Event berhasil ditambahkan.",
+        });
       }
+      
+      // Do not set isSubmitting to false here because we are navigating away,
+      // and we want the loading spinner to stay until the page changes.
       router.push("/admin/events/list");
       router.refresh();
     } catch (err: any) {
       setError(err.message || "Something went wrong.");
-    } finally {
-      setIsSubmitting(false);
+      toast({
+        title: "Terjadi kesalahan",
+        description: err.message || "Gagal menyimpan event.",
+        variant: "destructive",
+      });
+      setIsSubmitting(false); // Only reset if there was an error
     }
   }
 
