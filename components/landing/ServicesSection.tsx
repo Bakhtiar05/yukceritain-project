@@ -96,7 +96,7 @@ export default function ServicesSection() {
   }, [isMobile]);
 
   return (
-    <section id="layanan" className="scroll-mt-24 pt-8 pb-20 md:pt-16 md:pb-28 bg-white overflow-hidden">
+    <section id="layanan" className="scroll-mt-24 pt-6 pb-12 md:pt-12 md:pb-20 bg-white overflow-hidden">
       <div className="max-w-container mx-auto px-6">
         <ScrollReveal variant="fade-up" className="text-center mb-10 md:mb-16">
           <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest mb-3">Layanan Kami</p>
@@ -128,7 +128,7 @@ export default function ServicesSection() {
                   className={`relative rounded-2xl p-7 md:p-8 border h-full cursor-default transition-all duration-300 hover:-translate-y-1 ${
                     svc.featured
                       ? 'bg-gradient-to-br from-blue-600 to-blue-700 border-transparent text-white shadow-[0_8px_30px_rgba(37,99,235,0.25)]'
-                      : 'bg-white border-neutral-100 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-blue-100'
+                      : 'bg-white border-blue-200 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-blue-400'
                   }`}
                 >
                   {svc.badge && (

@@ -138,7 +138,7 @@ export default function HeroSection() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto relative z-30 pointer-events-auto">
           <Link 
             href="#events" 
-            className="w-full sm:w-auto px-8 h-[52px] rounded-[14px] bg-gradient-to-r from-[#2563EB] to-[#3b82f6] text-white font-semibold flex items-center justify-center shadow-lg shadow-blue-500/25 hover:translate-y-[-2px] hover:shadow-blue-500/40 transition-all duration-300"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-full font-bold shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:-translate-y-1 text-base"
           >
             Explore Events
           </Link>

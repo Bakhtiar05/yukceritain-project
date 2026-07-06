@@ -8,7 +8,7 @@ export default async function CounselorsSection() {
   if (counselors.length === 0) return null
 
   return (
-    <section className="py-20 bg-slate-50 relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-slate-50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-8 md:mb-16">
           <h2 className="text-4xl font-bold text-slate-900 mb-4">
@@ -25,7 +25,7 @@ export default async function CounselorsSection() {
 
         <div className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar gap-4 pb-8 -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8">
           {counselors.map((counselor) => (
-            <div key={counselor.id} className="w-[75vw] max-w-[260px] shrink-0 snap-center md:w-auto bg-white rounded-3xl p-5 md:p-6 shadow-sm border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div key={counselor.id} className="w-[75vw] max-w-[260px] shrink-0 snap-center md:w-auto bg-white rounded-3xl p-5 md:p-6 shadow-sm border border-blue-200 hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
               <div className="relative w-20 h-20 md:w-24 md:h-24 mx-auto mb-5 md:mb-6">
                 <img 
                   src={counselor.photo_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(counselor.full_name)}&background=random`} 
@@ -67,25 +67,13 @@ export default async function CounselorsSection() {
                 >
                   Book Consultation
                 </Link>
-                <Link 
-                  href={`/counselors/${counselor.slug}`}
-                  className="block w-full py-2.5 text-center bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-medium transition-colors"
-                >
-                  View Profile
-                </Link>
+
               </div>
             </div>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <Link 
-            href="/counselors"
-            className="inline-block px-8 py-4 bg-white border-2 border-slate-200 text-slate-700 hover:border-slate-300 hover:text-slate-900 rounded-2xl font-semibold transition-colors shadow-sm"
-          >
-            View All Counselors
-          </Link>
-        </div>
+
       </div>
     </section>
   )

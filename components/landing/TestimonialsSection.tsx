@@ -29,7 +29,7 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section id="testimoni" className="scroll-mt-24 py-20 md:py-28 bg-white">
+    <section id="testimoni" className="scroll-mt-24 py-12 md:py-20 bg-white">
       <div className="max-w-container mx-auto px-6">
         <ScrollReveal variant="fade-up" className="text-center mb-16">
           <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest mb-3">Testimoni</p>
@@ -41,14 +41,33 @@ export default function TestimonialsSection() {
           </p>
         </ScrollReveal>
 
-        <ScrollReveal staggerChildren={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((t) => (
-            <ScrollRevealItem key={t.name} variant="fade-up">
+        <div className="relative w-full overflow-hidden py-4 -mx-6 px-6 md:mx-auto md:px-0">
+          <style dangerouslySetInnerHTML={{__html: `
+            @keyframes scroll {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(calc(-50%)); } 
+            }
+            .animate-scroll {
+              animation: scroll 40s linear infinite;
+              display: flex;
+              width: max-content;
+            }
+            .animate-scroll:hover {
+              animation-play-state: paused;
+            }
+          `}} />
+          
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 md:w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 md:w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
+
+          <div className="animate-scroll gap-6 pr-6">
+            {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, idx) => (
               <div
-                className={`rounded-2xl p-8 border transition-all duration-300 hover:-translate-y-1 ${
+                key={idx}
+                className={`w-[85vw] sm:w-[350px] md:w-[400px] flex-shrink-0 rounded-2xl p-8 border transition-all duration-300 hover:-translate-y-1 ${
                   t.featured
-                    ? 'bg-gradient-to-br from-blue-600 to-blue-700 border-transparent text-white shadow-blue hover:shadow-blue-lg'
-                    : 'bg-white border-neutral-100 shadow-sm hover:shadow-card hover:border-blue-50'
+                    ? 'bg-gradient-to-br from-blue-600 to-blue-700 border-transparent text-white shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)]'
+                    : 'bg-white border-blue-200 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-blue-400'
                 }`}
               >
                 {/* Stars */}
@@ -72,9 +91,9 @@ export default function TestimonialsSection() {
                   </div>
                 </div>
               </div>
-            </ScrollRevealItem>
-          ))}
-        </ScrollReveal>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )

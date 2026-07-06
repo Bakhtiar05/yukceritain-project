@@ -121,7 +121,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section id="hero" className="relative w-full min-h-[100vh] bg-[#F8FBFF] overflow-hidden flex flex-col justify-center pt-0 md:pt-[72px]">
+    <section id="hero" className="relative w-full min-h-[90vh] md:min-h-[100vh] bg-[#F8FBFF] overflow-hidden flex flex-col justify-center pt-0 md:pt-[72px] pb-12 md:pb-0">
       {/* Subtle Background Effects */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-[10%] left-[20%] w-[400px] h-[400px] rounded-full bg-[#2563EB]/[0.03] blur-[100px]" />
@@ -254,7 +254,7 @@ export default function HeroSection() {
       </div>
 
       {/* Gradient fade to next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 lg:h-32 bg-gradient-to-b from-transparent to-white pointer-events-none z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-16 lg:h-32 bg-gradient-to-b from-transparent to-white pointer-events-none z-10" />
     </section>
   )
 }

@@ -98,13 +98,13 @@ export default function EventCard({ event, featured = false }: EventCardProps) {
           <div className="flex flex-col sm:flex-row gap-4 mt-auto">
             <Link 
               href={`/events/${event.slug}/register`} 
-              className="inline-flex items-center justify-center px-8 h-[52px] text-base font-semibold text-white bg-gradient-to-r from-[#2563EB] to-[#3b82f6] rounded-[14px] shadow-lg shadow-blue-500/25 hover:translate-y-[-2px] hover:shadow-blue-500/40 transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-full font-bold shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:-translate-y-1 text-base"
             >
               Register Now
             </Link>
             <Link 
               href={`/events/${event.slug}`} 
-              className="inline-flex items-center justify-center px-8 h-[52px] text-base font-medium text-[#0F172A] bg-white border border-[#E5E7EB] rounded-[14px] hover:bg-[#F8FAFC] transition-colors duration-300"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-transparent border-2 border-[#BFDBFE] hover:border-[#2563EB] hover:bg-[#EFF6FF] text-[#2563EB] rounded-full font-bold transition-all duration-300 hover:-translate-y-1 text-base"
             >
               Learn More
             </Link>
@@ -193,8 +193,8 @@ export default function EventCard({ event, featured = false }: EventCardProps) {
              )}
             <div className="flex items-center gap-2 ml-auto">
               <ShareButton title={event.title} slug={event.slug} />
-              <span className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-[#0F172A] bg-[#F8FAFC] rounded-[10px] group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300">
-                Register <ArrowRight className="w-4 h-4 ml-1" />
+              <span className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-bold bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-full shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] transition-all duration-300 group-hover:-translate-y-1">
+                Register <ArrowRight className="w-4 h-4" />
               </span>
             </div>
           </div>

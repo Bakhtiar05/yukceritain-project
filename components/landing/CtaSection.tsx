@@ -5,7 +5,7 @@ import ScrollReveal from '@/components/ui/ScrollReveal'
 
 export default function CtaSection() {
   return (
-    <section className="py-20 md:py-28 bg-white">
+    <section className="py-12 md:py-20 bg-white">
       <div className="max-w-container mx-auto px-6">
         <ScrollReveal variant="scale">
           <div className="relative bg-gradient-to-br from-blue-600 via-blue-600 to-blue-700 rounded-3xl py-16 md:py-20 px-8 md:px-16 text-center overflow-hidden">

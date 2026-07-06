@@ -130,7 +130,7 @@ export default function RegistrationForm({ eventId, isFree }: RegistrationFormPr
         <button 
           type="submit" 
           disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-2 py-4 px-6 text-white bg-blue-600 font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-md disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-2 py-4 px-6 text-white bg-[#2563EB] hover:bg-[#1D4ED8] font-bold rounded-full shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:-translate-y-1 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-[0_8px_30px_rgba(37,99,235,0.25)]"
         >
           {isSubmitting ? (
             <Loader2 className="w-5 h-5 animate-spin" />

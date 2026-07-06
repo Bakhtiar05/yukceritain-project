@@ -50,14 +50,14 @@ export default function TicketActions({
     <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
       <button 
         onClick={handleDownload}
-        className="flex-1 flex items-center justify-center gap-2 py-3 bg-slate-900 text-white text-sm font-semibold rounded-xl hover:bg-slate-800 transition-colors shadow-md"
+        className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-full font-bold shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:-translate-y-1 text-sm"
       >
         <Download className="w-4 h-4" />
         Download / Print
       </button>
       <button 
         onClick={handleAddToCalendar}
-        className="flex-1 flex items-center justify-center gap-2 py-3 bg-blue-50 text-blue-600 text-sm font-semibold rounded-xl hover:bg-blue-100 transition-colors border border-blue-200"
+        className="flex-1 flex items-center justify-center gap-2 py-3 bg-transparent border-2 border-[#BFDBFE] hover:border-[#2563EB] hover:bg-[#EFF6FF] text-[#2563EB] rounded-full font-bold transition-all duration-300 hover:-translate-y-1 text-sm"
       >
         <CalendarPlus className="w-4 h-4" />
         Add to Calendar

@@ -42,7 +42,7 @@ export default function AboutPage() {
         </div>
 
         {/* 1. Hero Section */}
-        <section className="relative z-10 pt-32 pb-20 md:pt-40 md:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
+        <section className="relative z-10 pt-32 pb-6 md:pt-40 md:pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
           <ScrollReveal>
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50/50 px-3 py-1 text-sm font-medium text-blue-600 mb-6 backdrop-blur-sm">
               <span className="flex h-2 w-2 rounded-full bg-blue-600 mr-2"></span>
@@ -52,8 +52,7 @@ export default function AboutPage() {
 
           <ScrollReveal delay={0.1}>
             <h1 className="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight max-w-4xl mb-6 font-playfair leading-tight">
-              Helping People Feel Heard, <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">Supported</span>, and Understood.
+              Your safe space to be <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">heard</span>.
             </h1>
           </ScrollReveal>
 
@@ -63,57 +62,22 @@ export default function AboutPage() {
             </p>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.3} className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/konsultasi" className="btn btn-primary btn-large">
-              Mulai Konseling
-            </Link>
-            <Link href="#vision-mission" className="btn btn-outline btn-large">
-              Learn Our Mission
+          <ScrollReveal delay={0.3} className="flex justify-center mt-2">
+            <Link 
+              href="#vision-mission" 
+              className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-bold text-white transition-all duration-300 bg-blue-600 rounded-full shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-blue-500/40 hover:-translate-y-1"
+            >
+              Discover Our Story
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </ScrollReveal>
         </section>
 
-        {/* 2. Our Story */}
-        <section className="relative z-10 py-20 bg-slate-50/50 backdrop-blur-sm border-y border-slate-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-              <ScrollReveal variant="fade-in">
-                <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden bg-white border border-slate-200 shadow-xl group flex items-center justify-center">
-                  <Image
-                    src="/assets/logo-v5.png"
-                    alt="YukCeritain Logo"
-                    fill
-                    className="object-contain p-8 group-hover:scale-105 transition-transform duration-700"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  {/* Glass reflection effect */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-white/40 pointer-events-none" />
-                </div>
-              </ScrollReveal>
-
-              <ScrollReveal delay={0.2}>
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 font-playfair">Our Story</h2>
-                <div className="space-y-4 text-slate-600 text-lg leading-relaxed">
-                  <p>
-                    YukCeritain was born out of a simple observation: taking the first step to seek mental health support is often the hardest. Many people struggle in silence because of stigma, cost, or simply not knowing where to start.
-                  </p>
-                  <p>
-                    We set out to change that by building a platform that breaks down these barriers. By combining modern technology with compassionate care, we created a space that feels welcoming, private, and deeply human.
-                  </p>
-                  <p>
-                    Today, YukCeritain is more than just a counseling platform. It's a growing community of individuals and professionals working together to make mental well-being accessible, affordable, and comfortable for everyone.
-                  </p>
-                </div>
-              </ScrollReveal>
-            </div>
-          </div>
-        </section>
-
-        {/* 3. Vision & Mission */}
-        <section id="vision-mission" className="relative z-10 py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
+        {/* 2. Vision & Mission */}
+        <section id="vision-mission" className="relative z-10 py-6 md:py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
           <div className="grid md:grid-cols-2 gap-8">
             <ScrollReveal>
-              <Card className="p-10 h-full rounded-[2rem] border-slate-200/60 shadow-lg shadow-blue-900/5 bg-white/60 backdrop-blur-xl hover:-translate-y-2 transition-all duration-300 group">
+              <Card className="p-10 h-full rounded-[2rem] border-blue-200 shadow-lg shadow-blue-900/5 bg-white/60 backdrop-blur-xl hover:border-blue-400 hover:-translate-y-2 transition-all duration-300 group">
                 <div className="w-16 h-16 rounded-2xl bg-blue-100/50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <TrendingUp className="w-8 h-8 text-blue-600" />
                 </div>
@@ -125,7 +89,7 @@ export default function AboutPage() {
             </ScrollReveal>
 
             <ScrollReveal delay={0.2}>
-              <Card className="p-10 h-full rounded-[2rem] border-slate-200/60 shadow-lg shadow-blue-900/5 bg-white/60 backdrop-blur-xl hover:-translate-y-2 transition-all duration-300 group">
+              <Card className="p-10 h-full rounded-[2rem] border-blue-200 shadow-lg shadow-blue-900/5 bg-white/60 backdrop-blur-xl hover:border-blue-400 hover:-translate-y-2 transition-all duration-300 group">
                 <div className="w-16 h-16 rounded-2xl bg-blue-100/50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <Lock className="w-8 h-8 text-blue-600" />
                 </div>
@@ -148,8 +112,30 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* 3. Our Story */}
+        <section className="relative z-10 py-6 md:py-8 bg-slate-50/50 backdrop-blur-sm border-y border-slate-100">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-left md:text-center">
+              <ScrollReveal delay={0.2}>
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 font-playfair">Our Story</h2>
+                <div className="space-y-4 text-slate-600 text-lg leading-relaxed">
+                  <p>
+                    YukCeritain was born out of a simple observation: taking the first step to seek mental health support is often the hardest. Many people struggle in silence because of stigma, cost, or simply not knowing where to start.
+                  </p>
+                  <p>
+                    We set out to change that by building a platform that breaks down these barriers. By combining modern technology with compassionate care, we created a space that feels welcoming, private, and deeply human.
+                  </p>
+                  <p>
+                    Today, YukCeritain is more than just a counseling platform. It's a growing community of individuals and professionals working together to make mental well-being accessible, affordable, and comfortable for everyone.
+                  </p>
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
+        </section>
+
         {/* 4. Core Values */}
-        <section className="relative z-10 py-20 bg-blue-50/30">
+        <section className="relative z-10 py-6 md:py-8 bg-blue-50/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <ScrollReveal>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-16 font-playfair">Our Values</h2>
@@ -163,7 +149,7 @@ export default function AboutPage() {
                 { icon: Users, title: 'Accessibility', desc: 'Making quality mental health care available for everyone.' },
               ].map((val, i) => (
                 <ScrollReveal key={i} delay={i * 0.1}>
-                  <Card className="p-8 text-center rounded-3xl border-slate-100 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-2 transition-all duration-300 bg-white">
+                  <Card className="p-8 text-center rounded-3xl border-blue-200 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-400 hover:-translate-y-2 transition-all duration-300 bg-white">
                     <div className="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-6 text-blue-600">
                       <val.icon className="w-7 h-7" />
                     </div>
@@ -177,7 +163,7 @@ export default function AboutPage() {
         </section>
 
         {/* 5. Leadership Team */}
-        <section className="relative z-10 py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative z-10 py-6 md:py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <ScrollReveal>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-playfair">Meet Our Leadership</h2>
@@ -192,7 +178,7 @@ export default function AboutPage() {
               { role: 'CMO', name: 'John Smith', desc: 'Responsible for branding, marketing strategy, and community engagement.', image: 'https://i.pravatar.cc/300?u=cmo' },
             ].map((leader, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <Card className="p-8 text-center rounded-[24px] border-slate-200/60 shadow-lg shadow-slate-200/20 hover:-translate-y-2 hover:shadow-xl transition-all duration-300 bg-white">
+                <Card className="p-8 text-center rounded-[24px] border-blue-200 shadow-lg shadow-blue-200/20 hover:-translate-y-2 hover:border-blue-400 hover:shadow-xl transition-all duration-300 bg-white">
                   <div className="w-32 h-32 rounded-full bg-slate-100 border-4 border-white shadow-sm mx-auto mb-6 overflow-hidden relative">
                     <Image src={leader.image} alt={leader.name} fill className="object-cover" sizes="(max-width: 128px) 100vw, 128px" />
                   </div>
@@ -220,7 +206,7 @@ export default function AboutPage() {
         </section>
 
         {/* 6. Why People Trust Us */}
-        <section className="relative z-10 py-24 bg-slate-50 border-y border-slate-100">
+        <section className="relative z-10 py-6 md:py-8 bg-slate-50 border-y border-slate-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ScrollReveal className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 font-playfair">Why People Trust Us</h2>
@@ -251,43 +237,9 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 7. Our Journey (Timeline) */}
-        <section className="relative z-10 py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
-          <ScrollReveal className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 font-playfair">Our Journey</h2>
-          </ScrollReveal>
-
-          <div className="relative max-w-5xl mx-auto">
-            {/* Horizontal Line */}
-            <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-blue-100 -translate-y-1/2" />
-
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-4 relative">
-              {[
-                { year: '2022', title: 'YukCeritain Founded' },
-                { year: '2023', title: 'Community Launch' },
-                { year: '2024', title: 'Online Counseling' },
-                { year: '2025', title: 'Educational Events' },
-                { year: 'Future', title: 'Global Expansion' },
-              ].map((milestone, i) => (
-                <ScrollReveal key={i} delay={i * 0.1} className="relative flex flex-col items-center text-center group">
-                  {/* Vertical Line for Mobile */}
-                  {i !== 0 && <div className="md:hidden w-0.5 h-8 bg-blue-100 mb-4" />}
-
-                  {/* Dot */}
-                  <div className="w-6 h-6 rounded-full bg-white border-4 border-blue-200 z-10 mb-4 group-hover:border-blue-500 group-hover:scale-125 transition-all duration-300" />
-
-                  <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 group-hover:shadow-md group-hover:-translate-y-1 transition-all duration-300 w-full">
-                    <span className="text-blue-600 font-bold text-sm mb-1 block">{milestone.year}</span>
-                    <h3 className="text-slate-800 font-medium text-sm">{milestone.title}</h3>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* 8. Community Impact */}
-        <section className="relative z-10 py-20 bg-blue-600 text-white overflow-hidden">
+        <section className="relative z-10 py-6 md:py-8 bg-blue-600 text-white overflow-hidden">
           {/* Background pattern */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20" />
 
@@ -309,7 +261,7 @@ export default function AboutPage() {
         </section>
 
         {/* 9. Call To Action */}
-        <section className="relative z-10 py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative z-10 py-6 md:py-8 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
             <div className="relative rounded-[3rem] overflow-hidden bg-gradient-to-br from-blue-50 to-white border border-blue-100 p-12 md:p-20 text-center shadow-2xl shadow-blue-900/5">
               {/* Floating elements background */}

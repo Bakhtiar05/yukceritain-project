@@ -18,7 +18,7 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
   if (!posts.length) return null
 
   return (
-    <section id="blog" className="scroll-mt-24 py-20 bg-white">
+    <section id="blog" className="scroll-mt-24 py-12 md:py-20 bg-white">
       <div className="max-w-container mx-auto px-6">
         <div className="text-center mb-14">
           <h2 className="font-display text-[clamp(1.8rem,4vw,2.6rem)] font-bold text-neutral-900 mb-4">

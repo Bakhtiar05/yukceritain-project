@@ -38,7 +38,7 @@ export default function SpeakersGrid() {
             <h2 className="text-3xl md:text-4xl font-extrabold text-[#0F172A] tracking-tight mb-4">Learn From Experts</h2>
             <p className="text-[#64748B] text-lg max-w-2xl">Our events are hosted by certified professionals who are passionate about sharing their knowledge.</p>
           </div>
-          <button className="px-6 py-3 rounded-[14px] font-semibold text-[#0F172A] bg-white border border-[#E5E7EB] hover:bg-[#F8FAFC] transition-colors shadow-sm self-start md:self-auto">
+          <button className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-transparent border-2 border-[#BFDBFE] hover:border-[#2563EB] hover:bg-[#EFF6FF] text-[#2563EB] rounded-full font-bold transition-all duration-300 hover:-translate-y-1 text-sm self-start md:self-auto">
             View All Speakers
           </button>
         </div>
