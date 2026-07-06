@@ -27,7 +27,7 @@ export default function Footer() {
 
           {/* Layanan */}
           <div>
-            <h4 className="font-semibold text-sm uppercase tracking-wider text-neutral-400 mb-5">Layanan</h4>
+            <h3 className="font-semibold text-sm uppercase tracking-wider text-neutral-400 mb-5">Layanan</h3>
             <ul className="space-y-3">
               {['Konseling Individu', 'Psikolog Klinis', 'Konselor Profesional', 'Konsultasi WhatsApp'].map((item) => (
                 <li key={item}><a href="#" className="text-neutral-400 text-sm hover:text-white transition-colors duration-200">{item}</a></li>
@@ -37,7 +37,7 @@ export default function Footer() {
 
           {/* Perusahaan */}
           <div>
-            <h4 className="font-semibold text-sm uppercase tracking-wider text-neutral-400 mb-5">Perusahaan</h4>
+            <h3 className="font-semibold text-sm uppercase tracking-wider text-neutral-400 mb-5">Perusahaan</h3>
             <ul className="space-y-3">
               <li><a href="#" className="text-neutral-400 text-sm hover:text-white transition-colors duration-200">Tentang Kami</a></li>
               <li><a href="#" className="text-neutral-400 text-sm hover:text-white transition-colors duration-200">Tim Ahli</a></li>
@@ -48,7 +48,7 @@ export default function Footer() {
 
           {/* Bantuan */}
           <div>
-            <h4 className="font-semibold text-sm uppercase tracking-wider text-neutral-400 mb-5">Bantuan</h4>
+            <h3 className="font-semibold text-sm uppercase tracking-wider text-neutral-400 mb-5">Bantuan</h3>
             <ul className="space-y-3">
               {['FAQ', 'Kebijakan Privasi', 'Syarat & Ketentuan', 'Hubungi Kami'].map((item) => (
                 <li key={item}><a href="#" className="text-neutral-400 text-sm hover:text-white transition-colors duration-200">{item}</a></li>

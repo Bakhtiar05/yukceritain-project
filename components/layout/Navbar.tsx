@@ -154,7 +154,7 @@ export default function Navbar({ variant = 'default' }: NavbarProps) {
       >
         <div className="flex justify-between items-center mb-6">
           <h3 className="font-bold text-lg text-neutral-800">Menu Lainnya</h3>
-          <button onClick={() => setMenuOpen(false)} className="p-2 bg-neutral-100 hover:bg-neutral-200 rounded-full text-neutral-600 transition-colors">
+          <button onClick={() => setMenuOpen(false)} aria-label="Tutup Menu" className="p-2 bg-neutral-100 hover:bg-neutral-200 rounded-full text-neutral-600 transition-colors">
             <X size={20} />
           </button>
         </div>
