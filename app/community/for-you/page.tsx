@@ -1,8 +1,8 @@
 import React from 'react'
-import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import StoryComposer from '@/components/community/StoryComposer'
 import StoryCard from '@/components/community/StoryCard'
+import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,8 +11,6 @@ export default async function ForYouPage() {
   const { data: { session } } = await supabase.auth.getSession()
   const isAuthenticated = !!session
 
-  // Fetch recent posts
-  // Note: RLS ensures we only fetch visible posts (is_hidden = false)
   const { data: posts, error } = await supabase
     .from('community_posts')
     .select(`
@@ -26,34 +24,46 @@ export default async function ForYouPage() {
 
   return (
     <div className="w-full">
-      {/* Welcome Section */}
-      <div className="px-4 sm:px-6 pt-6 sm:pt-8 pb-1">
-        {/* Mobile View: Logo and Tagline Only */}
-        <div className="sm:hidden flex items-center gap-3 mb-2">
-          <div className="w-[48px] h-[48px] flex items-center justify-center flex-shrink-0 overflow-hidden rounded-[12px] bg-slate-50 border border-slate-100">
-            <Image 
-              src="/assets/navbar-bawah.png" 
-              alt="Logo" 
-              width={40} 
-              height={40} 
-              className="w-full h-full object-cover" 
-            />
-          </div>
-          <p className="text-slate-600 text-[14px] font-medium leading-tight">Ruang aman untuk berbagi cerita.</p>
-        </div>
 
-        {/* Desktop View: Full Card */}
-        <div className="hidden sm:flex bg-gradient-to-r from-blue-50/60 to-indigo-50/60 rounded-[16px] px-5 py-3.5 border border-blue-100/40 items-center justify-between gap-2">
-          <div className="flex items-center space-x-2.5 flex-1 min-w-0">
-            <div className="bg-white w-8 h-8 flex items-center justify-center rounded-[10px] shadow-sm border border-blue-50/50 flex-shrink-0 overflow-hidden">
-              <Image 
-                src="/assets/navbar-bawah.png" 
-                alt="Logo" 
-                width={32} 
-                height={32} 
-                className="w-full h-full object-cover" 
-              />
+      {/* ── WELCOME CARD (mobile only) ─────────────────────────── */}
+      <div className="md:hidden px-4 pt-5 pb-3">
+        <div
+          className="relative overflow-hidden rounded-[24px] px-6 py-5"
+          style={{
+            background: 'linear-gradient(135deg, #EFF6FF 0%, #E0EAFF 60%, #EEF2FF 100%)',
+          }}
+        >
+          {/* Abstract blobs */}
+          <div
+            className="community-welcome-blob"
+            style={{ width: 120, height: 120, background: '#93C5FD', top: -32, right: -28 }}
+          />
+          <div
+            className="community-welcome-blob"
+            style={{ width: 80, height: 80, background: '#A5B4FC', bottom: -20, left: 20 }}
+          />
+
+          {/* Content */}
+          <div className="relative z-10">
+            <h1 className="text-[18px] font-bold text-[#1E3A5F] leading-snug">
+              Welcome to<br />YukceritaIN Community
+            </h1>
+            <p className="mt-1.5 text-[13px] text-[#3B5A85] leading-relaxed font-medium">
+              A safe place to share stories, support one another, and grow together.
+            </p>
+            {/* Badge */}
+            <div className="mt-3 inline-flex items-center gap-1.5 bg-white/70 backdrop-blur-sm border border-blue-100 rounded-full px-3 py-1.5 text-[12px] font-semibold text-[#2563EB]">
+              <span>✨</span>
+              <span>Safe • Anonymous • Positive</span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── WELCOME CARD (desktop) — kept from original ────────── */}
+      <div className="hidden md:block px-4 sm:px-6 pt-6 pb-1">
+        <div className="flex bg-gradient-to-r from-blue-50/60 to-indigo-50/60 rounded-[16px] px-5 py-3.5 border border-blue-100/40 items-center justify-between gap-2">
+          <div className="flex items-center space-x-2.5 flex-1 min-w-0">
             <div className="flex-1 min-w-0">
               <h2 className="text-[15px] font-bold text-slate-800 leading-tight truncate">Selamat Datang</h2>
               <p className="text-slate-500 text-[13px] mt-0.5 truncate">Ruang aman untuk berbagi cerita.</p>
@@ -65,18 +75,39 @@ export default async function ForYouPage() {
         </div>
       </div>
 
-      <div className="pt-1 sm:pt-2">
+      {/* ── STORY COMPOSER ────────────────────────────────────── */}
+      <div className="pt-1">
         <StoryComposer isAuthenticated={isAuthenticated} />
       </div>
 
-      <div className="flex flex-col pt-2 pb-8 min-h-screen">
+      {/* ── FEED ──────────────────────────────────────────────── */}
+      <div className="community-feed pt-2 pb-10 min-h-screen">
         {error ? (
-          <div className="p-8 text-center text-slate-500">
-            Failed to load stories. Please try again later.
+          /* Error state */
+          <div className="mx-4 mt-4 rounded-[20px] border border-red-100 bg-red-50/60 p-8 text-center">
+            <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-3">
+              <span className="text-2xl">⚠️</span>
+            </div>
+            <p className="text-[15px] font-semibold text-red-700">Gagal memuat cerita</p>
+            <p className="text-[13px] text-red-500 mt-1">Silakan coba lagi nanti.</p>
           </div>
         ) : posts?.length === 0 ? (
-          <div className="p-12 text-center text-slate-500">
-            No stories yet. Be the first to share!
+          /* Premium empty state */
+          <div className="flex flex-col items-center justify-center px-8 py-16 text-center">
+            {/* Illustration */}
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center mb-6 shadow-inner">
+              <span className="text-5xl">🌱</span>
+            </div>
+            <h2 className="text-[20px] font-bold text-[#111827] mb-2">No stories yet</h2>
+            <p className="text-[14px] text-[#6B7280] leading-relaxed max-w-[220px]">
+              Be the first to share your thoughts and inspire the community.
+            </p>
+            <Link
+              href="/community/create"
+              className="mt-6 inline-flex items-center gap-2 bg-[#2563EB] text-white text-[14px] font-semibold px-6 py-3 rounded-full shadow-[0_4px_14px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] hover:-translate-y-0.5 transition-all active:scale-95"
+            >
+              <span>✏️</span> Create Story
+            </Link>
           </div>
         ) : (
           posts?.map((post, index) => {

@@ -46,7 +46,7 @@ export default function MobileUpcomingEvents({ events, title = "Upcoming Events"
               key={event.id}
               className="group flex gap-4 bg-white p-3 rounded-2xl border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] active:bg-slate-50 transition-colors"
             >
-              <div className="relative w-[100px] sm:w-[120px] h-[100px] sm:h-[120px] rounded-xl overflow-hidden flex-shrink-0 bg-slate-100">
+              <div className="relative w-[84px] sm:w-[100px] h-[84px] sm:h-[100px] rounded-xl overflow-hidden flex-shrink-0 bg-slate-100">
                 {event.cover_image ? (
                   <Image
                     src={event.cover_image}
@@ -59,11 +59,6 @@ export default function MobileUpcomingEvents({ events, title = "Upcoming Events"
                     No Image
                   </div>
                 )}
-                <div className="absolute top-2 left-2">
-                  <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wide ${isFree ? 'bg-emerald-500 text-white' : 'bg-blue-600 text-white'}`}>
-                    {isFree ? 'Free' : 'Paid'}
-                  </span>
-                </div>
               </div>
 
               <div className="flex flex-col flex-1 py-1">
@@ -93,15 +88,20 @@ export default function MobileUpcomingEvents({ events, title = "Upcoming Events"
                 </div>
 
                 <div className="flex items-center justify-between">
-                  {remainingSeats !== null ? (
-                    <span className={`text-[10px] font-bold px-2 py-1 rounded-md ${isSoldOut ? 'bg-red-50 text-red-600' : 'bg-slate-100 text-slate-600'}`}>
-                      {isSoldOut ? 'Sold Out' : `${remainingSeats} seats left`}
+                  <div className="flex items-center gap-1.5">
+                    {remainingSeats !== null ? (
+                      <span className={`text-[10px] font-bold px-2 py-1 rounded-md ${isSoldOut ? 'bg-red-50 text-red-600' : 'bg-slate-100 text-slate-600'}`}>
+                        {isSoldOut ? 'Sold Out' : `${remainingSeats} left`}
+                      </span>
+                    ) : (
+                      <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-100 text-slate-600">
+                        Unlimited
+                      </span>
+                    )}
+                    <span className={`text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider ${isFree ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'}`}>
+                      {isFree ? 'Free' : 'Paid'}
                     </span>
-                  ) : (
-                    <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-100 text-slate-600">
-                      Unlimited
-                    </span>
-                  )}
+                  </div>
 
                   <Link 
                     href={`/events/${event.slug}`}

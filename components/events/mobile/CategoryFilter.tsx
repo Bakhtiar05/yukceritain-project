@@ -32,8 +32,8 @@ export default function CategoryFilter() {
   };
 
   return (
-    <div className="w-full pt-2 pb-4 overflow-hidden">
-      <div className="flex px-4 gap-2.5 overflow-x-auto hide-scrollbar pb-4">
+    <div className="w-full pt-2 pb-2">
+      <div className="flex px-4 gap-2.5 overflow-x-auto pb-4">
         {CATEGORIES.map((category) => {
           const isSelected = 
             (category.id === "all" && !searchParams.get("filter")) || 

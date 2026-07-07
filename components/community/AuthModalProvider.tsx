@@ -42,7 +42,7 @@ export default function AuthModalProvider({ children }: { children: React.ReactN
     <AuthModalContext.Provider value={{ isOpen, openModal, closeModal }}>
       {children}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[400px] bg-white rounded-[24px] shadow-2xl border-0 p-6 sm:p-8">
+        <DialogContent className="w-[90vw] max-w-[400px] bg-white rounded-[24px] shadow-2xl border-0 p-6 sm:p-8">
           <DialogHeader className="text-center flex flex-col items-center">
             <div className="w-16 h-16 rounded-[16px] flex items-center justify-center overflow-hidden mb-3">
               <Image 

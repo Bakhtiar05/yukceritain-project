@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import * as Dialog from '@radix-ui/react-dialog'
-import { HeartHandshake, MessageCircle, Share, MoreHorizontal, Edit2, Trash2, X, Check, AlertCircle, Link as LinkIcon } from 'lucide-react'
+import { Heart, MessageCircle, Share2, MoreHorizontal, Trash2, X, AlertCircle, Link as LinkIcon, Flag, EyeOff, Check } from 'lucide-react'
 import { useAuthModal } from './AuthModalProvider'
 import { toggleLike, deleteStory, updateStory } from '@/lib/actions/community'
 
@@ -41,68 +41,94 @@ export default function StoryCard({
   isAuthenticated,
   isOwner = false,
   disableCommentNavigation = false,
-  index = 0
+  index = 0,
 }: StoryCardProps) {
-  const { openModal } = useAuthModal()
-  const router = useRouter()
-  const [isLiked, setIsLiked] = useState(is_liked_by_me)
-  const [likesCount, setLikesCount] = useState(likes_count)
-  
-  const [isEditing, setIsEditing] = useState(false)
-  const [editContent, setEditContent] = useState(content)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  
+  const { openModal }   = useAuthModal()
+  const router          = useRouter()
+  const [isLiked, setIsLiked]             = useState(is_liked_by_me)
+  const [likesCount, setLikesCount]       = useState(likes_count)
+  const [isEditing, setIsEditing]         = useState(false)
+  const [editContent, setEditContent]     = useState(content)
+  const [isSubmitting, setIsSubmitting]   = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
-  
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
+  const [isDeleting, setIsDeleting]       = useState(false)
+  const [isMenuOpen, setIsMenuOpen]       = useState(false)
+  const [isExpanded, setIsExpanded]       = useState(false)
+  const [needsClamp, setNeedsClamp]       = useState(false)
+  const menuRef    = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLParagraphElement>(null)
+  const heartRef   = useRef<HTMLButtonElement>(null)
 
+  /* ── Click-outside for dropdown menu ─────────────────── */
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setIsMenuOpen(false)
       }
     }
-    if (isMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
+    if (isMenuOpen) document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isMenuOpen])
 
-  const copyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(`${window.location.origin}/community/post/${id}`)
-      setIsMenuOpen(false)
-      // Optional: Add toast here
-    } catch (err) {
-      console.error('Failed to copy link')
+  /* ── Detect if content overflows 5 lines ─────────────── */
+  useEffect(() => {
+    if (contentRef.current) {
+      const lineHeight = parseFloat(getComputedStyle(contentRef.current).lineHeight)
+      const maxHeight  = lineHeight * 5
+      setNeedsClamp(contentRef.current.scrollHeight > maxHeight + 2)
     }
+  }, [content])
+
+  /* ── Helpers ──────────────────────────────────────────── */
+  const handleShare = async () => {
+    const url = `${window.location.origin}/community/post/${id}`
+    const title = 'YukceritaIN Community'
+    const text = content.substring(0, 100) + '...'
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url })
+      } catch (err) {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(url)
+      } catch {}
+    }
+    setIsMenuOpen(false)
   }
 
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr)
+    const now   = new Date()
+    const diff  = now.getTime() - date.getTime()
+    const mins  = Math.floor(diff / (1000 * 60))
+    const hours = Math.floor(diff / (1000 * 60 * 60))
+    const days  = Math.floor(diff / (1000 * 60 * 60 * 24))
+    if (mins  < 1)  return 'Just now'
+    if (hours < 1)  return `${mins}m`
+    if (hours < 24) return `${hours}h`
+    if (days  === 1) return 'Yesterday'
+    return `${days}d`
+  }
+
+  /* ── Event handlers ───────────────────────────────────── */
   const handleLike = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    if (!isAuthenticated) {
-      openModal()
-      return
-    }
+    if (!isAuthenticated) { openModal(); return }
 
-    // Optimistic update
     setIsLiked(!isLiked)
     setLikesCount(prev => isLiked ? prev - 1 : prev + 1)
-    
-    // Heart bounce animation trigger
-    const btn = e.currentTarget as HTMLButtonElement
-    btn.classList.remove('animate-heart-bounce')
-    void btn.offsetWidth // trigger reflow
-    btn.classList.add('animate-heart-bounce')
+
+    // Micro-bounce
+    if (heartRef.current) {
+      heartRef.current.classList.remove('animate-community-heart-bounce')
+      void heartRef.current.offsetWidth
+      heartRef.current.classList.add('animate-community-heart-bounce')
+    }
 
     try {
       await toggleLike(id)
-    } catch (error) {
-      // Revert on error
+    } catch {
       setIsLiked(isLiked)
       setLikesCount(likesCount)
     }
@@ -110,13 +136,8 @@ export default function StoryCard({
 
   const handleComment = (e: React.MouseEvent) => {
     e.stopPropagation()
-    if (!isAuthenticated) {
-      openModal()
-      return
-    }
-    if (!disableCommentNavigation) {
-      router.push(`/community/post/${id}`)
-    }
+    if (!isAuthenticated) { openModal(); return }
+    if (!disableCommentNavigation) router.push(`/community/post/${id}`)
   }
 
   const handleDelete = async () => {
@@ -124,9 +145,7 @@ export default function StoryCard({
       setIsDeleting(true)
       await deleteStory(id)
       setIsDeleteModalOpen(false)
-      if (disableCommentNavigation) {
-        router.push('/community/for-you') // If on detail page, go back
-      }
+      if (disableCommentNavigation) router.push('/community/for-you')
     } catch (e) {
       console.error(e)
     } finally {
@@ -135,10 +154,7 @@ export default function StoryCard({
   }
 
   const handleEditSave = async () => {
-    if (!editContent.trim() || editContent === content) {
-      setIsEditing(false)
-      return
-    }
+    if (!editContent.trim() || editContent === content) { setIsEditing(false); return }
     try {
       setIsSubmitting(true)
       await updateStory(id, editContent)
@@ -150,187 +166,246 @@ export default function StoryCard({
     }
   }
 
-  const displayName = is_anonymous ? 'Anonymous' : profile.display_name
-  const username = is_anonymous ? 'anonymous' : profile.username
-  
-  const avatarUrl = is_anonymous 
-    ? 'https://api.dicebear.com/7.x/notionists/svg?seed=anonymous' 
-    : profile.avatar_url || `https://api.dicebear.com/7.x/notionists/svg?seed=${username}`
-  
-  // Format date relative (e.g., "2h", "5d")
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr)
-    const now = new Date()
-    const diff = now.getTime() - date.getTime()
-    const hours = Math.floor(diff / (1000 * 60 * 60))
-    if (hours < 1) return 'Just now'
-    if (hours < 24) return `${hours}h`
-    return `${Math.floor(hours / 24)}d`
-  }
+  const displayName = is_anonymous ? 'Anonymous' : profile?.display_name
+  const username    = is_anonymous ? 'anonymous' : profile?.username
+  const avatarUrl   = is_anonymous
+    ? 'https://api.dicebear.com/7.x/notionists/svg?seed=anonymous'
+    : profile?.avatar_url || `https://api.dicebear.com/7.x/notionists/svg?seed=${username}`
 
   return (
-    <article 
-      onClick={() => !disableCommentNavigation && router.push(`/community/post/${id}`)}
-      className={`px-3 sm:px-5 pt-3 pb-2 transition-colors cursor-pointer border-b border-slate-100/80 last:border-0 animate-feed-slide-up ${!disableCommentNavigation ? 'hover:bg-slate-50/50' : ''}`}
-      style={{ animationDelay: `${index * 60}ms` }}
-    >
-      <div className="flex gap-3">
-        {/* Avatar */}
-        <div className="flex-shrink-0">
-          <img src={avatarUrl} alt={displayName} className="w-[48px] h-[48px] rounded-full object-cover bg-slate-100 ring-1 ring-slate-200/50" />
-        </div>
-        
-        {/* Content */}
-        <div className="flex-1 min-w-0 pb-1">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-1.5 truncate pt-0.5">
-              {is_anonymous ? (
-                <span className="font-bold text-[15px] text-slate-900 truncate">{displayName}</span>
-              ) : (
-                <Link href={`/community/user/${username}`} onClick={(e) => e.stopPropagation()} className="flex items-center gap-1.5 group truncate cursor-pointer">
-                  <span className="font-bold text-[15px] text-slate-900 truncate group-hover:text-blue-600 transition-colors">{displayName}</span>
-                  <span className="text-slate-500 font-medium text-[13px] truncate group-hover:text-blue-500 transition-colors">@{username}</span>
-                </Link>
-              )}
-              <span className="text-slate-300 text-[13px]">·</span>
-              <span className="text-slate-400 text-[13px] whitespace-nowrap">{formatDate(created_at)}</span>
+    <>
+      <article
+        onClick={() => !disableCommentNavigation && router.push(`/community/post/${id}`)}
+        className={`community-card animate-community-card-appear ${!disableCommentNavigation ? 'cursor-pointer' : ''}`}
+        style={{ animationDelay: `${Math.min(index * 50, 400)}ms` }}
+      >
+
+        {/* ── User Info Row ──────────────────────────────── */}
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            {/* Avatar */}
+            <div className="flex-shrink-0">
+              <img
+                src={avatarUrl}
+                alt={displayName}
+                className="w-12 h-12 rounded-full object-cover bg-[#F3F4F6] ring-2 ring-[#F9FAFB]"
+              />
             </div>
-            
-            <div className="relative" ref={menuRef}>
-              <button 
-                onClick={(e) => { e.stopPropagation(); setIsMenuOpen(!isMenuOpen); }} 
-                className="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors active:scale-95"
-              >
-                <MoreHorizontal className="w-5 h-5" />
-              </button>
-              
-              {isMenuOpen && (
-                <div className="absolute right-0 top-full mt-1 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-1.5 z-10 animate-menu-slide-up">
-                  {isOwner && (
-                    <>
-                      <button 
-                        onClick={(e) => { e.stopPropagation(); setIsEditing(true); setIsMenuOpen(false); }}
-                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
-                      >
-                        <Edit2 className="w-4 h-4 text-slate-400" />
-                        Edit Post
-                      </button>
-                      <button 
-                        onClick={(e) => { e.stopPropagation(); setIsDeleteModalOpen(true); setIsMenuOpen(false); }}
-                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4 text-red-500" />
-                        Delete Post
-                      </button>
-                      <div className="h-px bg-slate-100 my-1 mx-3" />
-                    </>
-                  )}
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); copyLink(); }}
-                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+
+            {/* Name + meta */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                {is_anonymous ? (
+                  <span className="text-[16px] font-bold text-[#111827] leading-tight">
+                    {displayName}
+                  </span>
+                ) : (
+                  <Link
+                    href={`/community/user/${username}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-[16px] font-bold text-[#111827] hover:text-[#2563EB] transition-colors leading-tight"
                   >
-                    <LinkIcon className="w-4 h-4 text-slate-400" />
-                    Copy Link
-                  </button>
-                </div>
-              )}
+                    {displayName}
+                  </Link>
+                )}
+                {/* Anonymous badge */}
+                {is_anonymous && (
+                  <span className="community-badge-anon">
+                    🛡 Anonymous
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                {!is_anonymous && (
+                  <span className="text-[13px] text-[#9CA3AF] font-medium truncate">@{username}</span>
+                )}
+                {!is_anonymous && <span className="text-[#D1D5DB] text-[11px]">·</span>}
+                <span className="text-[13px] text-[#9CA3AF] font-medium whitespace-nowrap">
+                  {formatDate(created_at)}
+                </span>
+              </div>
             </div>
           </div>
 
-          {isEditing ? (
-            <div className="mt-2">
-              <textarea
-                value={editContent}
-                onChange={(e) => setEditContent(e.target.value)}
-                className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-slate-900 text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none min-h-[80px]"
-              />
-              <div className="flex justify-end space-x-2 mt-2">
-                <button onClick={(e) => { e.stopPropagation(); setIsEditing(false); setEditContent(content); }} className="px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
-                  Cancel
+          {/* More menu button */}
+          <div className="relative flex-shrink-0 ml-2" ref={menuRef}>
+            <button
+              onClick={(e) => { e.stopPropagation(); setIsMenuOpen(!isMenuOpen) }}
+              className="w-9 h-9 flex items-center justify-center rounded-full text-[#9CA3AF] hover:text-[#374151] hover:bg-[#F3F4F6] transition-colors active:scale-95"
+              aria-label="More options"
+            >
+              <MoreHorizontal className="w-5 h-5" />
+            </button>
+
+            {/* Dropdown */}
+            {isMenuOpen && (
+              <div className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-[#F3F4F6] py-2 z-20 animate-community-expand-down">
+                {isOwner && (
+                  <>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setIsEditing(true); setIsMenuOpen(false) }}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                    >
+                      <Check className="w-4 h-4 text-[#9CA3AF]" />
+                      Edit Post
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setIsDeleteModalOpen(true); setIsMenuOpen(false) }}
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-400" />
+                      Delete Post
+                    </button>
+                    <div className="h-px bg-[#F3F4F6] my-1.5 mx-3" />
+                  </>
+                )}
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleShare() }}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                >
+                  <LinkIcon className="w-4 h-4 text-[#9CA3AF]" />
+                  Share Story
                 </button>
-                <button onClick={(e) => { e.stopPropagation(); handleEditSave(); }} disabled={isSubmitting} className="px-3 py-1.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-full transition-colors disabled:opacity-50">
-                  {isSubmitting ? 'Saving...' : 'Save'}
+                <button
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                >
+                  <Flag className="w-4 h-4 text-[#9CA3AF]" />
+                  Report
+                </button>
+                <button
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                >
+                  <EyeOff className="w-4 h-4 text-[#9CA3AF]" />
+                  Hide Post
                 </button>
               </div>
+            )}
+          </div>
+        </div>
+
+        {/* ── Post Content ────────────────────────────────── */}
+        {isEditing ? (
+          <div className="mt-1 mb-3">
+            <textarea
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-[14px] px-4 py-3 text-[#111827] text-[15px] leading-relaxed focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB] outline-none resize-none min-h-[80px] transition-all"
+            />
+            <div className="flex justify-end gap-2 mt-2">
+              <button
+                onClick={(e) => { e.stopPropagation(); setIsEditing(false); setEditContent(content) }}
+                className="px-3 py-1.5 text-[13px] font-semibold text-[#6B7280] hover:text-[#374151] hover:bg-[#F3F4F6] rounded-full transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); handleEditSave() }}
+                disabled={isSubmitting}
+                className="px-4 py-1.5 text-[13px] font-semibold text-white bg-[#2563EB] hover:bg-[#1D4ED8] rounded-full transition-colors disabled:opacity-50"
+              >
+                {isSubmitting ? 'Saving…' : 'Save'}
+              </button>
             </div>
-          ) : (
-            <p className="text-slate-900 text-[15px] sm:text-[16px] leading-[1.5] whitespace-pre-wrap break-words max-w-2xl">
+          </div>
+        ) : (
+          <div className="mb-3">
+            <p
+              ref={contentRef}
+              className={`text-[#111827] text-[16px] leading-[1.7] whitespace-pre-wrap break-words community-post-content ${
+                isExpanded ? 'expanded' : ''
+              }`}
+            >
               {content}
             </p>
-          )}
-
-          {/* Action Buttons */}
-          <div className="mt-2 flex items-center justify-start gap-4 sm:gap-6 text-slate-500">
-            <button 
-              onClick={handleLike}
-              className={`flex items-center gap-1.5 h-10 min-w-[44px] group transition-colors duration-200 ${isLiked ? 'text-emerald-500' : 'hover:text-emerald-500'}`}
-              title="Kirim Pelukan"
-            >
-              <div className={`flex items-center justify-center w-9 h-9 -ml-2 rounded-full group-hover:bg-emerald-50 transition-colors ${isLiked ? 'bg-emerald-50' : ''}`}>
-                <HeartHandshake className={`w-5 h-5 ${isLiked ? 'stroke-emerald-500 text-emerald-500 fill-emerald-50' : ''}`} />
-              </div>
-              {likesCount > 0 && <span className="text-[13px] font-semibold -ml-0.5">{likesCount}</span>}
-            </button>
-
-            <button 
-              onClick={handleComment}
-              className="flex items-center gap-1.5 h-10 min-w-[44px] group hover:text-blue-500 transition-all duration-200 active:scale-95"
-              title="Komentar"
-            >
-              <div className="flex items-center justify-center w-9 h-9 -ml-2 rounded-full group-hover:bg-blue-50 transition-colors">
-                <MessageCircle className="w-5 h-5" />
-              </div>
-              {comments_count > 0 && <span className="text-[13px] font-semibold -ml-0.5">{comments_count}</span>}
-            </button>
-
-            <button 
-              onClick={(e) => e.stopPropagation()}
-              className="flex items-center gap-1.5 h-10 min-w-[44px] group hover:text-indigo-500 transition-all duration-200 active:scale-95"
-              title="Share"
-            >
-              <div className="flex items-center justify-center w-9 h-9 -ml-2 rounded-full group-hover:bg-indigo-50 transition-colors">
-                <Share className="w-5 h-5" />
-              </div>
-            </button>
+            {needsClamp && !isExpanded && (
+              <button
+                onClick={(e) => { e.stopPropagation(); setIsExpanded(true) }}
+                className="mt-1 text-[13.5px] font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition-colors"
+              >
+                Read More
+              </button>
+            )}
           </div>
-        </div>
-      </div>
+        )}
 
-      {/* Delete Confirmation Modal */}
+        {/* ── Card Footer ─────────────────────────────────── */}
+        <div className="flex items-center gap-2 pt-2 border-t border-[#F3F4F6]">
+
+          {/* Support (like) */}
+          <button
+            ref={heartRef}
+            onClick={handleLike}
+            className={`community-action-btn ${isLiked ? 'liked' : ''}`}
+            title="Kirim Dukungan"
+          >
+            <Heart
+              className="w-4 h-4 transition-colors"
+              strokeWidth={isLiked ? 0 : 1.8}
+              fill={isLiked ? '#93C5FD' : 'none'}
+            />
+            {likesCount > 0 && <span className="tabular-nums">{likesCount}</span>}
+            <span className="hidden sm:inline">Support</span>
+          </button>
+
+          {/* Reply */}
+          <button
+            onClick={handleComment}
+            className="community-action-btn"
+            title="Balas"
+          >
+            <MessageCircle className="w-4 h-4" strokeWidth={1.8} />
+            {comments_count > 0 && <span className="tabular-nums">{comments_count}</span>}
+            <span className="hidden sm:inline">Reply</span>
+          </button>
+
+          {/* Share */}
+          <button
+            onClick={(e) => { e.stopPropagation(); handleShare() }}
+            className="community-action-btn"
+            title="Bagikan"
+          >
+            <Share2 className="w-4 h-4" strokeWidth={1.8} />
+            <span className="hidden sm:inline">Share</span>
+          </button>
+        </div>
+
+      </article>
+
+      {/* ── Delete Confirmation Modal ────────────────────── */}
       <Dialog.Root open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[9998] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-          <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[90vw] max-w-sm translate-x-[-50%] translate-y-[-50%] bg-white p-6 shadow-xl sm:rounded-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]">
+          <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[90vw] max-w-sm translate-x-[-50%] translate-y-[-50%] bg-white rounded-[24px] p-6 shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
             <div className="flex flex-col items-center text-center">
               <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4 text-red-600">
                 <AlertCircle className="w-6 h-6" />
               </div>
-              <Dialog.Title className="text-lg font-bold text-slate-900 mb-2">
+              <Dialog.Title className="text-[18px] font-bold text-[#111827] mb-2">
                 Delete this story?
               </Dialog.Title>
-              <Dialog.Description className="text-slate-500 text-sm mb-6">
-                This action cannot be undone. This will permanently delete your story and all of its replies.
+              <Dialog.Description className="text-[#6B7280] text-[14px] mb-6 leading-relaxed">
+                This action cannot be undone. Your story and all its replies will be permanently deleted.
               </Dialog.Description>
-              
-              <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <div className="flex gap-3 w-full">
                 <Dialog.Close asChild>
-                  <button className="flex-1 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
+                  <button className="flex-1 px-4 py-2.5 bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#374151] rounded-full font-semibold text-[14px] transition-colors">
                     Cancel
                   </button>
                 </Dialog.Close>
-                <button 
+                <button
                   onClick={handleDelete}
                   disabled={isDeleting}
-                  className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                  className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold text-[14px] transition-colors disabled:opacity-50"
                 >
-                  {isDeleting ? 'Deleting...' : 'Delete'}
+                  {isDeleting ? 'Deleting…' : 'Delete'}
                 </button>
               </div>
             </div>
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
-    </article>
+    </>
   )
 }
-

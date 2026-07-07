@@ -24,7 +24,7 @@ export default function MobileSearchBar() {
   };
 
   return (
-    <div className="px-4 py-3 relative z-40 bg-white">
+    <div className="px-4 pt-3 pb-1 relative z-40 bg-white">
       <form onSubmit={handleSearch} className="flex items-center gap-2">
         <div 
           className={`flex-1 flex items-center bg-white border rounded-full px-4 py-2.5 transition-all duration-300 ${
@@ -53,13 +53,6 @@ export default function MobileSearchBar() {
         </button>
       </form>
       
-      <div className="mt-3 flex items-center justify-between">
-        <button className="flex items-center gap-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100 transition-colors">
-          <MapPin className="w-3.5 h-3.5 text-blue-500" />
-          Online & Offline
-          <ChevronDown className="w-3.5 h-3.5 opacity-50" />
-        </button>
-      </div>
     </div>
   );
 }

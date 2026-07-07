@@ -35,7 +35,7 @@ export default function MobileFeaturedEvents({ events }: MobileFeaturedEventsPro
           return (
             <div 
               key={event.id}
-              className="snap-start flex-shrink-0 w-[280px] sm:w-[320px] bg-white rounded-[24px] border border-slate-200 overflow-hidden shadow-sm active:scale-[0.98] transition-transform duration-200"
+              className="snap-start flex-shrink-0 w-[300px] sm:w-[340px] bg-white rounded-[24px] border border-slate-200 overflow-hidden shadow-sm active:scale-[0.98] transition-transform duration-200"
             >
               <Link href={`/events/${event.slug}`} className="block">
                 <div className="relative aspect-square bg-slate-100">
@@ -52,11 +52,6 @@ export default function MobileFeaturedEvents({ events }: MobileFeaturedEventsPro
                     </div>
                   )}
                   
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-white/95 backdrop-blur-sm text-blue-600 text-[10px] font-extrabold px-2.5 py-1 rounded-lg uppercase tracking-wide shadow-sm">
-                      Featured
-                    </span>
-                  </div>
                   <button 
                     onClick={(e) => {
                       e.preventDefault();
@@ -69,11 +64,14 @@ export default function MobileFeaturedEvents({ events }: MobileFeaturedEventsPro
                 </div>
 
                 <div className="p-4">
-                  <div className="flex items-center text-blue-600 text-xs font-semibold gap-3 mb-2">
-                    <div className="flex items-center gap-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center text-blue-600 text-xs font-semibold gap-2">
                       <CalendarDays className="w-3.5 h-3.5" />
                       <span>{formattedDate} • {formattedTime}</span>
                     </div>
+                    <span className="bg-blue-50 text-blue-600 text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">
+                      Featured
+                    </span>
                   </div>
 
                   <h3 className="text-base font-bold text-slate-900 mb-1.5 line-clamp-2 leading-tight">
