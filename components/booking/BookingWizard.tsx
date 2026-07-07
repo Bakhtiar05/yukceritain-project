@@ -35,7 +35,7 @@ export function BookingWizard() {
     mode: "onTouched",
   });
 
-  const { currentStep, handleNext, handleBack, jumpToStep } = useBookingNavigation(methods);
+  const { currentStep, returnToReview, handleNext, handleBack, jumpToStep } = useBookingNavigation(methods);
   const { isMounted, clearDraft } = useBookingDraft(methods, currentStep);
   const { isSubmitting, handleFinalSubmit } = useBookingSubmit(methods, clearDraft);
   const [reflection, setReflection] = useState("");
@@ -84,8 +84,8 @@ export function BookingWizard() {
           <div className="flex-1 w-full flex flex-col justify-center">
             {CurrentStepComponent && (
               <CurrentStepComponent 
-                onStart={() => jumpToStep(preselectedCounselorId ? 2 : 1)} 
-                onEdit={(step) => jumpToStep(step)} 
+                onStart={() => jumpToStep(preselectedCounselorId ? 2 : 1, false)} 
+                onEdit={(step) => jumpToStep(step, true)} 
               />
             )}
           </div>
@@ -107,8 +107,8 @@ export function BookingWizard() {
                   onClick={handleNext} 
                   className="rounded-2xl px-6 md:px-8 h-12 md:h-14 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base md:text-lg shadow-xl shadow-slate-900/10 transition-transform active:scale-95"
                 >
-                  Lanjut
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  {returnToReview ? "Simpan Perubahan" : "Lanjut"}
+                  {!returnToReview && <ArrowRight className="w-5 h-5 ml-2" />}
                 </Button>
               ) : (
                 <Button 

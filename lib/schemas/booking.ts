@@ -38,6 +38,9 @@ export const bookingSchema = z.object({
   urutan_konseling: z.enum(["Pertama", "Kedua", "Ketiga", "Keempat", "Lebih dari Empat"], { message: "Pilih ini konseling ke berapa" }),
   sumber_informasi: z.enum(["WhatsApp", "Instagram", "Campaign", "Teman", "Lainnya"], { message: "Pilih sumber informasi" }),
   sumber_informasi_lainnya: z.string().optional(),
+  
+  // Optional Discount
+  discount_code: z.string().optional(),
 }).superRefine((data, ctx) => {
   // Counselor Preference Refinements
   if (data.counselor_preference === "manual" && (!data.counselor_id || data.counselor_id.trim().length === 0)) {
@@ -104,5 +107,6 @@ export const defaultBookingValues: Partial<BookingFormData> = {
   urutan_konseling: undefined,
   sumber_informasi: undefined,
   sumber_informasi_lainnya: "",
+  discount_code: "",
 };
 

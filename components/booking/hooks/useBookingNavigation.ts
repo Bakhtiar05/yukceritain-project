@@ -5,6 +5,7 @@ import { BOOKING_STEPS, TOTAL_STEPS } from "../utils/bookingSteps";
 
 export function useBookingNavigation(methods: UseFormReturn<BookingFormData>) {
   const [currentStep, setCurrentStep] = useState(0);
+  const [returnToReview, setReturnToReview] = useState(false);
   const { trigger } = methods;
 
   // Handle "Enter" key to go next
@@ -31,21 +32,39 @@ export function useBookingNavigation(methods: UseFormReturn<BookingFormData>) {
       if (!isValid) return; // Prevent going next if validation fails
     }
 
+    if (returnToReview) {
+      setReturnToReview(false);
+      setCurrentStep(TOTAL_STEPS - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
     setCurrentStep((prev) => Math.min(prev + 1, TOTAL_STEPS - 1));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleBack = () => {
+    if (returnToReview) {
+      setReturnToReview(false);
+      setCurrentStep(TOTAL_STEPS - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
     setCurrentStep((prev) => Math.max(prev - 1, 0));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const jumpToStep = (stepIndex: number) => {
+  const jumpToStep = (stepIndex: number, isEdit: boolean = false) => {
     if (stepIndex >= 0 && stepIndex < TOTAL_STEPS) {
+      if (isEdit && currentStep === TOTAL_STEPS - 1) {
+        setReturnToReview(true);
+      } else if (!isEdit) {
+        setReturnToReview(false);
+      }
       setCurrentStep(stepIndex);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
-  return { currentStep, handleNext, handleBack, jumpToStep };
+  return { currentStep, returnToReview, handleNext, handleBack, jumpToStep };
 }

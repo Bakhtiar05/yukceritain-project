@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { 
   LayoutDashboard, FileText, PenTool, ArrowLeft, 
   ShieldAlert, UsersRound, MessageCircle, Calendar, 
-  CreditCard, UserCircle2, LineChart 
+  CreditCard, UserCircle2, LineChart, Percent
 } from 'lucide-react'
 
 interface AdminSidebarProps {
@@ -75,6 +75,10 @@ export default function AdminSidebar({ role }: AdminSidebarProps) {
             <Link href="/admin/konseling/payments" className={linkClass('/admin/konseling/payments')}>
               <CreditCard className="w-4 h-4" />
               Payments
+            </Link>
+            <Link href="/admin/konseling/discounts" className={linkClass('/admin/konseling/discounts')}>
+              <Percent className="w-4 h-4" />
+              Discounts
             </Link>
             <Link href="/admin/konseling/counselors" className={linkClass('/admin/konseling/counselors')}>
               <UserCircle2 className="w-4 h-4" />

@@ -21,7 +21,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const role = await getUserRole()
 
   if (!user) {
-    redirect('/admin/login')
+    // Middleware sudah mengurus proteksi route, jadi jika user tidak ada,
+    // berarti mereka sedang berada di halaman /admin/login.
+    // Kita cukup mengembalikan children tanpa menampilkan sidebar dan topnav.
+    return <>{children}</>
   }
 
   return (

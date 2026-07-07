@@ -262,6 +262,7 @@ CREATE TABLE IF NOT EXISTS consultation_requests (
   
   -- System
   db_status TEXT DEFAULT 'Menunggu Verifikasi',
+  discount_code TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -270,6 +271,37 @@ CREATE TABLE IF NOT EXISTS consultation_requests (
 CREATE INDEX IF NOT EXISTS idx_consultation_schedule 
 ON consultation_requests(tanggal_konsultasi, waktu_konsultasi) 
 WHERE db_status IN ('Menunggu Verifikasi', 'Disetujui', 'Waiting Payment', 'Waiting Admin Confirmation', 'Processing', 'Completed');
+
+-- ============================================
+-- 5A. DISCOUNT CODES TABLE
+-- ============================================
+CREATE TABLE IF NOT EXISTS discount_codes (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  code TEXT UNIQUE NOT NULL,
+  discount_percentage NUMERIC NOT NULL DEFAULT 100,
+  is_active BOOLEAN DEFAULT true,
+  max_uses INTEGER,
+  current_uses INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- RLS for discount_codes
+ALTER TABLE discount_codes ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can read discount codes to validate them
+CREATE POLICY "Public can view discount codes"
+  ON discount_codes
+  FOR SELECT
+  USING (is_active = true);
+
+-- Admins can manage discount codes
+CREATE POLICY "Admins can manage discount codes"
+  ON discount_codes
+  FOR ALL
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
+
 
 -- ============================================
 -- 5B. ROW LEVEL SECURITY (RLS) — CONSULTATION REQUESTS
