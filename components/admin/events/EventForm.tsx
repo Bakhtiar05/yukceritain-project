@@ -25,7 +25,16 @@ export default function EventForm({ initialData }: EventFormProps) {
 
   const form = useForm<EventFormValues>({
     resolver: zodResolver(eventSchema) as any,
-    defaultValues: initialData || {
+    defaultValues: initialData ? {
+      ...initialData,
+      cover_image: initialData.cover_image || "",
+      speaker: initialData.speaker || "",
+      venue_name: initialData.venue_name || "",
+      venue_address: initialData.venue_address || "",
+      google_maps_url: initialData.google_maps_url || "",
+      meeting_platform: initialData.meeting_platform || "",
+      meeting_link: initialData.meeting_link || "",
+    } : {
       title: "",
       slug: "",
       description: "",
@@ -55,6 +64,16 @@ export default function EventForm({ initialData }: EventFormProps) {
   const pricingType = form.watch("pricing_type");
   const eventType = form.watch("event_type");
 
+  const onError = (errors: any) => {
+    const firstErrorKey = Object.keys(errors)[0];
+    const firstErrorMessage = errors[firstErrorKey]?.message || "Silakan cek kembali form Anda.";
+    toast({
+      title: "Validasi Gagal",
+      description: firstErrorMessage,
+      variant: "destructive",
+    });
+  };
+
   async function onSubmit(data: EventFormValues) {
     setIsSubmitting(true);
     setError(null);
@@ -75,10 +94,11 @@ export default function EventForm({ initialData }: EventFormProps) {
         });
       }
       
-      // Do not set isSubmitting to false here because we are navigating away,
-      // and we want the loading spinner to stay until the page changes.
+      // Set loading to false so the UI feels responsive immediately
+      setIsSubmitting(false);
+      
+      // Navigate to the list
       router.push("/admin/events/list");
-      router.refresh();
     } catch (err: any) {
       setError(err.message || "Something went wrong.");
       toast({
@@ -128,7 +148,7 @@ export default function EventForm({ initialData }: EventFormProps) {
 
   // Simplified form for generation - in production use Shadcn UI components properly.
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 bg-white p-6 rounded-xl border border-slate-200">
+    <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8 bg-white p-6 rounded-xl border border-slate-200">
       
       {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">{error}</div>}
 

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
-import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
+import { ArrowRight, CalendarDays, MapPin, Share2, Handshake } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Event } from "@/types/events";
 
@@ -33,7 +33,7 @@ export default function AutoHeroBanner({ events }: AutoHeroBannerProps) {
 
   return (
     <div className="px-4 py-2 w-full">
-      <div className="relative w-full aspect-[4/5] sm:aspect-video md:aspect-[21/9] rounded-[24px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.08)] bg-slate-100">
+      <div className="relative w-full aspect-square sm:aspect-[16/10] md:aspect-[21/9] rounded-[24px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.08)] bg-slate-100">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -99,10 +99,11 @@ export default function AutoHeroBanner({ events }: AutoHeroBannerProps) {
           </motion.div>
         </AnimatePresence>
 
-        {/* Pagination Dots */}
-        {events.length > 1 && (
-          <div className="absolute top-4 right-4 flex gap-1.5 z-10">
-            {events.map((_, idx) => (
+        {/* Top Bar (Pagination and Share) */}
+        <div className="absolute top-4 inset-x-4 flex items-center justify-between z-20 pointer-events-none">
+          {/* Pagination Dots */}
+          <div className="flex gap-1.5 pointer-events-auto">
+            {events.length > 1 && events.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
@@ -113,16 +114,43 @@ export default function AutoHeroBanner({ events }: AutoHeroBannerProps) {
               />
             ))}
           </div>
-        )}
+
+          {/* Share Button */}
+          <button 
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({
+                  title: event.title,
+                  text: event.short_description,
+                  url: `${window.location.origin}/events/${event.slug}`,
+                }).catch(console.error);
+              } else {
+                navigator.clipboard.writeText(`${window.location.origin}/events/${event.slug}`);
+                alert("Link copied to clipboard!");
+              }
+            }}
+            className="w-8 h-8 flex items-center justify-center rounded-full bg-black/20 backdrop-blur-md text-white border border-white/20 hover:bg-white/30 transition-colors pointer-events-auto"
+            aria-label="Share event"
+          >
+            <Share2 className="w-4 h-4" />
+          </button>
+        </div>
       </div>
       
-      {/* Small Hero CTA - Extracted out per instruction, but it's often placed right below */}
-      <div className="flex justify-center mt-5 mb-2 px-2">
+      {/* Hero CTAs */}
+      <div className="flex flex-row justify-center gap-3 mt-5 mb-2 px-4 w-full">
+        <Link 
+          href="/events/partner"
+          className="flex-1 px-4 py-3 bg-white hover:bg-blue-50 border border-blue-600 text-blue-600 rounded-full font-medium transition-all duration-300 hover:scale-[0.98] active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm h-[44px]"
+        >
+          <Handshake className="w-4 h-4" />
+          Partner
+        </Link>
         <Link 
           href="#all-events"
-          className="px-6 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-full font-bold shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-2 text-sm max-w-[280px] w-full"
+          className="flex-1 px-4 py-3 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-full font-bold shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm h-[44px]"
         >
-          Explore All Events
+          Explore
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>

@@ -2,13 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Bell } from "lucide-react";
+import { ArrowLeft, Bookmark } from "lucide-react";
 
 interface MobileHeaderProps {
   title?: string;
+  backUrl?: string;
 }
 
-export default function MobileHeader({ title = "Community Events" }: MobileHeaderProps) {
+export default function MobileHeader({ title = "Community Events", backUrl = "/" }: MobileHeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function MobileHeader({ title = "Community Events" }: MobileHeade
     >
       <div className="flex items-center justify-between px-4 h-14 max-w-7xl mx-auto">
         <Link 
-          href="/"
+          href={backUrl}
           className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 transition-colors"
         >
           <ArrowLeft className="w-5 h-5 text-slate-700" />
@@ -39,10 +40,12 @@ export default function MobileHeader({ title = "Community Events" }: MobileHeade
           {title}
         </h1>
 
-        <button className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 transition-colors relative">
-          <Bell className="w-5 h-5 text-slate-700" />
-          <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-blue-600 rounded-full border-2 border-white"></span>
-        </button>
+        <Link 
+          href="/events/favorites"
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 transition-colors"
+        >
+          <Bookmark className="w-5 h-5 text-slate-700" />
+        </Link>
       </div>
     </header>
   );

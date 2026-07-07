@@ -6,6 +6,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { MapPin, Bookmark } from "lucide-react";
 import { Event } from "@/types/events";
+import { useFavorites } from "@/hooks/useFavorites";
 
 interface MobileUpcomingEventsProps {
   events: Event[];
@@ -13,6 +14,8 @@ interface MobileUpcomingEventsProps {
 }
 
 export default function MobileUpcomingEvents({ events, title = "Upcoming Events" }: MobileUpcomingEventsProps) {
+  const { isFavorite, toggleFavorite } = useFavorites();
+
   if (!events || events.length === 0) {
     return (
       <div className="px-4 py-8 text-center bg-white">
@@ -68,8 +71,13 @@ export default function MobileUpcomingEvents({ events, title = "Upcoming Events"
                   <span className="text-blue-600 text-[11px] font-bold uppercase tracking-wider">
                     {formattedDate} • {formattedTime}
                   </span>
-                  <button className="text-slate-400 hover:text-slate-600 -mt-1 -mr-1 p-1">
-                    <Bookmark className="w-4 h-4" />
+                  <button 
+                    onClick={() => toggleFavorite(event.id)}
+                    className="text-slate-400 hover:text-red-500 -mt-1 -mr-1 p-1 transition-colors"
+                  >
+                    <Bookmark 
+                      className={`w-4 h-4 ${isFavorite(event.id) ? 'fill-red-500 text-red-500' : ''}`} 
+                    />
                   </button>
                 </div>
 

@@ -6,12 +6,15 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { CalendarDays, MapPin, Users, Bookmark, ArrowRight } from "lucide-react";
 import { Event } from "@/types/events";
+import { useFavorites } from "@/hooks/useFavorites";
 
 interface MobileFeaturedEventsProps {
   events: Event[];
 }
 
 export default function MobileFeaturedEvents({ events }: MobileFeaturedEventsProps) {
+  const { isFavorite, toggleFavorite } = useFavorites();
+
   if (!events || events.length === 0) return null;
 
   return (
@@ -35,7 +38,7 @@ export default function MobileFeaturedEvents({ events }: MobileFeaturedEventsPro
               className="snap-start flex-shrink-0 w-[280px] sm:w-[320px] bg-white rounded-[24px] border border-slate-200 overflow-hidden shadow-sm active:scale-[0.98] transition-transform duration-200"
             >
               <Link href={`/events/${event.slug}`} className="block">
-                <div className="relative aspect-[4/3] bg-slate-100">
+                <div className="relative aspect-square bg-slate-100">
                   {event.cover_image ? (
                     <Image
                       src={event.cover_image}
@@ -54,9 +57,15 @@ export default function MobileFeaturedEvents({ events }: MobileFeaturedEventsPro
                       Featured
                     </span>
                   </div>
-                  <div className="absolute bottom-3 right-3 flex items-center justify-center w-8 h-8 rounded-full bg-white/95 backdrop-blur-sm shadow-sm text-slate-600">
-                    <Bookmark className="w-4 h-4" />
-                  </div>
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleFavorite(event.id);
+                    }}
+                    className="absolute bottom-3 right-3 flex items-center justify-center w-8 h-8 rounded-full bg-white/95 backdrop-blur-sm shadow-sm text-slate-600 transition-colors hover:text-red-500"
+                  >
+                    <Bookmark className={`w-4 h-4 ${isFavorite(event.id) ? 'fill-red-500 text-red-500' : ''}`} />
+                  </button>
                 </div>
 
                 <div className="p-4">

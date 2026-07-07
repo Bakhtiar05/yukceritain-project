@@ -25,7 +25,7 @@ export default function EventCard({ event, featured = false }: EventCardProps) {
   if (featured) {
     return (
       <div className="bg-white rounded-[32px] overflow-hidden border border-[#E5E7EB] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] flex flex-col lg:flex-row mb-12 group transition-all duration-500 hover:shadow-[0_25px_50px_-12px_rgba(37,99,235,0.1)]">
-        <div className="relative w-full lg:w-[55%] aspect-[4/3] lg:aspect-auto overflow-hidden bg-slate-100">
+        <div className="relative w-full lg:w-[55%] aspect-square lg:aspect-auto overflow-hidden bg-slate-100">
           {event.cover_image ? (
             <Image 
               src={event.cover_image} 
@@ -121,7 +121,7 @@ export default function EventCard({ event, featured = false }: EventCardProps) {
       href={`/events/${event.slug}`} 
       className="group bg-white rounded-[24px] border border-[#E5E7EB] overflow-hidden shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_20px_40px_-15px_rgba(37,99,235,0.15)] hover:border-blue-100 hover:-translate-y-2 transition-all duration-300 flex flex-col h-full"
     >
-      <div className="relative aspect-[16/9] overflow-hidden bg-[#F8FAFC]">
+      <div className="relative aspect-square overflow-hidden bg-[#F8FAFC]">
         {event.cover_image ? (
           <Image 
             src={event.cover_image} 
