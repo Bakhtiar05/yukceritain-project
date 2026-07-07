@@ -1,13 +1,48 @@
 import React from "react";
 import { getEventBySlug, getPublicEvents } from "@/app/actions/events";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 import { CalendarDays, MapPin, Video, Clock, Users, ArrowLeft, ArrowRight, UserRound, HelpCircle } from "lucide-react";
 import EventCard from "@/components/events/EventCard";
+import Breadcrumbs from '@/components/seo/Breadcrumbs';
+import { EventJsonLd } from '@/components/seo/JsonLd';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const events = await getPublicEvents();
+  return events.map((event) => ({
+    slug: event.slug,
+  }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const event = await getEventBySlug(slug);
+
+  if (!event) return { title: 'Event Tidak Ditemukan' };
+
+  return {
+    title: event.title,
+    description: event.short_description || undefined,
+    openGraph: {
+      title: event.title,
+      description: event.short_description || undefined,
+      images: event.cover_image ? [{ url: event.cover_image }] : undefined,
+      type: 'website',
+      locale: 'id_ID',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: event.title,
+      description: event.short_description || undefined,
+      images: event.cover_image ? [event.cover_image] : undefined,
+    },
+  };
+}
 
 export default async function EventDetailPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
@@ -58,6 +93,17 @@ export default async function EventDetailPage(props: { params: Promise<{ slug: s
         {/* Main Content Column */}
         <div className="flex-1 w-full space-y-8">
           
+          <Breadcrumbs 
+            items={[
+              { name: 'Beranda', url: '/' },
+              { name: 'Events', url: '/events' },
+              { name: event.title, url: `/events/${event.slug}` }
+            ]} 
+            className="text-white/80" 
+          />
+
+          <EventJsonLd event={event} />
+
           {/* 2. Event Summary Card */}
           <div className="bg-white rounded-[2rem] p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
             <div className="flex flex-wrap gap-2 mb-6">

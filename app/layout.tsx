@@ -86,6 +86,7 @@ export const metadata: Metadata = {
 }
 
 import { Toaster } from "@/components/ui/toaster"
+import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd"
 
 export default function RootLayout({
   children,
@@ -95,6 +96,8 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${inter.variable} ${playfair.variable}`}>
       <body className="font-body antialiased">
+        <OrganizationJsonLd />
+        <WebSiteJsonLd />
         {children}
         <Toaster />
       </body>

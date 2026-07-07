@@ -206,7 +206,7 @@ export default function HeroSection() {
 
         {/* LEFT COLUMN: TEXT & CTA */}
         <motion.div
-          className="relative z-20 w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left -mt-20 md:-mt-16 lg:mt-0"
+          className="relative z-20 w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left mt-4 md:-mt-8 lg:mt-0"
           variants={containerVariants}
           initial="hidden"
           animate="visible"

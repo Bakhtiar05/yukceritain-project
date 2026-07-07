@@ -19,10 +19,23 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import Breadcrumbs from '@/components/seo/Breadcrumbs'
+import { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'About Us',
   description: 'Learn more about YukCeritain and our mission to make mental health support accessible for everyone.',
+  openGraph: {
+    title: 'About Us | YukceritaIN',
+    description: 'Learn more about YukCeritain and our mission to make mental health support accessible for everyone.',
+    type: 'website',
+    locale: 'id_ID',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Us | YukceritaIN',
+    description: 'Learn more about YukCeritain and our mission to make mental health support accessible for everyone.',
+  },
 }
 
 export default function AboutPage() {
@@ -43,6 +56,12 @@ export default function AboutPage() {
 
         {/* 1. Hero Section */}
         <section className="relative z-10 pt-32 pb-6 md:pt-40 md:pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
+          <div className="w-full flex justify-center mb-6">
+            <Breadcrumbs items={[
+              { name: 'Beranda', url: '/' },
+              { name: 'About', url: '/about' }
+            ]} className="justify-center" />
+          </div>
           <ScrollReveal>
             <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50/50 px-3 py-1 text-sm font-medium text-blue-600 mb-6 backdrop-blur-sm">
               <span className="flex h-2 w-2 rounded-full bg-blue-600 mr-2"></span>

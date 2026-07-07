@@ -2,7 +2,16 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import type { Post, ActionResult } from '@/lib/types'
+
+// Helper for static generation / public fetching without cookies
+function createStaticClient() {
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+}
 
 // ============================================
 // PUBLIC ACTIONS (no auth required)
@@ -14,7 +23,7 @@ export async function getPosts(options?: {
   page?: number
   limit?: number
 }): Promise<{ posts: Post[]; count: number }> {
-  const supabase = await createClient()
+  const supabase = createStaticClient()
   const { category, search, page = 1, limit = 6 } = options || {}
   const from = (page - 1) * limit
   const to = from + limit - 1
@@ -45,7 +54,7 @@ export async function getPosts(options?: {
 }
 
 export async function getLatestPosts(limit: number = 3): Promise<Post[]> {
-  const supabase = await createClient()
+  const supabase = createStaticClient()
 
   const { data, error } = await supabase
     .from('posts')
@@ -62,8 +71,23 @@ export async function getLatestPosts(limit: number = 3): Promise<Post[]> {
   return (data as Post[]) || []
 }
 
+
+export async function getStaticPostsSlugs(): Promise<{ slug: string }[]> {
+  const supabase = createStaticClient()
+  const { data, error } = await supabase
+    .from('posts')
+    .select('slug')
+    .eq('published', true)
+    
+  if (error) {
+    console.error('Error fetching static posts slugs:', error)
+    return []
+  }
+  return data || []
+}
+
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const supabase = await createClient()
+  const supabase = createStaticClient()
 
   const { data, error } = await supabase
     .from('posts')
@@ -85,7 +109,7 @@ export async function getRelatedPosts(
   excludeId: string,
   limit: number = 3
 ): Promise<Post[]> {
-  const supabase = await createClient()
+  const supabase = createStaticClient()
 
   const { data, error } = await supabase
     .from('posts')
@@ -105,7 +129,7 @@ export async function getRelatedPosts(
 }
 
 export async function getFeaturedPost(): Promise<Post | null> {
-  const supabase = await createClient()
+  const supabase = createStaticClient()
 
   const { data, error } = await supabase
     .from('posts')

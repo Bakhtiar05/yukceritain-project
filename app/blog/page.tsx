@@ -6,11 +6,25 @@ import FeaturedPost from '@/components/blog/FeaturedPost'
 import BlogGrid from '@/components/blog/BlogGrid'
 import NewsletterSection from '@/components/blog/NewsletterSection'
 import { getPosts, getFeaturedPost } from '@/lib/actions/posts'
-import Link from 'next/link'
+import Breadcrumbs from '@/components/seo/Breadcrumbs'
+import MobileHeader from '@/components/events/mobile/MobileHeader'
+import BlogMobileSearchBar from '@/components/blog/BlogMobileSearchBar'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Blog & Artikel',
   description: 'Tips, panduan, dan wawasan dari para ahli kesehatan mental untuk membantumu menjalani hidup yang lebih baik.',
+  openGraph: {
+    title: 'Blog & Artikel | YukceritaIN',
+    description: 'Tips, panduan, dan wawasan dari para ahli kesehatan mental untuk membantumu menjalani hidup yang lebih baik.',
+    type: 'website',
+    locale: 'id_ID',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog & Artikel | YukceritaIN',
+    description: 'Tips, panduan, dan wawasan dari para ahli kesehatan mental untuk membantumu menjalani hidup yang lebih baik.',
+  },
 }
 
 export default async function BlogPage() {
@@ -22,15 +36,18 @@ export default async function BlogPage() {
   return (
     <>
       <Navbar variant="blog" />
+      <MobileHeader title="YukceritaIN Blog" />
+      <Suspense fallback={null}>
+        <BlogMobileSearchBar />
+      </Suspense>
       <main>
         {/* Blog Hero */}
-        <section className="bg-gradient-to-b from-neutral-50 to-white border-b border-neutral-200" style={{ paddingTop: 'calc(72px + 48px)' }}>
+        <section className="bg-gradient-to-b from-neutral-50 to-white border-b border-neutral-200 hidden md:block" style={{ paddingTop: 'calc(72px + 48px)' }}>
           <div className="max-w-container mx-auto px-6 pb-10">
-            <nav className="flex items-center gap-1.5 text-[0.82rem] text-neutral-400 mb-6">
-              <Link href="/" className="hover:text-blue-500 transition-colors">Beranda</Link>
-              <span>›</span>
-              <span className="text-neutral-500">Blog</span>
-            </nav>
+            <Breadcrumbs items={[
+              { name: 'Beranda', url: '/' },
+              { name: 'Blog', url: '/blog' }
+            ]} />
             <h1 className="font-display text-[clamp(2rem,5vw,3rem)] font-bold text-neutral-900 mb-3">
               Blog &amp; Artikel
             </h1>
@@ -49,7 +66,9 @@ export default async function BlogPage() {
 
         {/* Blog Grid */}
         <section className="max-w-container mx-auto px-6 pb-16">
-          <BlogGrid initialPosts={posts} />
+          <Suspense fallback={null}>
+            <BlogGrid initialPosts={posts} />
+          </Suspense>
         </section>
 
         <NewsletterSection />

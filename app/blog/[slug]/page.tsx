@@ -10,7 +10,18 @@ import ArticleContent from '@/components/article/ArticleContent'
 import TableOfContents from '@/components/article/TableOfContents'
 import ShareButtons from '@/components/article/ShareButtons'
 import RelatedArticles from '@/components/article/RelatedArticles'
-import { getPostBySlug, getRelatedPosts } from '@/lib/actions/posts'
+import { getPostBySlug, getRelatedPosts, getPosts } from '@/lib/actions/posts'
+import Breadcrumbs from '@/components/seo/Breadcrumbs'
+import { ArticleJsonLd } from '@/components/seo/JsonLd'
+
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const { posts } = await getPosts({ limit: 100 });
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -31,6 +42,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: 'article',
       locale: 'id_ID',
     },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt || undefined,
+      images: post.cover_image ? [post.cover_image] : undefined,
+    },
   }
 }
 
@@ -43,9 +60,17 @@ export default async function ArticlePage({ params }: PageProps) {
 
   return (
     <>
+      <ArticleJsonLd post={post} />
       <Navbar variant="blog" />
       <ReadingProgress />
       <main>
+        <div className="max-w-container mx-auto px-6 pt-24 pb-4">
+          <Breadcrumbs items={[
+            { name: 'Beranda', url: '/' },
+            { name: 'Blog', url: '/blog' },
+            { name: post.title, url: `/blog/${post.slug}` }
+          ]} />
+        </div>
         <ArticleHero post={post} />
         <ArticleCover
           src={post.cover_image}

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import ScrollReveal from '@/components/ui/ScrollReveal'
+import { FaqJsonLd } from '@/components/seo/JsonLd'
 
 const faqs = [
   {
@@ -32,12 +33,13 @@ const faqs = [
 ]
 
 export default function FaqSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i)
 
   return (
     <section id="faq" className="scroll-mt-24 py-12 md:py-20 bg-neutral-50">
+      <FaqJsonLd faqs={faqs} />
       <div className="max-w-container mx-auto px-6">
         <ScrollReveal variant="fade-up" className="text-center mb-16">
           <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest mb-3">FAQ</p>

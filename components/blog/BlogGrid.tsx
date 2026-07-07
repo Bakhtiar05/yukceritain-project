@@ -1,14 +1,21 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import type { Post } from '@/lib/types'
 import BlogCard from './BlogCard'
 import CategoryFilter from './CategoryFilter'
 import SearchBar from './SearchBar'
 
 export default function BlogGrid({ initialPosts }: { initialPosts: Post[] }) {
+  const searchParams = useSearchParams()
+  
   const [activeCategory, setActiveCategory] = useState('semua')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '')
+
+  useEffect(() => {
+    setSearchQuery(searchParams.get('search') || '')
+  }, [searchParams])
 
   const filtered = useMemo(() => {
     return initialPosts.filter((post) => {
@@ -33,10 +40,10 @@ export default function BlogGrid({ initialPosts }: { initialPosts: Post[] }) {
   return (
     <div>
       {/* Filter Bar */}
-      <div className="sticky top-[72px] z-[100] bg-white border-b border-neutral-200 shadow-sm -mx-6 px-6 py-4">
+      <div className="relative z-10 bg-white border-b border-neutral-200 shadow-sm -mx-6 px-6 py-4">
         <div className="max-w-container mx-auto flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
           <CategoryFilter activeCategory={activeCategory} onCategoryChange={handleCategoryChange} />
-          <div className="w-full md:w-72">
+          <div className="hidden md:block w-72">
             <SearchBar value={searchQuery} onChange={handleSearchChange} />
           </div>
         </div>
