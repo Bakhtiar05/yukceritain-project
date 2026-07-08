@@ -100,7 +100,7 @@ export default function ResponseCard({
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="text-[12px] text-muted-foreground font-medium">@{profile?.username}</span>
                 <span className="text-[#D1D5DB] text-[10px]">·</span>
-                <span className="text-[12px] text-muted-foreground font-medium">{formatDate(comment.created_at, t)}</span>
+                <span className="text-[12px] text-muted-foreground font-medium" suppressHydrationWarning>{formatDate(comment.created_at, t)}</span>
               </div>
             </div>
 

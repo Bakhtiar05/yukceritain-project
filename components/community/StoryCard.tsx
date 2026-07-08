@@ -224,7 +224,7 @@ export default function StoryCard({
                   <span className="text-[13px] text-muted-foreground font-medium truncate">@{username}</span>
                 )}
                 {!is_anonymous && <span className="text-[#D1D5DB] text-[11px]">·</span>}
-                <span className="text-[13px] text-muted-foreground font-medium whitespace-nowrap">
+                <span className="text-[13px] text-muted-foreground font-medium whitespace-nowrap" suppressHydrationWarning>
                   {formatDate(created_at)}
                 </span>
               </div>

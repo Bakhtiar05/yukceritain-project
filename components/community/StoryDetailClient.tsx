@@ -213,7 +213,7 @@ export default function StoryDetailClient({
                       <span className="community-badge-anon">🛡 {t('storyDetail.anonymous')}</span>
                     )}
                   </div>
-                  <span className="text-[13px] text-muted-foreground font-medium">{formatDate(post.created_at, t)}</span>
+                  <span className="text-[13px] text-muted-foreground font-medium" suppressHydrationWarning>{formatDate(post.created_at, t)}</span>
                 </div>
               </div>
 

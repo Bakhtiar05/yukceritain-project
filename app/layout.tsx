@@ -97,9 +97,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
-      <body className="font-body antialiased">
+      <head>
         <OrganizationJsonLd />
         <WebSiteJsonLd />
+      </head>
+      <body className="font-body antialiased">
         <RootThemeProvider>
           {children}
         </RootThemeProvider>

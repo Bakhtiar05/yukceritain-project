@@ -50,7 +50,7 @@ export default function AuthModalProvider({ children }: { children: React.ReactN
                 alt="YukCeritain Logo" 
                 width={64} 
                 height={64} 
-                className="w-full h-full object-cover" 
+                className="w-full h-full object-cover dark:brightness-0 dark:invert" 
               />
             </div>
             <DialogTitle className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">Bergabung Sekarang</DialogTitle>

@@ -30,13 +30,13 @@ export default function CommunityMobileHeader() {
       </button>
 
       {/* Center — Logo */}
-      <div className="flex flex-col items-center justify-center flex-1 px-3">
+      <div className="flex flex-col items-center justify-center flex-1 px-3 relative h-full">
         <Image 
-          src="/assets/logo-v4.png" 
+          src="/assets/logo-v11.png" 
           alt="YukceritaIN Logo" 
-          width={130} 
-          height={32} 
-          className="object-contain h-8 w-auto dark:brightness-0 dark:invert"
+          width={160} 
+          height={40} 
+          className="object-contain h-10 w-auto mt-1.5 dark:brightness-0 dark:invert"
           priority
         />
       </div>
