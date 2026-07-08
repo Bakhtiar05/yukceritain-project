@@ -213,6 +213,20 @@ export default function HeroSection() {
         >
           <motion.div
             variants={fadeUpVariants}
+            className="mb-5 md:mb-6 flex justify-center lg:justify-start w-full"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50/80 backdrop-blur-sm border border-blue-200/60 rounded-full shadow-sm hover:bg-blue-100/50 transition-colors">
+              <span className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[10px] md:text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                GRATIS100
+              </span>
+              <span className="text-[11px] md:text-xs font-semibold text-blue-900 pr-1">
+                Diskon 100% Konseling <span className="hidden sm:inline font-normal text-blue-700/80">· s/d 31 Agu 2026</span>
+              </span>
+            </div>
+          </motion.div>
+
+          <motion.div
+            variants={fadeUpVariants}
             className="mb-3 md:mb-8 w-full"
           >
             <DynamicTextSwap />

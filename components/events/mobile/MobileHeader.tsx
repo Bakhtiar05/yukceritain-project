@@ -7,9 +7,10 @@ import { ArrowLeft, Bookmark } from "lucide-react";
 interface MobileHeaderProps {
   title?: string;
   backUrl?: string;
+  hideBookmark?: boolean;
 }
 
-export default function MobileHeader({ title = "Community Events", backUrl = "/" }: MobileHeaderProps) {
+export default function MobileHeader({ title = "Community Events", backUrl = "/", hideBookmark = false }: MobileHeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export default function MobileHeader({ title = "Community Events", backUrl = "/"
           : "bg-white/50 backdrop-blur-sm border-b border-transparent"
       }`}
     >
-      <div className="flex items-center justify-between px-4 h-14 max-w-7xl mx-auto">
+      <div className="flex items-center justify-between px-4 h-16 max-w-7xl mx-auto">
         <Link 
           href={backUrl}
           className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 transition-colors"
@@ -40,12 +41,16 @@ export default function MobileHeader({ title = "Community Events", backUrl = "/"
           {title}
         </h1>
 
-        <Link 
-          href="/events/favorites"
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 transition-colors"
-        >
-          <Bookmark className="w-5 h-5 text-slate-700" />
-        </Link>
+        {!hideBookmark ? (
+          <Link 
+            href="/events/favorites"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 transition-colors"
+          >
+            <Bookmark className="w-5 h-5 text-slate-700" />
+          </Link>
+        ) : (
+          <div className="w-10 h-10 flex-shrink-0" />
+        )}
       </div>
     </header>
   );
