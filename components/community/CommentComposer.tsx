@@ -16,9 +16,11 @@ const TONE_CHIPS = [
 export default function CommentComposer({
   postId,
   isAuthenticated,
+  onSuccess,
 }: {
   postId: string
   isAuthenticated: boolean
+  onSuccess?: () => void
 }) {
   const [content, setContent]         = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -46,6 +48,7 @@ export default function CommentComposer({
       await addComment(postId, content)
       setContent('')
       setIsFocused(false)
+      if (onSuccess) onSuccess()
     } catch (error) {
       console.error('Failed to post comment:', error)
     } finally {
@@ -62,15 +65,9 @@ export default function CommentComposer({
 
 
 
-      {/* ── Reply Composer Card ───────────────────────────── */}
-      <div
-        className={`bg-card rounded-[22px] border transition-all duration-200 overflow-hidden ${
-          isFocused
-            ? 'border-primary shadow-[0_0_0_3px_rgba(37,99,235,0.08)]'
-            : 'border-border shadow-[0_1px_4px_rgba(0,0,0,0.04)]'
-        }`}
-      >
-        <div className="flex gap-3 p-4">
+      {/* ── Reply Composer ───────────────────────────── */}
+      <div className="transition-all duration-200 relative">
+        <div className="flex gap-3 py-2">
           {/* Avatar */}
           <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[#EFF6FF] dark:bg-blue-500/10 border border-[#BFDBFE] dark:border-blue-500/30 flex items-center justify-center text-[#60A5FA]">
             <User className="w-4 h-4" />
@@ -105,7 +102,7 @@ export default function CommentComposer({
               transition={{ duration: 0.22, ease: 'easeInOut' }}
               className="overflow-hidden"
             >
-              <div className="px-4 pb-4 space-y-3 pt-1">
+              <div className="pb-2 space-y-3 pt-2">
                 {/* Tone chips */}
                 <div className="flex flex-wrap gap-2">
                   {TONE_CHIPS.map((chip) => (

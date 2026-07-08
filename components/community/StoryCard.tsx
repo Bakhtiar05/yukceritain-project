@@ -4,8 +4,9 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import * as Dialog from '@radix-ui/react-dialog'
-import { Heart, MessageCircle, Share2, MoreHorizontal, Trash2, X, AlertCircle, Link as LinkIcon, Flag, EyeOff, Check } from 'lucide-react'
+import { Heart, MessageCircle, Share2, MoreVertical, Trash2, X, AlertCircle, Link as LinkIcon, Flag, EyeOff, Check } from 'lucide-react'
 import { useAuthModal } from './AuthModalProvider'
+import { useCommentSheet } from './CommentSheetProvider'
 import { toggleLike, deleteStory, updateStory } from '@/lib/actions/community'
 
 type Profile = {
@@ -45,6 +46,7 @@ export default function StoryCard({
 }: StoryCardProps) {
   const { openModal }   = useAuthModal()
   const router          = useRouter()
+  const { openSheet }   = useCommentSheet()
   const [isLiked, setIsLiked]             = useState(is_liked_by_me)
   const [likesCount, setLikesCount]       = useState(likes_count)
   const [isEditing, setIsEditing]         = useState(false)
@@ -137,7 +139,9 @@ export default function StoryCard({
   const handleComment = (e: React.MouseEvent) => {
     e.stopPropagation()
     if (!isAuthenticated) { openModal(); return }
-    if (!disableCommentNavigation) router.push(`/community/post/${id}`)
+    if (!disableCommentNavigation) {
+      openSheet(id)
+    }
   }
 
   const handleDelete = async () => {
@@ -234,7 +238,7 @@ export default function StoryCard({
               className="w-9 h-9 flex items-center justify-center rounded-full text-muted-foreground hover:text-muted-foreground hover:bg-muted transition-colors active:scale-95"
               aria-label="More options"
             >
-              <MoreHorizontal className="w-5 h-5" />
+              <MoreVertical className="w-5 h-5" />
             </button>
 
             {/* Dropdown */}

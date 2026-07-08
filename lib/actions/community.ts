@@ -182,3 +182,53 @@ export async function deleteComment(commentId: string, postId: string) {
 
   revalidatePath(`/community/post/${postId}`)
 }
+
+export async function fetchPostAndComments(postId: string) {
+  const supabase = await createClient()
+  
+  const { data: post, error: postError } = await supabase
+    .from('community_posts')
+    .select(`
+      *,
+      profile:profiles(display_name, username, avatar_url),
+      likes:community_likes(profile_id)
+    `)
+    .eq('id', postId)
+    .single()
+
+  if (postError) throw new Error(postError.message)
+
+  const { data: comments, error: commentsError } = await supabase
+    .from('community_comments')
+    .select(`
+      *,
+      profile:profiles(display_name, username, avatar_url)
+    `)
+    .eq('post_id', postId)
+    .order('created_at', { ascending: true })
+
+  if (commentsError) throw new Error(commentsError.message)
+
+  return { post, comments }
+}
+
+export async function fetchFeedBatch(offset: number, limit: number = 5, mode: 'for-you' | 'explore' = 'for-you') {
+  const supabase = await createClient()
+
+  const query = supabase
+    .from('community_posts')
+    .select(`
+      *,
+      profile:profiles(display_name, username, avatar_url),
+      likes:community_likes(profile_id),
+      comments:community_comments(count)
+    `)
+    .order('created_at', { ascending: false })
+    .range(offset, offset + limit - 1)
+
+  const { data, error } = await query
+
+  if (error) throw new Error(error.message)
+
+  return data
+}

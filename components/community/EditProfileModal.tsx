@@ -61,27 +61,27 @@ export default function EditProfileModal({
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[9998] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[95vw] max-w-md translate-x-[-50%] translate-y-[-50%] bg-card p-6 shadow-xl sm:rounded-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]">
-          <div className="flex items-center justify-between mb-5">
-            <Dialog.Title className="text-xl font-bold text-foreground">
+        <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[92vw] max-w-md translate-x-[-50%] translate-y-[-50%] bg-card p-6 shadow-[0_10px_40px_rgba(0,0,0,0.12)] rounded-[28px] border border-border/60 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]">
+          <div className="flex items-center justify-between mb-6 border-b border-border/50 pb-4">
+            <Dialog.Title className="text-[20px] font-bold text-foreground">
               Edit Profile
             </Dialog.Title>
             <Dialog.Close asChild>
-              <button className="rounded-full p-2 hover:bg-accent hover:text-accent-foreground dark:bg-muted dark:hover:bg-muted text-muted-foreground transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                <X className="w-5 h-5" />
+              <button className="w-8 h-8 flex items-center justify-center rounded-full bg-muted/50 hover:bg-muted text-muted-foreground transition-colors focus:outline-none">
+                <X className="w-4 h-4" strokeWidth={2.5} />
               </button>
             </Dialog.Close>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
-              <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 rounded-lg text-sm font-medium">
+              <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 rounded-[14px] text-[13px] font-medium border border-red-100 dark:border-red-900/30">
                 {error}
               </div>
             )}
 
-            <div>
-              <label htmlFor="displayName" className="block text-sm font-semibold text-muted-foreground mb-1.5">
+            <div className="space-y-1.5">
+              <label htmlFor="displayName" className="block text-[12px] font-bold text-muted-foreground uppercase tracking-wider pl-1">
                 Display Name
               </label>
               <input
@@ -90,59 +90,58 @@ export default function EditProfileModal({
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 maxLength={50}
-                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                className="w-full bg-muted border-2 border-transparent rounded-[16px] px-4 py-3 text-[15px] font-semibold text-foreground focus:outline-none focus:border-primary/30 focus:bg-background transition-all"
                 placeholder="How you want to be called"
               />
             </div>
 
-            <div>
-              <label htmlFor="username" className="block text-sm font-semibold text-muted-foreground mb-1.5">
+            <div className="space-y-1.5">
+              <label htmlFor="username" className="block text-[12px] font-bold text-muted-foreground uppercase tracking-wider pl-1">
                 Username
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-2.5 text-slate-400 dark:text-muted-foreground font-medium">@</span>
+                <span className="absolute left-4 top-3.5 text-muted-foreground font-bold">@</span>
                 <input
                   id="username"
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   maxLength={20}
-                  className="w-full bg-muted border border-border rounded-xl pl-8 pr-4 py-2.5 text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                  className="w-full bg-muted border-2 border-transparent rounded-[16px] pl-[34px] pr-4 py-3 text-[15px] font-semibold text-foreground focus:outline-none focus:border-primary/30 focus:bg-background transition-all"
                   placeholder="username"
                 />
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">Only letters, numbers, and underscores.</p>
             </div>
 
-            <div>
-              <label htmlFor="bio" className="block text-sm font-semibold text-muted-foreground mb-1.5">
-                Bio
-              </label>
+            <div className="space-y-1.5">
+              <div className="flex justify-between items-center pl-1 pr-1">
+                <label htmlFor="bio" className="block text-[12px] font-bold text-muted-foreground uppercase tracking-wider">
+                  Bio
+                </label>
+                <span className={`text-[11px] font-bold ${bio.length >= 150 ? 'text-amber-500' : 'text-muted-foreground/60'}`}>
+                  {bio.length} / 160
+                </span>
+              </div>
               <textarea
                 id="bio"
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 maxLength={160}
                 rows={3}
-                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow resize-none"
+                className="w-full bg-muted border-2 border-transparent rounded-[16px] px-4 py-3 text-[15px] font-semibold text-foreground focus:outline-none focus:border-primary/30 focus:bg-background transition-all resize-none"
                 placeholder="Write a short bio about yourself..."
               />
-              <div className="text-right mt-1">
-                <span className={`text-xs ${bio.length >= 150 ? 'text-amber-500' : 'text-slate-400 dark:text-muted-foreground'}`}>
-                  {bio.length} / 160
-                </span>
-              </div>
             </div>
 
-            <div className="pt-4 flex justify-end space-x-3">
+            <div className="pt-3 flex gap-3 w-full">
               <Dialog.Close asChild>
-                <Button type="button" variant="outline" className="rounded-full px-5">
+                <button type="button" className="flex-1 h-12 bg-transparent border border-border rounded-[16px] text-[15px] font-bold text-foreground hover:bg-muted transition-colors">
                   Cancel
-                </Button>
+                </button>
               </Dialog.Close>
-              <Button type="submit" disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 shadow-sm">
+              <button type="submit" disabled={isSubmitting} className="flex-1 h-12 bg-primary hover:bg-primary/90 text-white rounded-[16px] text-[15px] font-bold shadow-[0_4px_14px_rgba(37,99,235,0.25)] active:scale-95 transition-all disabled:opacity-50">
                 {isSubmitting ? 'Saving...' : 'Save Changes'}
-              </Button>
+              </button>
             </div>
           </form>
         </Dialog.Content>

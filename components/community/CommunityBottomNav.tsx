@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   House,
   Search,
-  PenLine,
+  Plus,
   HeartHandshake,
   CircleUser,
   X,
@@ -29,7 +29,7 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { id: 'home',    label: 'Home',       icon: House,         href: '/community/for-you' },
   { id: 'search',  label: 'Search',     icon: Search,        href: '/community/explore' },
-  { id: 'create',  label: 'Story',      icon: PenLine,       href: '/community/create', isPrimary: true },
+  { id: 'create',  label: 'Story',      icon: Plus,          href: '/community/create', isPrimary: true },
   { id: 'counsel', label: 'Konseling',  icon: HeartHandshake, href: '/' },
   { id: 'profile', label: 'Profile',   icon: CircleUser,    href: '/community/profile' },
 ]
@@ -67,14 +67,14 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
   }
 
   return (
-    /* Floating wrapper */
+    /* Fixed bottom wrapper */
     <div className="md:hidden fixed bottom-0 inset-x-0 z-[998] pointer-events-none">
-      <div className="pointer-events-auto mx-4 mb-4">
+      <div className="pointer-events-auto">
         <motion.nav
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 340, damping: 30, delay: 0.1 }}
-          className="flex items-center justify-between h-[72px] px-5 bg-card/95 backdrop-blur-xl rounded-[24px] border border-border shadow-[0_8px_32px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.06)]"
+          className="flex items-center justify-between h-[76px] px-6 pb-1 bg-card/95 backdrop-blur-xl rounded-t-[24px] border-t border-border shadow-[0_-4px_24px_rgba(0,0,0,0.06)]"
         >
           {NAV_ITEMS.map((item) => {
             const active = isActive(item)

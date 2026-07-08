@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
-import { Trash2, AlertCircle, MoreHorizontal } from 'lucide-react'
+import { Trash2, AlertCircle, MoreVertical } from 'lucide-react'
 import { deleteComment } from '@/lib/actions/community'
 
 type Props = {

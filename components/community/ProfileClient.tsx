@@ -29,6 +29,7 @@ import {
 import EditProfileModal from './EditProfileModal'
 import AppearanceModal from './AppearanceModal'
 import LanguageModal from './LanguageModal'
+import StoryCard from './StoryCard'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
@@ -212,10 +213,9 @@ export default function ProfileClient({
               </p>
             )}
 
-            {/* Edit button */}
             <button
               onClick={() => setIsEditOpen(true)}
-              className="mt-4 h-10 px-5 rounded-[14px] border border-border text-[14px] font-semibold text-muted-foreground hover:border-primary hover:text-primary hover:bg-[#EFF6FF] dark:bg-blue-500/10 transition-all duration-200"
+              className="mt-4 h-10 px-5 rounded-full border border-border text-[14px] font-semibold text-muted-foreground hover:border-primary hover:text-primary hover:bg-[#EFF6FF] dark:bg-blue-500/10 transition-all duration-200"
             >
               Edit Profile
             </button>
@@ -281,51 +281,50 @@ export default function ProfileClient({
             </div>
           ) : (
             <div className="space-y-3">
-              {posts.slice(0, 5).map((post, i) => (
-                <motion.div
-                  key={post.id}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: 0.18 + i * 0.05 }}
-                >
-                  <Link
-                    href={`/community/post/${post.id}`}
-                    className="block bg-card rounded-[20px] border border-border p-5 hover:border-primary hover:shadow-[0_2px_12px_rgba(37,99,235,0.06)] transition-all duration-200"
+              {posts.slice(0, 5).map((post, i) => {
+                const isLikedByMe = session ? post.likes?.some((like: any) => like.profile_id === session.user.id) : false
+                const commentsCount = post.comments?.[0]?.count || 0
+
+                return (
+                  <motion.div
+                    key={post.id}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: 0.18 + i * 0.05 }}
                   >
-                    {post.is_anonymous && (
-                      <span className="community-badge-anon mb-2 inline-flex">🛡 Anonymous</span>
-                    )}
-                    <p className="text-[15px] text-foreground leading-relaxed line-clamp-2 mb-3">
-                      {post.content}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-[13px] text-muted-foreground font-medium">
-                        <span>{formatDate(post.created_at)}</span>
-                        <span className="flex items-center gap-1">
-                          <MessageCircle className="w-3.5 h-3.5" /> {post.comments[0]?.count || 0}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Heart className="w-3.5 h-3.5" /> {post.likes.length}
-                        </span>
-                      </div>
-                      <button 
-                        onClick={(e) => handleShare(e, post.id, post.content)}
-                        className="text-muted-foreground hover:text-primary hover:bg-muted rounded-full p-1.5 transition-colors"
-                      >
-                        <Share2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
+                    <StoryCard
+                      id={post.id}
+                      content={post.content}
+                      is_anonymous={post.is_anonymous}
+                      created_at={post.created_at}
+                      profile={profile as any}
+                      likes_count={post.likes?.length || 0}
+                      comments_count={commentsCount}
+                      is_liked_by_me={isLikedByMe}
+                      isAuthenticated={!!session}
+                      isOwner={true}
+                      index={i}
+                    />
+                  </motion.div>
+                )
+              })}
             </div>
           )}
         </motion.div>
 
 
 
-        {/* Bottom spacer */}
-        <div className="h-4" />
+        {/* Bottom actions & spacer */}
+        <motion.div {...fadeUp(0.20)} className="pt-4 pb-12">
+          <button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="w-full h-12 rounded-[16px] border border-[#FECACA] bg-red-50/50 dark:bg-red-900/10 text-[15px] font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            <LogOut className="w-4 h-4" />
+            {isLoggingOut ? 'Logging out…' : 'Log Out'}
+          </button>
+        </motion.div>
       </div>
 
       {/* Edit Profile Modal */}
@@ -364,9 +363,9 @@ export default function ProfileClient({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsSettingsOpen(false)}
-              className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] dark:bg-black/60"
+              className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[9999] dark:bg-black/60"
             />
-            <div className="fixed inset-0 z-[100] flex flex-col justify-end sm:items-center sm:justify-center p-0 sm:p-4 pointer-events-none">
+            <div className="fixed inset-0 z-[9999] flex flex-col justify-end sm:items-center sm:justify-center p-0 sm:p-4 pointer-events-none">
               <motion.div
                 initial={{ opacity: 0, y: "100%" }}
                 animate={{ opacity: 1, y: 0 }}

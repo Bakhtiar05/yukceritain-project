@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useRouter } from 'next/navigation'
 import { useAuthModal } from './AuthModalProvider'
 import { createStory } from '@/lib/actions/community'
 import {
@@ -24,6 +25,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
   const [isFocused, setIsFocused]       = useState(false)
   const { openModal }                   = useAuthModal()
   const textareaRef                     = useRef<HTMLTextAreaElement>(null)
+  const router                          = useRouter()
 
   const used      = content.length
   const remaining = MAX_LENGTH - used
@@ -59,6 +61,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
       setIsSubmitting(true)
       await createStory(content, isAnonymous)
       handleDiscard()
+      router.push('/community/for-you')
     } catch (err) {
       console.error('Failed to post story:', err)
     } finally {
@@ -199,7 +202,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
         </AnimatePresence>
 
         {/* ── FOOTER ──────────────────────────────────────────── */}
-        <div className={`flex flex-wrap items-center justify-between gap-3 ${(isFocused || hasContent) ? 'pt-1 border-t border-border' : ''}`}>
+        <div className={`flex flex-wrap items-center justify-between gap-3 ${(isFocused || hasContent) ? 'pt-4 mt-2 border-t border-border' : ''}`}>
           {/* Left: counter + discard */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Char counter — only when focused */}
