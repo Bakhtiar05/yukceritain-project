@@ -25,19 +25,19 @@ export default async function CommunityLayout({ children }: { children: React.Re
         <div className="w-full max-w-[1600px] flex flex-col md:flex-row md:px-4 xl:px-8 gap-6 xl:gap-8">
 
           {/* Desktop Left Sidebar */}
-          <div className="hidden md:flex w-72 xl:w-[300px] flex-shrink-0 bg-card rounded-3xl shadow-[0_2px_20px_-4px_rgba(0,0,0,0.02)] border border-border my-4 sticky top-24 h-[calc(100vh-120px)] overflow-y-auto custom-scrollbar transition-colors duration-300">
+          <div className="hidden md:flex w-72 xl:w-[300px] flex-shrink-0 bg-card rounded-3xl shadow-[0_2px_20px_-4px_rgba(0,0,0,0.02)] border border-border my-4 sticky top-4 h-[calc(100vh-32px)] overflow-y-auto custom-scrollbar transition-colors duration-300">
             <LeftSidebar />
           </div>
 
           {/* Main Feed Column */}
-          <div className="flex-1 w-full max-w-3xl min-h-screen flex flex-col bg-card md:bg-transparent md:dark:bg-transparent md:rounded-3xl my-0 md:my-4 md:mt-24 relative transition-colors duration-300">
+          <div className="flex-1 w-full max-w-3xl min-h-screen flex flex-col bg-card md:bg-transparent md:dark:bg-transparent md:rounded-3xl my-0 md:my-4 relative transition-colors duration-300">
             <main className="flex-1 pb-28 md:pb-0">
               {children}
             </main>
           </div>
 
           {/* Desktop Right Sidebar */}
-          <div className="hidden lg:flex w-80 xl:w-[340px] flex-shrink-0 sticky top-24 h-[calc(100vh-120px)] overflow-y-auto custom-scrollbar py-4">
+          <div className="hidden lg:flex w-80 xl:w-[340px] flex-shrink-0 sticky top-4 h-[calc(100vh-32px)] overflow-y-auto custom-scrollbar py-4">
             <RightSidebar />
           </div>
 

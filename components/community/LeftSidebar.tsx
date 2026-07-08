@@ -96,7 +96,7 @@ export default function LeftSidebar() {
           alt="YukCeritain Logo"
           width={180}
           height={48}
-          className="w-auto h-10 sm:h-11 object-contain transition-transform group-hover:scale-[1.02]"
+          className="w-auto h-10 sm:h-11 object-contain transition-transform group-hover:scale-[1.02] dark:brightness-0 dark:invert"
           priority
         />
       </Link>

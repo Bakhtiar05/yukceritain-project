@@ -2,13 +2,19 @@
 
 import React from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { ChevronLeft, Bookmark } from 'lucide-react'
+import Image from 'next/image'
+import { ChevronLeft } from 'lucide-react'
 
 export default function CommunityMobileHeader() {
   const router = useRouter()
   const pathname = usePathname()
 
-  if (pathname?.includes('/community/post/') || pathname?.includes('/community/create')) {
+  if (
+    pathname?.includes('/community/post/') || 
+    pathname?.includes('/community/create') ||
+    pathname?.includes('/community/profile') ||
+    pathname?.includes('/community/user')
+  ) {
     return null
   }
 
@@ -23,14 +29,16 @@ export default function CommunityMobileHeader() {
         <ChevronLeft className="w-5 h-5" strokeWidth={2.2} />
       </button>
 
-      {/* Center — Title + Subtitle */}
-      <div className="flex flex-col items-center flex-1 px-3">
-        <span className="text-[17px] font-bold text-foreground leading-tight tracking-tight">
-          YukceritaIN Community
-        </span>
-        <span className="text-[11.5px] font-medium text-muted-foreground leading-tight mt-0.5">
-          Safe Anonymous Space
-        </span>
+      {/* Center — Logo */}
+      <div className="flex flex-col items-center justify-center flex-1 px-3">
+        <Image 
+          src="/assets/logo-v4.png" 
+          alt="YukceritaIN Logo" 
+          width={130} 
+          height={32} 
+          className="object-contain h-8 w-auto dark:brightness-0 dark:invert"
+          priority
+        />
       </div>
       
       {/* Right placeholder to keep center alignment */}

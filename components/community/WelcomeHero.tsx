@@ -16,7 +16,7 @@ export default function WelcomeHero() {
   }
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
+    hidden: { opacity: 0, y: 15 },
     show: { 
       opacity: 1, 
       y: 0,
@@ -30,32 +30,9 @@ export default function WelcomeHero() {
         initial={{ opacity: 0, y: 15, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative overflow-hidden rounded-[20px] group"
+        className="relative overflow-hidden rounded-[24px] bg-transparent border border-border group"
       >
-        {/* Animated Background Mesh */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-primary/10 dark:from-primary/10 dark:via-card dark:to-primary/5" />
-        
-        {/* Floating Glowing Orbs */}
-        <motion.div 
-          animate={{
-            x: [0, 20, -10, 0],
-            y: [0, -15, 10, 0],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[-20%] left-[-10%] w-[50%] h-[150%] rounded-full bg-primary/20 dark:bg-primary/15 blur-[60px] pointer-events-none"
-        />
-        <motion.div 
-          animate={{
-            x: [0, -20, 15, 0],
-            y: [0, 20, -10, 0],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute bottom-[-30%] right-[-10%] w-[60%] h-[120%] rounded-full bg-indigo-500/15 dark:bg-indigo-500/20 blur-[70px] pointer-events-none"
-        />
-
-        {/* Glassmorphic Container Layer (Reduced Padding) */}
-        <div className="relative z-10 w-full h-full bg-card/40 dark:bg-card/50 backdrop-blur-2xl border border-white/50 dark:border-white/10 px-5 sm:px-6 py-5 sm:py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          
+        <div className="relative z-10 w-full px-5 sm:px-7 py-6 sm:py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <motion.div 
             variants={containerVariants}
             initial="hidden"
@@ -80,7 +57,6 @@ export default function WelcomeHero() {
               className="text-sm sm:text-base text-muted-foreground font-medium"
             />
           </motion.div>
-
         </div>
       </motion.div>
     </div>
@@ -129,7 +105,6 @@ function LoopingTypewriterHeadline({ sentences, className }: { sentences: string
   const [blink, setBlink] = useState(true)
   const prefersReducedMotion = useReducedMotion()
 
-  // Find longest string for layout stability
   const longestSentence = sentences.reduce((a, b) => a.length > b.length ? a : b, '')
 
   useEffect(() => {
@@ -156,7 +131,6 @@ function LoopingTypewriterHeadline({ sentences, className }: { sentences: string
     return () => clearTimeout(timeout)
   }, [subIndex, index, reverse, sentences, prefersReducedMotion])
 
-  // Blinking cursor effect independent of typing
   useEffect(() => {
     if (prefersReducedMotion) return
     const interval = setInterval(() => setBlink((b) => !b), 500)
@@ -169,7 +143,6 @@ function LoopingTypewriterHeadline({ sentences, className }: { sentences: string
 
   return (
     <h1 className={`relative ${className}`}>
-      {/* Invisible placeholder to prevent layout shift */}
       <span className="invisible select-none break-words" aria-hidden="true">{longestSentence}</span>
       <span className="absolute left-0 top-0 w-full h-full text-left break-words">
         {sentences[index].substring(0, subIndex)}

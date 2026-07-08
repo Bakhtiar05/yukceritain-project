@@ -125,27 +125,27 @@ export default async function EventDetailPage(props: { params: Promise<{ slug: s
           </div>
 
           {/* 3. Event Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white p-6 rounded-3xl border border-slate-100 flex gap-4 items-start shadow-sm">
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center flex-shrink-0">
-                <CalendarDays className="w-6 h-6 text-blue-500" />
+          <div className="grid grid-cols-2 gap-3 md:gap-4">
+            <div className="bg-white p-3 md:p-6 rounded-2xl md:rounded-3xl border border-slate-100 flex flex-row gap-2 md:gap-4 items-center md:items-start shadow-sm">
+              <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-2xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                <CalendarDays className="w-4 h-4 md:w-6 md:h-6 text-blue-500" />
               </div>
-              <div>
-                <h3 className="text-sm font-bold text-slate-900 mb-1">Date & Time</h3>
-                <p className="text-slate-600 text-sm">{formattedDate}</p>
-                <p className="text-slate-500 text-sm">{formattedTime} - {endTime} WIB</p>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-[11px] md:text-sm font-bold text-slate-900 mb-0.5 md:mb-1 leading-tight">Date & Time</h3>
+                <p className="text-slate-600 text-[10px] md:text-sm truncate">{formattedDate}</p>
+                <p className="text-slate-500 text-[10px] md:text-sm truncate">{formattedTime} - {endTime} WIB</p>
               </div>
             </div>
             
-            <div className="bg-white p-6 rounded-3xl border border-slate-100 flex gap-4 items-start shadow-sm">
-              <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center flex-shrink-0">
-                {event.event_type === 'ONLINE' ? <Video className="w-6 h-6 text-purple-500" /> : <MapPin className="w-6 h-6 text-purple-500" />}
+            <div className="bg-white p-3 md:p-6 rounded-2xl md:rounded-3xl border border-slate-100 flex flex-row gap-2 md:gap-4 items-center md:items-start shadow-sm">
+              <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-2xl bg-purple-50 flex items-center justify-center flex-shrink-0">
+                {event.event_type === 'ONLINE' ? <Video className="w-4 h-4 md:w-6 md:h-6 text-purple-500" /> : <MapPin className="w-4 h-4 md:w-6 md:h-6 text-purple-500" />}
               </div>
-              <div>
-                <h3 className="text-sm font-bold text-slate-900 mb-1">{event.event_type === 'ONLINE' ? 'Platform' : 'Location'}</h3>
-                <p className="text-slate-600 text-sm">{event.event_type === 'ONLINE' ? event.meeting_platform || 'Online Meeting' : event.venue_name || 'Location TBA'}</p>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-[11px] md:text-sm font-bold text-slate-900 mb-0.5 md:mb-1 leading-tight">{event.event_type === 'ONLINE' ? 'Platform' : 'Location'}</h3>
+                <p className="text-slate-600 text-[10px] md:text-sm truncate">{event.event_type === 'ONLINE' ? event.meeting_platform || 'Online Meeting' : event.venue_name || 'Location TBA'}</p>
                 {event.event_type === 'OFFLINE' && event.venue_address && (
-                  <p className="text-slate-500 text-sm line-clamp-1 mt-1">{event.venue_address}</p>
+                  <p className="text-slate-500 text-[10px] md:text-sm truncate mt-0.5 md:mt-1">{event.venue_address}</p>
                 )}
               </div>
             </div>

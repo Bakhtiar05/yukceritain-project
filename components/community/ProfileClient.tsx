@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import {
   Settings,
@@ -22,6 +22,9 @@ import {
   Star,
   Feather,
   BarChart3,
+  X,
+  ChevronLeft,
+  Share2
 } from 'lucide-react'
 import EditProfileModal from './EditProfileModal'
 import AppearanceModal from './AppearanceModal'
@@ -82,6 +85,7 @@ export default function ProfileClient({
 }) {
   const router = useRouter()
   const { language, t } = useCommunityLanguage()
+  const [isSettingsOpen, setIsSettingsOpen]     = useState(false)
   const [isEditOpen, setIsEditOpen]     = useState(false)
   const [isAppearanceOpen, setIsAppearanceOpen] = useState(false)
   const [isLanguageOpen, setIsLanguageOpen]     = useState(false)
@@ -103,6 +107,24 @@ export default function ProfileClient({
     finally { setIsLoggingOut(false) }
   }
 
+  const handleShare = async (e: React.MouseEvent, id: string, content: string) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const url = `${window.location.origin}/community/post/${id}`
+    const title = 'YukceritaIN Community'
+    const text = content.substring(0, 100) + '...'
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text, url })
+      } catch (err) {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(url)
+      } catch {}
+    }
+  }
+
   /* Stat items */
   const stats = [
     { label: 'Stories',       value: posts.length,  icon: <Feather  className="w-4 h-4" /> },
@@ -110,44 +132,36 @@ export default function ProfileClient({
     { label: 'Received',      value: totalSupport,  icon: <Star     className="w-4 h-4" /> },
   ]
 
-  /* Quick action grid */
-  const quickActions = [
-    { icon: <BookOpen className="w-5 h-5" />,  label: 'My Stories',    href: '#stories' },
-    { icon: <Bookmark className="w-5 h-5" />,  label: 'Bookmarks',     href: '#' },
-    { icon: <Heart    className="w-5 h-5" />,  label: 'Support History', href: '#' },
-    { icon: <Award    className="w-5 h-5" />,  label: 'Achievements',  href: '#' },
-    { icon: <Bell     className="w-5 h-5" />,  label: 'Notifications', href: '#' },
-    { icon: <BarChart3 className="w-5 h-5" />, label: 'My Stats',      href: '#' },
-  ]
 
-  /* Settings items */
-  const settingItems = [
-    { icon: <Edit3  className="w-4 h-4" />, title: 'Edit Profile',   desc: 'Update your name, username, bio', action: () => setIsEditOpen(true) },
-    { icon: <Lock   className="w-4 h-4" />, title: 'Privacy',        desc: 'Control your data and visibility', action: () => {} },
-    { icon: <Shield className="w-4 h-4" />, title: 'Security',       desc: 'Password and login settings',      action: () => {} },
-    { icon: <Globe  className="w-4 h-4" />, title: t('profile.language'), desc: t('profile.languageDesc'), action: () => setIsLanguageOpen(true) },
-    { icon: <Moon   className="w-4 h-4" />, title: 'Appearance',     desc: 'Theme and display settings',       action: () => setIsAppearanceOpen(true) },
-    { icon: <Bell   className="w-4 h-4" />, title: 'Notifications',  desc: 'Manage alerts and reminders',      action: () => {} },
-  ]
-
-  /* Achievements */
-  const achievements = [
-    { emoji: '🌱', label: 'First Story',    color: '#D1FAE5', textColor: '#065F46' },
-    { emoji: '💙', label: 'Supporter',      color: '#DBEAFE', textColor: '#1E40AF' },
-    { emoji: '💡', label: 'Helpful Member', color: '#FEF9C3', textColor: '#92400E' },
-    { emoji: '🌟', label: 'Trusted Member', color: '#EDE9FE', textColor: '#4C1D95' },
-    { emoji: '🤝', label: 'Community Hero', color: '#FFE4E6', textColor: '#9F1239' },
-  ]
 
   return (
     <div className="w-full min-h-screen bg-background pb-32">
 
       {/* ── STICKY HEADER ──────────────────────────────── */}
       <header className="sticky top-0 z-40 bg-card/92 backdrop-blur-xl border-b border-border md:hidden">
-        <div className="h-16 flex items-center justify-between px-4">
-          <span className="text-[17px] font-bold text-foreground">Profile</span>
-          <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-muted text-muted-foreground transition-colors">
-            <Settings className="w-5 h-5" strokeWidth={1.8} />
+        <div className="h-[60px] flex items-center justify-between px-4">
+          <button
+            onClick={() => router.back()}
+            aria-label="Kembali"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-muted hover:bg-muted text-muted-foreground transition-colors active:scale-95 flex-shrink-0"
+          >
+            <ChevronLeft className="w-5 h-5" strokeWidth={2.2} />
+          </button>
+
+          <div className="flex flex-col items-center flex-1 px-3">
+            <span className="text-[17px] font-bold text-foreground leading-tight tracking-tight">
+              Profile
+            </span>
+            <span className="text-[11.5px] font-medium text-muted-foreground leading-tight mt-0.5">
+              @{profile.username}
+            </span>
+          </div>
+
+          <button 
+            onClick={() => setIsSettingsOpen(true)}
+            className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-muted text-muted-foreground transition-colors active:scale-95 flex-shrink-0"
+          >
+            <Settings className="w-5 h-5" strokeWidth={2.2} />
           </button>
         </div>
       </header>
@@ -155,7 +169,14 @@ export default function ProfileClient({
       <div className="max-w-2xl mx-auto px-4 space-y-4 pt-5">
 
         {/* ── PROFILE HERO ───────────────────────────────── */}
-        <motion.div {...fadeUp(0)} className="bg-card rounded-[24px] border border-border shadow-[0_2px_12px_rgba(0,0,0,0.05)] p-6">
+        <motion.div {...fadeUp(0)} className="relative bg-card rounded-[24px] border border-border shadow-[0_2px_12px_rgba(0,0,0,0.05)] p-6">
+          <button 
+            onClick={() => setIsSettingsOpen(true)}
+            className="absolute top-4 right-4 w-10 h-10 hidden md:flex items-center justify-center rounded-full hover:bg-muted text-muted-foreground transition-colors"
+          >
+            <Settings className="w-5 h-5" strokeWidth={1.8} />
+          </button>
+          
           <div className="flex flex-col items-center text-center">
 
             {/* Avatar */}
@@ -211,27 +232,7 @@ export default function ProfileClient({
           </div>
         </motion.div>
 
-        {/* ── QUICK ACTIONS ──────────────────────────────── */}
-        <motion.div {...fadeUp(0.06)}>
-          <h2 className="text-[14px] font-bold text-muted-foreground uppercase tracking-wider px-1 mb-3">Quick Actions</h2>
-          <div className="grid grid-cols-3 gap-3">
-            {quickActions.map((item, i) => (
-              <motion.a
-                key={item.label}
-                href={item.href}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: 0.08 + i * 0.04 }}
-                className="bg-card rounded-[20px] border border-border p-4 flex flex-col items-center gap-2.5 hover:border-primary hover:shadow-[0_2px_12px_rgba(37,99,235,0.08)] transition-all duration-200 active:scale-95"
-              >
-                <div className="w-10 h-10 rounded-[12px] bg-muted flex items-center justify-center text-muted-foreground">
-                  {item.icon}
-                </div>
-                <span className="text-[12px] font-semibold text-muted-foreground text-center leading-tight">{item.label}</span>
-              </motion.a>
-            ))}
-          </div>
-        </motion.div>
+
 
         {/* ── ANONYMOUS MODE CARD ────────────────────────── */}
         <motion.div {...fadeUp(0.10)} className="bg-[#EFF6FF] dark:bg-blue-500/10 rounded-[20px] border border-[#BFDBFE] dark:border-blue-500/30 p-5">
@@ -263,29 +264,7 @@ export default function ProfileClient({
           </div>
         </motion.div>
 
-        {/* ── ACHIEVEMENTS ───────────────────────────────── */}
-        <motion.div {...fadeUp(0.13)}>
-          <h2 className="text-[14px] font-bold text-muted-foreground uppercase tracking-wider px-1 mb-3">Achievements</h2>
-          <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 hide-scrollbar">
-            {achievements.map((a) => (
-              <div
-                key={a.label}
-                className="flex-shrink-0 flex flex-col items-center gap-2 px-4 py-3.5 rounded-[18px] border border-border bg-card min-w-[90px]"
-                style={{ borderColor: a.color }}
-              >
-                <div
-                  className="w-11 h-11 rounded-full flex items-center justify-center text-2xl"
-                  style={{ background: a.color }}
-                >
-                  {a.emoji}
-                </div>
-                <span className="text-[11px] font-bold text-center leading-tight" style={{ color: a.textColor }}>
-                  {a.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+
 
         {/* ── RECENT STORIES ─────────────────────────────── */}
         <motion.div {...fadeUp(0.16)} id="stories">
@@ -319,14 +298,22 @@ export default function ProfileClient({
                     <p className="text-[15px] text-foreground leading-relaxed line-clamp-2 mb-3">
                       {post.content}
                     </p>
-                    <div className="flex items-center gap-4 text-[13px] text-muted-foreground font-medium">
-                      <span>{formatDate(post.created_at)}</span>
-                      <span className="flex items-center gap-1">
-                        <MessageCircle className="w-3.5 h-3.5" /> {post.comments[0]?.count || 0}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Heart className="w-3.5 h-3.5" /> {post.likes.length}
-                      </span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4 text-[13px] text-muted-foreground font-medium">
+                        <span>{formatDate(post.created_at)}</span>
+                        <span className="flex items-center gap-1">
+                          <MessageCircle className="w-3.5 h-3.5" /> {post.comments[0]?.count || 0}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Heart className="w-3.5 h-3.5" /> {post.likes.length}
+                        </span>
+                      </div>
+                      <button 
+                        onClick={(e) => handleShare(e, post.id, post.content)}
+                        className="text-muted-foreground hover:text-primary hover:bg-muted rounded-full p-1.5 transition-colors"
+                      >
+                        <Share2 className="w-4 h-4" />
+                      </button>
                     </div>
                   </Link>
                 </motion.div>
@@ -335,40 +322,7 @@ export default function ProfileClient({
           )}
         </motion.div>
 
-        {/* ── SETTINGS ───────────────────────────────────── */}
-        <motion.div {...fadeUp(0.20)}>
-          <h2 className="text-[14px] font-bold text-muted-foreground uppercase tracking-wider px-1 mb-3">Account</h2>
-          <div className="bg-card rounded-[20px] border border-border overflow-hidden divide-y divide-border">
-            {settingItems.map((item) => (
-              <button
-                key={item.title}
-                onClick={item.action}
-                className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left"
-              >
-                <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0">
-                  {item.icon}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[15px] font-semibold text-foreground leading-tight">{item.title}</p>
-                  <p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">{item.desc}</p>
-                </div>
-                <ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
-              </button>
-            ))}
-          </div>
-        </motion.div>
 
-        {/* ── LOGOUT ─────────────────────────────────────── */}
-        <motion.div {...fadeUp(0.24)}>
-          <button
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-            className="w-full h-12 rounded-[16px] border border-[#FECACA] text-[15px] font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
-          >
-            <LogOut className="w-4 h-4" />
-            {isLoggingOut ? 'Logging out…' : 'Log Out'}
-          </button>
-        </motion.div>
 
         {/* Bottom spacer */}
         <div className="h-4" />
@@ -400,6 +354,83 @@ export default function ProfileClient({
           setIsOpen={setIsLanguageOpen}
         />
       )}
+
+      {/* Settings Modal (Moved from inline profile) */}
+      <AnimatePresence>
+        {isSettingsOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsSettingsOpen(false)}
+              className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] dark:bg-black/60"
+            />
+            <div className="fixed inset-0 z-[100] flex flex-col justify-end sm:items-center sm:justify-center p-0 sm:p-4 pointer-events-none">
+              <motion.div
+                initial={{ opacity: 0, y: "100%" }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: "100%" }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="w-full sm:max-w-md bg-card sm:rounded-[24px] rounded-t-[24px] shadow-xl border border-border overflow-hidden pointer-events-auto flex flex-col max-h-[85vh]"
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between p-5 border-b border-border/50 flex-shrink-0">
+                  <h2 className="text-[18px] font-bold text-foreground">Settings</h2>
+                  <button
+                    onClick={() => setIsSettingsOpen(false)}
+                    className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-muted text-muted-foreground transition-colors"
+                  >
+                    <X className="w-5 h-5" strokeWidth={2} />
+                  </button>
+                </div>
+
+                {/* Body */}
+                <div className="p-5 overflow-y-auto hide-scrollbar">
+                  <div className="bg-card rounded-[20px] border border-border overflow-hidden divide-y divide-border">
+                    <button onClick={() => { setIsSettingsOpen(false); setIsEditOpen(true) }} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
+                      <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Edit3 className="w-4 h-4" /></div>
+                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">Edit Profile</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">Update your name, username, bio</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
+                    </button>
+                    <button onClick={() => {}} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
+                      <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Lock className="w-4 h-4" /></div>
+                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">Privacy</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">Control your data and visibility</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
+                    </button>
+                    <button onClick={() => {}} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
+                      <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Shield className="w-4 h-4" /></div>
+                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">Security</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">Password and login settings</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
+                    </button>
+                    <button onClick={() => { setIsSettingsOpen(false); setIsLanguageOpen(true) }} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
+                      <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Globe className="w-4 h-4" /></div>
+                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">{t('profile.language')}</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">{t('profile.languageDesc')}</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
+                    </button>
+                    <button onClick={() => { setIsSettingsOpen(false); setIsAppearanceOpen(true) }} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
+                      <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Moon className="w-4 h-4" /></div>
+                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">Appearance</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">Theme and display settings</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
+                    </button>
+                    <button onClick={() => {}} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
+                      <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Bell className="w-4 h-4" /></div>
+                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">Notifications</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">Manage alerts and reminders</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Footer (Always Visible) */}
+                <div className="p-5 pt-0 border-t border-border/50 bg-card mt-auto flex-shrink-0">
+                  <button
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="w-full h-12 mt-4 rounded-[16px] border border-[#FECACA] text-[15px] font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    {isLoggingOut ? 'Logging out…' : 'Log Out'}
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

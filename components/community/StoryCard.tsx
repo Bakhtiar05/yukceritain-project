@@ -176,7 +176,7 @@ export default function StoryCard({
     <>
       <article
         onClick={() => !disableCommentNavigation && router.push(`/community/post/${id}`)}
-        className={`community-card animate-community-card-appear ${!disableCommentNavigation ? 'cursor-pointer' : ''}`}
+        className={`community-card animate-community-card-appear relative ${isMenuOpen ? 'z-50' : 'z-0'} ${!disableCommentNavigation ? 'cursor-pointer' : ''}`}
         style={{ animationDelay: `${Math.min(index * 50, 400)}ms` }}
       >
 

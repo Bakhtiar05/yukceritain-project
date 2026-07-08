@@ -34,7 +34,7 @@ export default function TopBar() {
           alt="YukCeritain Logo"
           width={120}
           height={32}
-          className="w-auto h-7 object-contain"
+          className="w-auto h-7 object-contain dark:brightness-0 dark:invert"
           priority
         />
       </div>

@@ -184,8 +184,6 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
             >
               {[
                 { icon: <ImageIcon className="w-3.5 h-3.5" />, label: 'Add Image' },
-                { icon: <Tag       className="w-3.5 h-3.5" />, label: 'Add Topic' },
-                { icon: <MapPin    className="w-3.5 h-3.5" />, label: 'Add Context' },
               ].map(({ icon, label }) => (
                 <button
                   key={label}
@@ -201,9 +199,9 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
         </AnimatePresence>
 
         {/* ── FOOTER ──────────────────────────────────────────── */}
-        <div className={`flex items-center justify-between gap-4 ${(isFocused || hasContent) ? 'pt-1 border-t border-border' : ''}`}>
+        <div className={`flex flex-wrap items-center justify-between gap-3 ${(isFocused || hasContent) ? 'pt-1 border-t border-border' : ''}`}>
           {/* Left: counter + discard */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Char counter — only when focused */}
             <AnimatePresence>
               {(isFocused || hasContent) && (
@@ -211,7 +209,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="text-[13px] font-semibold tabular-nums"
+                  className="text-[12px] sm:text-[13px] font-semibold tabular-nums"
                   style={{ color: counterColor }}
                 >
                   {used} / {MAX_LENGTH}
@@ -228,7 +226,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                   exit={{ opacity: 0, scale: 0.9 }}
                   type="button"
                   onClick={handleDiscard}
-                  className="inline-flex items-center gap-1.5 h-10 px-4 rounded-full border border-border text-[14px] font-semibold text-muted-foreground hover:border-[#EF4444] hover:text-[#EF4444] hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
+                  className="inline-flex items-center justify-center gap-1.5 h-9 sm:h-10 px-3 sm:px-4 rounded-full border border-border text-[13px] sm:text-[14px] font-semibold text-muted-foreground hover:border-[#EF4444] hover:text-[#EF4444] hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 whitespace-nowrap flex-shrink-0"
                 >
                   <X className="w-3.5 h-3.5" />
                   Discard
@@ -246,7 +244,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
             whileHover={hasContent ? { scale: 1.02 } : {}}
             whileTap={hasContent ? { scale: 0.97 } : {}}
             transition={{ duration: 0.18 }}
-            className={`inline-flex items-center gap-2 h-12 px-6 rounded-full text-[15px] font-semibold text-white transition-colors duration-200 ${
+            className={`inline-flex items-center justify-center gap-2 h-10 sm:h-12 px-4 sm:px-6 rounded-full text-[14px] sm:text-[15px] font-semibold text-white transition-colors duration-200 whitespace-nowrap flex-shrink-0 ${
               hasContent
                 ? 'bg-primary hover:bg-primary/90 shadow-[0_4px_14px_rgba(37,99,235,0.30)] cursor-pointer'
                 : 'bg-primary cursor-default'

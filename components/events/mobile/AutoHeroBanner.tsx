@@ -33,7 +33,7 @@ export default function AutoHeroBanner({ events }: AutoHeroBannerProps) {
 
   return (
     <div className="px-4 py-2 w-full">
-      <div className="relative w-full aspect-[4/5] sm:aspect-[16/10] md:aspect-[21/9] rounded-[24px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.08)] bg-slate-100">
+      <div className="relative w-full aspect-square sm:aspect-[16/10] md:aspect-[21/9] rounded-[24px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.08)] bg-slate-100">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
