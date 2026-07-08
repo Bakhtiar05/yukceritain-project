@@ -6,6 +6,8 @@ import InfiniteFeed from '@/components/community/InfiniteFeed'
 import Link from 'next/link'
 import { User, Send } from 'lucide-react'
 
+import StoryComposerLink from '@/components/community/StoryComposerLink'
+
 export const dynamic = 'force-dynamic'
 
 export default async function ForYouPage() {
@@ -31,32 +33,7 @@ export default async function ForYouPage() {
       <WelcomeHero />
 
       {/* ── STORY COMPOSER LINK ────────────────────────────────────── */}
-      <div className="pt-1 px-4 md:px-0 mb-4">
-        <Link 
-          href="/community/create"
-          className="flex items-center gap-4 bg-card rounded-full border border-primary/40 shadow-[0_2px_16px_rgba(37,99,235,0.1)] sm:border-border sm:shadow-[0_2px_12px_rgba(0,0,0,0.05)] p-4 hover:border-primary/50 sm:hover:border-primary/30 hover:shadow-[0_4px_24px_rgba(37,99,235,0.15)] sm:hover:shadow-[0_4px_24px_rgba(37,99,235,0.08)] transition-all group"
-        >
-          {/* Avatar */}
-          <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-sm group-hover:scale-105 transition-transform">
-            <User className="w-5 h-5" strokeWidth={1.8} />
-          </div>
-
-          {/* Title block */}
-          <div className="flex-1">
-            <h2 className="text-[18px] sm:text-[20px] font-bold text-foreground leading-tight group-hover:text-primary transition-colors">
-              Share Your Story
-            </h2>
-            <p className="hidden sm:block text-[14px] text-muted-foreground leading-snug mt-0.5">
-              Your story may help someone feel less alone.
-            </p>
-          </div>
-
-          {/* Action button */}
-          <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-muted-foreground group-hover:text-primary transition-colors">
-             <Send className="w-5 h-5 ml-0.5" strokeWidth={2} />
-          </div>
-        </Link>
-      </div>
+      <StoryComposerLink />
 
       {/* ── FEED ──────────────────────────────────────────────── */}
       <div className="community-feed pt-2 pb-10 min-h-screen">

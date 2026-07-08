@@ -1,6 +1,11 @@
+'use client'
+
 import React from 'react'
+import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 
 export default function ExplorePage() {
+  const { t } = useCommunityLanguage()
+
   const categories = [
     'Stress', 'College', 'Work', 'Relationship', 'Family', 'Self Growth'
   ]
@@ -8,12 +13,12 @@ export default function ExplorePage() {
   return (
     <div className="w-full bg-background min-h-screen">
       <div className="p-6 border-b border-border sticky top-0 bg-background/80 backdrop-blur-md z-10">
-        <h2 className="text-2xl font-bold text-foreground mb-4">Explore</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-4">{t('explore.title')}</h2>
         
         <div className="relative mb-6">
           <input 
             type="text" 
-            placeholder="Search stories, topics, or users..." 
+            placeholder={t('explore.searchPlaceholder')} 
             className="w-full bg-muted border-0 rounded-full py-3 pl-12 pr-4 text-foreground focus:ring-2 focus:ring-primary outline-none transition-colors"
           />
           <svg className="w-5 h-5 absolute left-4 top-3.5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,7 +40,7 @@ export default function ExplorePage() {
 
       <div className="p-12 text-center text-muted-foreground">
         <div className="text-4xl mb-4">🔍</div>
-        <p>Search results and trending topics will appear here.</p>
+        <p>{t('explore.emptyState')}</p>
       </div>
     </div>
   )

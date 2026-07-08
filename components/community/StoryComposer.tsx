@@ -14,8 +14,9 @@ import {
   Send,
   X,
 } from 'lucide-react'
+import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 
-const MAX_LENGTH = 1000
+const MAX_LENGTH = 2000
 
 /* ─────────────────────── Component ──────────────────── */
 export default function StoryComposer({ isAuthenticated }: { isAuthenticated: boolean }) {
@@ -26,6 +27,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
   const { openModal }                   = useAuthModal()
   const textareaRef                     = useRef<HTMLTextAreaElement>(null)
   const router                          = useRouter()
+  const { t } = useCommunityLanguage()
 
   const used      = content.length
   const remaining = MAX_LENGTH - used
@@ -99,10 +101,10 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
           {/* Title block */}
           <div>
             <h2 className="text-[20px] font-bold text-foreground leading-tight">
-              Share Your Story
+              {t('composer.shareYourStory')}
             </h2>
             <p className="text-[14px] text-muted-foreground leading-snug mt-0.5">
-              Your story may help someone feel less alone.
+              {t('composer.shareSubtitle')}
             </p>
           </div>
         </div>
@@ -121,9 +123,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
             onChange={handleInput}
             onFocus={handleFocus}
             onBlur={() => setIsFocused(false)}
-            placeholder={
-              `What's on your mind today?\n\nShare your thoughts, experiences, or feelings in a safe and supportive space...`
-            }
+            placeholder={t('composer.placeholder')}
             className="w-full bg-transparent outline-none focus:outline-none focus:ring-0 border-0 resize-none text-[16px] text-foreground leading-[1.7] placeholder:text-muted-foreground placeholder:leading-[1.7] p-5 rounded-[16px] custom-scrollbar"
             style={{ minHeight: '160px' }}
           />
@@ -146,10 +146,10 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                 </div>
                 <div>
                   <p className="text-[13.5px] font-bold text-[#1E40AF] leading-tight">
-                    Anonymous Posting
+                    {t('composer.postAnonymously')}
                   </p>
                   <p className="text-[12px] text-[#3B82F6] leading-snug mt-0.5">
-                    Your identity will remain hidden.
+                    {t('composer.anonymousDesc')}
                   </p>
                 </div>
               </div>
@@ -186,7 +186,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
               className="flex items-center gap-2 flex-wrap"
             >
               {[
-                { icon: <ImageIcon className="w-3.5 h-3.5" />, label: 'Add Image' },
+                { icon: <ImageIcon className="w-3.5 h-3.5" />, label: t('composer.addImage') },
               ].map(({ icon, label }) => (
                 <button
                   key={label}
@@ -205,21 +205,6 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
         <div className={`flex flex-wrap items-center justify-between gap-3 ${(isFocused || hasContent) ? 'pt-4 mt-2 border-t border-border' : ''}`}>
           {/* Left: counter + discard */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Char counter — only when focused */}
-            <AnimatePresence>
-              {(isFocused || hasContent) && (
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-[12px] sm:text-[13px] font-semibold tabular-nums"
-                  style={{ color: counterColor }}
-                >
-                  {used} / {MAX_LENGTH}
-                </motion.span>
-              )}
-            </AnimatePresence>
-
             {/* Discard */}
             <AnimatePresence>
               {hasContent && (
@@ -232,7 +217,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                   className="inline-flex items-center justify-center gap-1.5 h-9 sm:h-10 px-3 sm:px-4 rounded-full border border-border text-[13px] sm:text-[14px] font-semibold text-muted-foreground hover:border-[#EF4444] hover:text-[#EF4444] hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 whitespace-nowrap flex-shrink-0"
                 >
                   <X className="w-3.5 h-3.5" />
-                  Discard
+                  {t('composer.discard')}
                 </motion.button>
               )}
             </AnimatePresence>
@@ -259,12 +244,12 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                 </svg>
-                Sharing…
+                {t('composer.sharing')}
               </>
             ) : (
               <>
                 <Send className="w-4 h-4" strokeWidth={2} />
-                Share Story
+                {t('composer.shareStoryBtn')}
               </>
             )}
           </motion.button>
@@ -272,7 +257,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
 
         {/* ── GUIDANCE ────────────────────────────────────────── */}
         <p className="text-[12.5px] text-muted-foreground leading-snug text-center">
-          💙 Please be respectful, protect privacy, and remember that kindness matters.
+          {t('composer.guidance')}
         </p>
 
       </div>

@@ -128,9 +128,9 @@ export default function ProfileClient({
 
   /* Stat items */
   const stats = [
-    { label: 'Stories',       value: posts.length,  icon: <Feather  className="w-4 h-4" /> },
-    { label: 'Support Given', value: totalLikesGiven, icon: <Heart   className="w-4 h-4" /> },
-    { label: 'Received',      value: totalSupport,  icon: <Star     className="w-4 h-4" /> },
+    { label: t('profile.stories'),       value: posts.length,  icon: <Feather  className="w-4 h-4" /> },
+    { label: t('profile.likes'),         value: totalLikesGiven, icon: <Heart    className="w-4 h-4" /> },
+    { label: t('profile.received'),      value: totalSupport,  icon: <Star     className="w-4 h-4" /> },
   ]
 
 
@@ -217,7 +217,7 @@ export default function ProfileClient({
               onClick={() => setIsEditOpen(true)}
               className="mt-4 h-10 px-5 rounded-full border border-border text-[14px] font-semibold text-muted-foreground hover:border-primary hover:text-primary hover:bg-[#EFF6FF] dark:bg-blue-500/10 transition-all duration-200"
             >
-              Edit Profile
+              {t('profile.editProfile')}
             </button>
 
             {/* Stats row */}
@@ -242,9 +242,9 @@ export default function ProfileClient({
                 <Shield className="w-5 h-5 text-primary" strokeWidth={1.8} />
               </div>
               <div>
-                <p className="text-[15px] font-bold text-[#1E40AF]">Anonymous Mode</p>
+                <p className="text-[15px] font-bold text-[#1E40AF]">{t('profile.anonymousMode')}</p>
                 <p className="text-[12.5px] text-[#3B82F6] leading-snug mt-0.5 max-w-[200px]">
-                  Your identity stays hidden when sharing stories.
+                  {t('profile.identityHidden')}
                 </p>
               </div>
             </div>
@@ -269,15 +269,15 @@ export default function ProfileClient({
         {/* ── RECENT STORIES ─────────────────────────────── */}
         <motion.div {...fadeUp(0.16)} id="stories">
           <div className="flex items-center justify-between px-1 mb-3">
-            <h2 className="text-[14px] font-bold text-muted-foreground uppercase tracking-wider">Recent Stories</h2>
+            <h2 className="text-[14px] font-bold text-muted-foreground uppercase tracking-wider">{t('profile.recentStories')}</h2>
             <span className="text-[12px] font-semibold text-muted-foreground">{posts.length} total</span>
           </div>
 
           {posts.length === 0 ? (
             <div className="bg-card rounded-[20px] border border-border p-10 flex flex-col items-center text-center">
               <span className="text-4xl mb-3">✏️</span>
-              <p className="text-[15px] font-semibold text-muted-foreground">No stories yet</p>
-              <p className="text-[13px] text-muted-foreground mt-1">Your shared stories will appear here.</p>
+              <p className="text-[15px] font-semibold text-muted-foreground">{t('profile.noStoriesYet')}</p>
+              <p className="text-[13px] text-muted-foreground mt-1">{t('profile.storiesDesc')}</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -322,7 +322,7 @@ export default function ProfileClient({
             className="w-full h-12 rounded-[16px] border border-[#FECACA] bg-red-50/50 dark:bg-red-900/10 text-[15px] font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
           >
             <LogOut className="w-4 h-4" />
-            {isLoggingOut ? 'Logging out…' : 'Log Out'}
+            {isLoggingOut ? t('profile.loggingOut') : t('profile.logout')}
           </button>
         </motion.div>
       </div>
@@ -375,7 +375,7 @@ export default function ProfileClient({
               >
                 {/* Header */}
                 <div className="flex items-center justify-between p-5 border-b border-border/50 flex-shrink-0">
-                  <h2 className="text-[18px] font-bold text-foreground">Settings</h2>
+                  <h2 className="text-[18px] font-bold text-foreground">{t('profile.settings')}</h2>
                   <button
                     onClick={() => setIsSettingsOpen(false)}
                     className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-muted text-muted-foreground transition-colors"
@@ -389,7 +389,7 @@ export default function ProfileClient({
                   <div className="bg-card rounded-[20px] border border-border overflow-hidden divide-y divide-border">
                     <button onClick={() => { setIsSettingsOpen(false); setIsEditOpen(true) }} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
                       <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Edit3 className="w-4 h-4" /></div>
-                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">Edit Profile</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">Update your name, username, bio</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
+                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">{t('profile.editProfile')}</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">{t('profile.editProfileDesc')}</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
                     </button>
                     <button onClick={() => {}} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
                       <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Lock className="w-4 h-4" /></div>
@@ -397,7 +397,7 @@ export default function ProfileClient({
                     </button>
                     <button onClick={() => {}} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
                       <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Shield className="w-4 h-4" /></div>
-                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">Security</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">Password and login settings</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
+                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">{t('profile.security')}</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">{t('profile.securityDesc')}</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
                     </button>
                     <button onClick={() => { setIsSettingsOpen(false); setIsLanguageOpen(true) }} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
                       <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Globe className="w-4 h-4" /></div>
@@ -405,7 +405,7 @@ export default function ProfileClient({
                     </button>
                     <button onClick={() => { setIsSettingsOpen(false); setIsAppearanceOpen(true) }} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
                       <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Moon className="w-4 h-4" /></div>
-                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">Appearance</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">Theme and display settings</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
+                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">{t('profile.appearance')}</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">{t('profile.appearanceDesc')}</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
                     </button>
                     <button onClick={() => {}} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
                       <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Bell className="w-4 h-4" /></div>
@@ -422,7 +422,7 @@ export default function ProfileClient({
                     className="w-full h-12 mt-4 rounded-[16px] border border-[#FECACA] text-[15px] font-semibold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     <LogOut className="w-4 h-4" />
-                    {isLoggingOut ? 'Logging out…' : 'Log Out'}
+                    {isLoggingOut ? t('profile.loggingOut') : t('profile.logout')}
                   </button>
                 </div>
               </motion.div>

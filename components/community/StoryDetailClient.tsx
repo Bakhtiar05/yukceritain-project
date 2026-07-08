@@ -13,6 +13,7 @@ import { useAuthModal } from './AuthModalProvider'
 import { toggleLike, deleteStory, updateStory, deleteComment } from '@/lib/actions/community'
 import CommentComposer from './CommentComposer'
 import { useRouter } from 'next/navigation'
+import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 
 /* ─────────────────────── Types ─────────────────────── */
 type Profile = { display_name: string; username: string; avatar_url: string }
@@ -34,18 +35,18 @@ type Post = {
 }
 
 /* ─────────────────────── Helpers ────────────────────── */
-function formatDate(dateStr: string) {
+function formatDate(dateStr: string, t: (key: string) => string) {
   const d    = new Date(dateStr)
   const now  = new Date()
   const diff = now.getTime() - d.getTime()
   const m    = Math.floor(diff / 60000)
   const h    = Math.floor(diff / 3600000)
   const day  = Math.floor(diff / 86400000)
-  if (m  < 1)  return 'Just now'
-  if (h  < 1)  return `${m}m ago`
-  if (h  < 24) return `${h}h ago`
-  if (day === 1) return 'Yesterday'
-  return `${day}d ago`
+  if (m  < 1)  return t('time.justNow')
+  if (h  < 1)  return `${m} ${t('time.mAgo')}`
+  if (h  < 24) return `${h} ${t('time.hAgo')}`
+  if (day === 1) return t('time.yesterday')
+  return `${day} ${t('time.dAgo')}`
 }
 
 function avatarFor(username: string, url?: string) {
@@ -80,6 +81,7 @@ export default function StoryDetailClient({
 }) {
   const { openModal }     = useAuthModal()
   const router            = useRouter()
+  const { t }             = useCommunityLanguage()
   const [isLiked, setIsLiked]           = useState(isLikedByMe)
   const [likesCount, setLikesCount]     = useState(post.likes.length)
   const [isEditing, setIsEditing]       = useState(false)
@@ -90,8 +92,8 @@ export default function StoryDetailClient({
   const [isMenuOpen, setIsMenuOpen]     = useState(false)
 
   const isOwner = session?.user?.id === post.profile_id
-  const displayName = post.is_anonymous ? 'Anonymous' : post.profile?.display_name
-  const username    = post.is_anonymous ? 'anonymous' : post.profile?.username
+  const displayName = post.is_anonymous ? t('storyDetail.anonymous') : post.profile?.display_name
+  const username    = post.is_anonymous ? t('storyDetail.anonymous') : post.profile?.username
   const avatarUrl   = post.is_anonymous
     ? 'https://api.dicebear.com/7.x/notionists/svg?seed=anonymous'
     : avatarFor(post.profile?.username, post.profile?.avatar_url)
@@ -160,7 +162,7 @@ export default function StoryDetailClient({
           {/* Center */}
           <div className="flex flex-col items-center flex-1 px-3">
             <span className="text-[17px] font-bold text-foreground leading-tight tracking-tight text-center">
-              Story Community Discussion
+              {t('storyDetail.header')}
             </span>
           </div>
 
@@ -175,7 +177,7 @@ export default function StoryDetailClient({
           href="/community/for-you"
           className="inline-flex items-center gap-2 text-[14px] font-semibold text-muted-foreground hover:text-primary transition-colors"
         >
-          <ChevronLeft className="w-4 h-4" /> Back to Feed
+          <ChevronLeft className="w-4 h-4" /> {t('storyDetail.backToFeed')}
         </Link>
       </div>
 
@@ -208,10 +210,10 @@ export default function StoryDetailClient({
                       </Link>
                     )}
                     {post.is_anonymous && (
-                      <span className="community-badge-anon">🛡 Anonymous</span>
+                      <span className="community-badge-anon">🛡 {t('storyDetail.anonymous')}</span>
                     )}
                   </div>
-                  <span className="text-[13px] text-muted-foreground font-medium">{formatDate(post.created_at)}</span>
+                  <span className="text-[13px] text-muted-foreground font-medium">{formatDate(post.created_at, t)}</span>
                 </div>
               </div>
 
@@ -238,25 +240,25 @@ export default function StoryDetailClient({
                             onClick={() => { setIsEditing(true); setIsMenuOpen(false) }}
                             className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                           >
-                            <Check className="w-4 h-4 text-muted-foreground" /> Edit Post
+                            <Check className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.editPost')}
                           </button>
                           <button
                             onClick={() => { setIsDeleteOpen(true); setIsMenuOpen(false) }}
                             className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-colors"
                           >
-                            <Trash2 className="w-4 h-4 text-red-400" /> Delete Post
+                            <Trash2 className="w-4 h-4 text-red-400" /> {t('storyDetail.deletePost')}
                           </button>
                           <div className="h-px bg-muted my-1.5 mx-3" />
                         </>
                       )}
                       <button onClick={handleShare} className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
-                        <LinkIcon className="w-4 h-4 text-muted-foreground" /> Share Story
+                        <LinkIcon className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.shareStory')}
                       </button>
                       <button className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
-                        <Flag className="w-4 h-4 text-muted-foreground" /> Report
+                        <Flag className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.report')}
                       </button>
                       <button className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
-                        <EyeOff className="w-4 h-4 text-muted-foreground" /> Hide Story
+                        <EyeOff className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.hideStory')}
                       </button>
                     </motion.div>
                   )}
@@ -273,9 +275,9 @@ export default function StoryDetailClient({
                   className="w-full bg-muted border border-border rounded-[16px] px-4 py-3 text-foreground text-[17px] leading-[1.8] focus:ring-2 focus:ring-ring focus:border-primary outline-none resize-none min-h-[120px] transition-all"
                 />
                 <div className="flex justify-end gap-2 mt-3">
-                  <button onClick={() => { setIsEditing(false); setEditContent(post.content) }} className="px-4 py-2 text-[14px] font-semibold text-muted-foreground hover:bg-muted rounded-full transition-colors">Cancel</button>
+                  <button onClick={() => { setIsEditing(false); setEditContent(post.content) }} className="px-4 py-2 text-[14px] font-semibold text-muted-foreground hover:bg-muted rounded-full transition-colors">{t('storyDetail.cancel')}</button>
                   <button onClick={handleEditSave} disabled={isSubmitting} className="px-4 py-2 text-[14px] font-semibold text-white bg-primary hover:bg-primary/90 rounded-full transition-colors disabled:opacity-50">
-                    {isSubmitting ? 'Saving…' : 'Save'}
+                    {isSubmitting ? t('storyDetail.saving') : t('storyDetail.save')}
                   </button>
                 </div>
               </div>
@@ -294,18 +296,18 @@ export default function StoryDetailClient({
               >
                 <Heart className="w-4 h-4" strokeWidth={isLiked ? 0 : 1.8} fill={isLiked ? '#93C5FD' : 'none'} />
                 {likesCount > 0 && <span className="tabular-nums">{likesCount}</span>}
-                <span className="hidden sm:inline">Support</span>
+                <span className="hidden sm:inline">{t('storyDetail.support')}</span>
               </motion.button>
 
               <div className="community-action-btn cursor-default">
                 <MessageCircle className="w-4 h-4" strokeWidth={1.8} />
                 <span className="tabular-nums">{commentsCount}</span>
-                <span className="hidden sm:inline">Responses</span>
+                <span className="hidden sm:inline">{t('storyDetail.responses')}</span>
               </div>
 
               <button onClick={handleShare} className="community-action-btn">
                 <Share2 className="w-4 h-4" strokeWidth={1.8} />
-                <span className="hidden sm:inline">Share</span>
+                <span className="hidden sm:inline">{t('storyDetail.share')}</span>
               </button>
             </div>
           </div>
@@ -330,11 +332,11 @@ export default function StoryDetailClient({
           {/* Section header */}
           <div className="flex items-center justify-between px-1 py-2">
             <div>
-              <h2 className="text-[18px] font-bold text-foreground">Responses</h2>
+              <h2 className="text-[18px] font-bold text-foreground">{t('storyDetail.responses')}</h2>
               <p className="text-[13px] text-muted-foreground font-medium mt-0.5">
                 {comments.length === 0
-                  ? 'No responses yet'
-                  : `${comments.length} supportive repl${comments.length === 1 ? 'y' : 'ies'}`}
+                  ? t('storyDetail.noResponses')
+                  : `${comments.length} ${comments.length === 1 ? t('storyDetail.supportiveReply') : t('storyDetail.supportiveReplies')}`}
               </p>
             </div>
           </div>
@@ -351,9 +353,9 @@ export default function StoryDetailClient({
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center mb-5 shadow-inner">
                 <span className="text-4xl">💌</span>
               </div>
-              <h3 className="text-[19px] font-bold text-foreground mb-2">No responses yet</h3>
+              <h3 className="text-[19px] font-bold text-foreground mb-2">{t('storyDetail.noResponses')}</h3>
               <p className="text-[14px] text-muted-foreground leading-relaxed max-w-[220px]">
-                Be the first to offer kindness and encouragement.
+                {t('storyDetail.beTheFirst')}
               </p>
             </motion.div>
           ) : (
@@ -385,16 +387,16 @@ export default function StoryDetailClient({
               <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center mb-4">
                 <AlertCircle className="w-5 h-5 text-red-500" />
               </div>
-              <Dialog.Title className="text-[18px] font-bold text-foreground mb-2">Delete this story?</Dialog.Title>
+              <Dialog.Title className="text-[18px] font-bold text-foreground mb-2">{t('storyDetail.deleteTitle')}</Dialog.Title>
               <Dialog.Description className="text-muted-foreground text-[14px] mb-6 leading-relaxed">
-                This action cannot be undone. Your story and all replies will be permanently deleted.
+                {t('storyDetail.deleteDesc')}
               </Dialog.Description>
               <div className="flex gap-3 w-full">
                 <Dialog.Close asChild>
-                  <button className="flex-1 px-4 py-2.5 bg-muted hover:bg-muted text-muted-foreground rounded-full font-semibold text-[14px] transition-colors">Cancel</button>
+                  <button className="flex-1 px-4 py-2.5 bg-muted hover:bg-muted text-muted-foreground rounded-full font-semibold text-[14px] transition-colors">{t('storyDetail.cancel')}</button>
                 </Dialog.Close>
                 <button onClick={handleDelete} disabled={isDeleting} className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold text-[14px] transition-colors disabled:opacity-50">
-                  {isDeleting ? 'Deleting…' : 'Delete'}
+                  {isDeleting ? t('storyDetail.deleting') : t('storyDetail.delete')}
                 </button>
               </div>
             </div>

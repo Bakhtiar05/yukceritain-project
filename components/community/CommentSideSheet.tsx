@@ -8,10 +8,12 @@ import { fetchPostAndComments } from '@/lib/actions/community'
 import ResponseCard from './ResponseCard'
 import CommentComposer from './CommentComposer'
 import { useAuthModal } from './AuthModalProvider'
+import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 
 export default function CommentSideSheet({ session }: { session: any }) {
   const { isOpen, activePostId, closeSheet } = useCommentSheet()
   const { openModal } = useAuthModal()
+  const { t } = useCommunityLanguage()
   
   const [loading, setLoading] = useState(true)
   const [postData, setPostData] = useState<any>(null)
@@ -82,7 +84,7 @@ export default function CommentSideSheet({ session }: { session: any }) {
             <div className="flex items-center justify-between px-5 h-16 border-b border-border bg-card z-10 shrink-0">
               <h2 className="text-lg font-bold flex items-center gap-2">
                 <MessageCircle className="w-5 h-5" />
-                Comments
+                {t('comment.title')}
               </h2>
               <button
                 onClick={closeSheet}
@@ -106,13 +108,13 @@ export default function CommentSideSheet({ session }: { session: any }) {
 
                   {/* Comments List */}
                   <div className="flex flex-col gap-4">
-                    <h3 className="font-semibold text-sm text-muted-foreground px-2">Responses ({commentsData.length})</h3>
+                    <h3 className="font-semibold text-sm text-muted-foreground px-2">{t('storyDetail.responses')} ({commentsData.length})</h3>
                     {commentsData.length === 0 ? (
                       <div className="text-center py-10 px-4">
                         <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
                           <MessageCircle className="w-5 h-5 text-muted-foreground" />
                         </div>
-                        <p className="text-sm text-muted-foreground">No responses yet. Be the first to share your thoughts.</p>
+                        <p className="text-sm text-muted-foreground">{t('storyDetail.noResponses')}. {t('storyDetail.beTheFirst')}</p>
                       </div>
                     ) : (
                       commentsData.map((comment, index) => {
@@ -133,7 +135,7 @@ export default function CommentSideSheet({ session }: { session: any }) {
                   </div>
                 </>
               ) : (
-                <div className="text-center py-10 text-muted-foreground">Post not found.</div>
+                <div className="text-center py-10 text-muted-foreground">{t('comment.notFound')}</div>
               )}
             </div>
 

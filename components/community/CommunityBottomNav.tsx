@@ -28,7 +28,7 @@ type NavItem = {
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'home',    label: 'Home',       icon: House,         href: '/community/for-you' },
-  { id: 'search',  label: 'Search',     icon: Search,        href: '/community/explore' },
+  { id: 'explore',  label: 'Explore',     icon: Search,        href: '/community/explore' },
   { id: 'create',  label: 'Story',      icon: Plus,          href: '/community/create', isPrimary: true },
   { id: 'counsel', label: 'Konseling',  icon: HeartHandshake, href: '/' },
   { id: 'profile', label: 'Profile',   icon: CircleUser,    href: '/community/profile' },
@@ -43,7 +43,7 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
 
   const isActive = (item: typeof NAV_ITEMS[number]) => {
     if (item.id === 'home')    return pathname === '/community/for-you'
-    if (item.id === 'search')  return pathname?.startsWith('/community/explore')
+    if (item.id === 'explore')  return pathname?.startsWith('/community/explore')
     if (item.id === 'create')  return pathname?.startsWith('/community/create')
     if (item.id === 'counsel') return false
     if (item.id === 'profile') return pathname?.startsWith('/community/profile')

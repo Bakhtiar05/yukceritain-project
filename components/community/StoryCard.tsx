@@ -323,12 +323,12 @@ export default function StoryCard({
             >
               {content}
             </p>
-            {needsClamp && !isExpanded && (
+            {needsClamp && (
               <button
-                onClick={(e) => { e.stopPropagation(); setIsExpanded(true) }}
+                onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded) }}
                 className="mt-1 text-[13.5px] font-semibold text-primary hover:text-primary/90 transition-colors"
               >
-                Read More
+                {isExpanded ? 'Read Less' : 'Read More'}
               </button>
             )}
           </div>

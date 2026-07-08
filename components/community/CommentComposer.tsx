@@ -5,12 +5,16 @@ import { useAuthModal } from './AuthModalProvider'
 import { addComment } from '@/lib/actions/community'
 import { motion, AnimatePresence } from 'framer-motion'
 import { User } from 'lucide-react'
+import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 
 const TONE_CHIPS = [
   { emoji: '❤️', label: 'Support' },
   { emoji: '🤗', label: 'Encouragement' },
   { emoji: '💡', label: 'Advice' },
   { emoji: '🌱', label: 'Experience' },
+  { emoji: '👏', label: 'Applause' },
+  { emoji: '💪', label: 'Strength' },
+  { emoji: '🤝', label: 'Agreement' },
 ]
 
 export default function CommentComposer({
@@ -28,8 +32,9 @@ export default function CommentComposer({
   const [guidelinesOpen, setGuidelinesOpen] = useState(false)
   const { openModal }                 = useAuthModal()
   const textareaRef                   = useRef<HTMLTextAreaElement>(null)
+  const { t }                         = useCommunityLanguage()
 
-  const maxLength = 500
+  const maxLength = 1000
   const remaining = maxLength - content.length
   const hasContent = content.trim().length > 0
 
@@ -81,13 +86,13 @@ export default function CommentComposer({
               onChange={(e) => setContent(e.target.value.slice(0, maxLength))}
               onFocus={() => { setIsFocused(true); handleClick() }}
               onBlur={() => setIsFocused(false)}
-              placeholder="Write a supportive response..."
+              placeholder={t('comment.placeholder')}
               rows={1}
               className="w-full bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-foreground text-[15px] leading-relaxed resize-none placeholder:text-muted-foreground placeholder:font-medium"
               style={{ minHeight: '28px' }}
             />
             <p className="text-[11.5px] text-muted-foreground font-medium mt-1">
-              Please be respectful and supportive.
+              {t('comment.respectful')}
             </p>
           </div>
         </div>
@@ -115,26 +120,23 @@ export default function CommentComposer({
                           prev ? `${prev} ${chip.emoji} ` : `${chip.emoji} `
                         )
                       }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted border border-border text-[12.5px] font-semibold text-muted-foreground hover:bg-[#EFF6FF] dark:bg-blue-500/10 hover:border-[#BFDBFE] dark:border-blue-500/30 hover:text-primary transition-colors"
+                      className="inline-flex items-center justify-center text-[22px] hover:scale-110 active:scale-95 transition-transform"
                     >
                       <span>{chip.emoji}</span>
-                      <span>{chip.label}</span>
                     </button>
                   ))}
                 </div>
 
                 {/* Bottom bar */}
-                <div className="flex items-center justify-between pt-1 border-t border-border">
-                  <span className={`text-[12px] font-semibold tabular-nums ${remaining < 80 ? 'text-amber-500' : 'text-muted-foreground'}`}>
-                    {remaining} left
-                  </span>
+                <div className="flex items-center justify-between pt-3 mt-2 border-t border-border">
+                  <div />
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onMouseDown={(e) => { e.preventDefault(); setContent(''); setIsFocused(false) }}
                       className="h-8 px-3 rounded-full text-[13px] font-semibold text-muted-foreground hover:text-muted-foreground hover:bg-muted transition-colors"
                     >
-                      Cancel
+                      {t('comment.cancel')}
                     </button>
                     <button
                       type="button"
@@ -142,7 +144,7 @@ export default function CommentComposer({
                       disabled={!hasContent || isSubmitting}
                       className="h-8 px-4 rounded-full text-[13px] font-semibold text-white bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-[0_2px_8px_rgba(37,99,235,0.25)] active:scale-95"
                     >
-                      {isSubmitting ? '…' : 'Post Reply'}
+                      {isSubmitting ? t('comment.posting') : t('comment.postReply')}
                     </button>
                   </div>
                 </div>
@@ -160,7 +162,7 @@ export default function CommentComposer({
           className="w-full flex items-center justify-between px-4 py-3 text-left"
         >
           <span className="text-[13px] font-bold text-muted-foreground flex items-center gap-2">
-            📋 Community Guidelines
+            📋 {t('comment.guidelines')}
           </span>
           <motion.span
             animate={{ rotate: guidelinesOpen ? 180 : 0 }}
@@ -181,11 +183,11 @@ export default function CommentComposer({
             >
               <ul className="px-4 pb-4 space-y-1.5 border-t border-border">
                 {[
-                  'Be respectful and kind',
-                  'Avoid judgment — everyone\'s journey is valid',
-                  'Protect privacy — don\'t share others\' details',
-                  'No hate speech or harmful content',
-                  'Support each other with empathy',
+                  t('comment.rule1'),
+                  t('comment.rule2'),
+                  t('comment.rule3'),
+                  t('comment.rule4'),
+                  t('comment.rule5'),
                 ].map((rule) => (
                   <li key={rule} className="flex items-start gap-2 pt-2">
                     <span className="text-primary mt-0.5 text-[13px]">•</span>
