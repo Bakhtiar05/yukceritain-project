@@ -1,5 +1,6 @@
 {
   "welcomeHero": {
+    "badge": "Ruang Aman Bercerita",
     "headline_1": "Bicara Tanpa Rasa Takut.",
     "headline_2": "Kamu Tidak Sendirian.",
     "headline_3": "Bagikan Ceritamu.",
@@ -96,7 +97,7 @@
     "createStory": "Tulis Cerita",
     "back": "Kembali",
     "privacyNote": "Bagikan apa yang sedang Anda rasakan. Anda dapat membagikannya secara anonim untuk melindungi privasi.",
-    "placeholder": "Apa yang sedang Anda pikirkan? Anda bisa bercerita secara anonim...",
+    "placeholder": "Ada cerita apa hari ini?",
     "postAnonymously": "Posting Anonim",
     "anonymousDesc": "Identitas Anda akan tetap tersembunyi.",
     "discard": "Batal",

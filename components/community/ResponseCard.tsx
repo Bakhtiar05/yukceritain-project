@@ -79,24 +79,23 @@ export default function ResponseCard({
     >
       <div className="flex items-start gap-3">
         {/* Left Col: Avatar */}
-        <Link href={`/community/user/${profile?.username}`} className="flex-shrink-0 mt-0.5">
+        <div className="flex-shrink-0 mt-0.5">
           <img
             src={avatarFor(profile?.username, profile?.avatar_url)}
             alt={profile?.display_name}
             className="w-10 h-10 rounded-full object-cover bg-muted ring-2 ring-background"
           />
-        </Link>
+        </div>
 
         {/* Right Col: Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between mb-1.5">
             <div>
-              <Link
-                href={`/community/user/${profile?.username}`}
-                className="text-[14.5px] font-bold text-foreground hover:text-primary transition-colors leading-tight block"
+              <span
+                className="text-[14.5px] font-bold text-foreground leading-tight block"
               >
                 {profile?.display_name}
-              </Link>
+              </span>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="text-[12px] text-muted-foreground font-medium">@{profile?.username}</span>
                 <span className="text-[#D1D5DB] text-[10px]">·</span>

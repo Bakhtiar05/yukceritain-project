@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
+import { HeartHandshake } from 'lucide-react'
 import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 
 export default function WelcomeHero() {
@@ -32,12 +33,28 @@ export default function WelcomeHero() {
         transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="relative overflow-hidden rounded-[24px] bg-transparent border border-border group"
       >
-        <div className="relative z-10 w-full px-5 sm:px-7 py-6 sm:py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        {/* Background Decorative Icon */}
+        <div className="absolute -right-12 sm:-right-8 top-1/2 -translate-y-1/2 pointer-events-none text-primary/5 dark:text-primary/10">
+          <HeartHandshake className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96" strokeWidth={1.5} />
+        </div>
+
+        <div className="relative z-10 w-full px-6 sm:px-8 py-8 flex flex-col items-start gap-4">
+          
+          {/* Badge */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.4 }}
+            className="flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary border border-primary/20 tracking-wider"
+          >
+            {t('welcomeHero.badge')}
+          </motion.div>
+
           <motion.div 
             variants={containerVariants}
             initial="hidden"
             animate="show"
-            className="flex-1 max-w-2xl"
+            className="max-w-2xl mt-2"
           >
             {/* Looping Typewriter Headline */}
             <motion.div variants={itemVariants}>
@@ -47,16 +64,17 @@ export default function WelcomeHero() {
                   t('welcomeHero.headline_2'),
                   t('welcomeHero.headline_3')
                 ]}
-                className="text-[21px] min-[360px]:text-[23px] sm:text-3xl font-bold tracking-tight text-foreground leading-[1.2] mb-2 whitespace-nowrap sm:whitespace-normal"
+                className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-[1.2] mb-4 whitespace-nowrap sm:whitespace-normal"
               />
             </motion.div>
             
             {/* Typewriter Description */}
             <TypewriterText 
               text={t('welcomeHero.description')}
-              className="text-sm sm:text-base text-muted-foreground font-medium"
+              className="text-[15px] sm:text-[17px] text-muted-foreground font-medium leading-[1.6]"
             />
           </motion.div>
+          
         </div>
       </motion.div>
     </div>

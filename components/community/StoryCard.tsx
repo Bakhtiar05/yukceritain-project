@@ -204,13 +204,11 @@ export default function StoryCard({
                     {displayName}
                   </span>
                 ) : (
-                  <Link
-                    href={`/community/user/${username}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className="text-[16px] font-bold text-foreground hover:text-primary transition-colors leading-tight"
+                  <span
+                    className="text-[16px] font-bold text-foreground leading-tight"
                   >
                     {displayName}
-                  </Link>
+                  </span>
                 )}
                 {/* Anonymous badge */}
                 {is_anonymous && (

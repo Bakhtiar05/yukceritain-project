@@ -1,5 +1,6 @@
 {
   "welcomeHero": {
+    "badge": "Your safe space",
     "headline_1": "Speak Without Fear.",
     "headline_2": "You Are Not Alone.",
     "headline_3": "Share Your Story.",
@@ -96,7 +97,7 @@
     "createStory": "Create Story",
     "back": "Back",
     "privacyNote": "Share what's on your mind. You can choose to post anonymously to protect your privacy.",
-    "placeholder": "What's on your mind? You can write anonymously...",
+    "placeholder": "What's your story today?",
     "postAnonymously": "Post Anonymously",
     "anonymousDesc": "Your identity will remain hidden.",
     "discard": "Discard",
