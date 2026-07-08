@@ -36,7 +36,11 @@ export default function InfiniteFeed({ initialPosts, mode, session }: InfiniteFe
       if (!nextPosts || nextPosts.length < 5) {
         setHasMore(false)
       }
-    } catch (err) {
+    } catch (err: any) {
+      if (err?.message?.includes('Failed to fetch') || err?.message?.includes('fetch failed')) {
+        // Ignore fetch errors caused by navigation aborts
+        return
+      }
       console.error('Error fetching more posts:', err)
     } finally {
       setLoading(false)

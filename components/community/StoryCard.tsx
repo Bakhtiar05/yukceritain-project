@@ -205,6 +205,7 @@ export default function StoryCard({
                   </span>
                 ) : (
                   <span
+                    onClick={(e) => e.stopPropagation()}
                     className="text-[16px] font-bold text-foreground leading-tight"
                   >
                     {displayName}
