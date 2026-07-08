@@ -33,7 +33,7 @@ export default function LeftSidebar() {
 
   const renderNavGroup = (title: string, items: {name: string, href: string, icon: any, onClick?: () => void}[]) => (
     <div className="mb-6">
-      <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-4">{title}</h4>
+      <h4 className="text-xs font-bold text-slate-400 dark:text-muted-foreground uppercase tracking-wider mb-3 px-4">{title}</h4>
       <div className="space-y-1">
         {items.map((item) => {
           const isActive = pathname === item.href
@@ -43,11 +43,11 @@ export default function LeftSidebar() {
               onClick={item.onClick}
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-2xl font-medium transition-all group relative ${
                 isActive 
-                  ? 'bg-blue-50 text-blue-700' 
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-700' 
+                  : 'text-muted-foreground hover:bg-muted dark:hover:bg-muted hover:text-foreground'
               }`}
             >
-              <item.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-500'}`} />
+              <item.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-blue-600' : 'text-slate-400 dark:text-muted-foreground group-hover:text-blue-500'}`} />
               <span className="text-[15px]">{item.name}</span>
             </button>
           ) : (
@@ -56,14 +56,14 @@ export default function LeftSidebar() {
               href={item.href}
               className={`flex items-center space-x-3 px-4 py-3 rounded-2xl font-medium transition-all group relative overflow-hidden ${
                 isActive 
-                  ? 'bg-blue-50/80 text-blue-700' 
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  ? 'bg-blue-50 dark:bg-blue-500/10/80 text-blue-700' 
+                  : 'text-muted-foreground hover:bg-muted dark:hover:bg-muted hover:text-foreground'
               }`}
             >
               {isActive && (
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 h-2/3 w-1 bg-blue-600 rounded-r-full shadow-[0_0_8px_rgba(37,99,235,0.6)]"></div>
               )}
-              <item.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-blue-600' : 'text-slate-400 group-hover:text-blue-500'}`} />
+              <item.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-blue-600' : 'text-slate-400 dark:text-muted-foreground group-hover:text-blue-500'}`} />
               <span className="text-[15px]">{item.name}</span>
             </Link>
           )
@@ -110,7 +110,7 @@ export default function LeftSidebar() {
           <div className="px-4 mt-2">
             <button 
               onClick={handleLogout} 
-              className="flex items-center justify-center space-x-2 w-full px-4 py-2.5 rounded-xl font-medium text-red-500 border border-red-200 hover:bg-red-50 hover:border-red-300 transition-all"
+              className="flex items-center justify-center space-x-2 w-full px-4 py-2.5 rounded-xl font-medium text-red-500 border border-red-200 hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 hover:border-red-300 transition-all"
             >
               <LogOut className="w-4 h-4" />
               <span className="text-[14px]">Keluar</span>
@@ -119,16 +119,16 @@ export default function LeftSidebar() {
         )}
       </div>
 
-      <div className="pt-6 mt-4 border-t border-slate-100/80">
+      <div className="pt-6 mt-4 border-t border-border/80">
         {profile ? (
-          <div className="flex items-center space-x-3 p-3 rounded-2xl hover:bg-slate-50 transition-colors cursor-pointer border border-transparent hover:border-slate-100 group">
+          <div className="flex items-center space-x-3 p-3 rounded-2xl hover:bg-muted dark:hover:bg-muted transition-colors cursor-pointer border border-transparent hover:border-border group">
             <div className="relative">
-              <img src={profile.avatar_url || 'https://api.dicebear.com/7.x/notionists/svg?seed=' + profile.username} alt={profile.display_name} className="w-10 h-10 rounded-full object-cover bg-slate-100 ring-2 ring-white shadow-sm" />
+              <img src={profile.avatar_url || 'https://api.dicebear.com/7.x/notionists/svg?seed=' + profile.username} alt={profile.display_name} className="w-10 h-10 rounded-full object-cover bg-muted ring-2 ring-background shadow-sm" />
               <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full"></div>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-slate-900 truncate group-hover:text-blue-600 transition-colors">{profile.display_name}</p>
-              <p className="text-xs text-slate-500 truncate font-medium">@{profile.username}</p>
+              <p className="text-sm font-bold text-foreground truncate group-hover:text-blue-600 transition-colors">{profile.display_name}</p>
+              <p className="text-xs text-muted-foreground truncate font-medium">@{profile.username}</p>
             </div>
           </div>
         ) : (

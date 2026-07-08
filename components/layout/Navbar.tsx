@@ -62,13 +62,13 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
           <div
             className={`w-full max-w-container mx-auto flex items-center justify-between transition-all duration-500 ${
               scrolled
-                ? 'bg-white/70 backdrop-blur-xl border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-2xl md:rounded-full py-2 px-4 md:px-6 xl:px-8'
-                : 'bg-white/40 backdrop-blur-md border border-white/30 shadow-[0_4px_20px_rgba(0,0,0,0.04)] rounded-2xl md:rounded-full py-3 md:py-3.5 px-4 md:px-6 xl:px-8'
+                ? 'bg-background/70 backdrop-blur-xl border border-border/50 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-2xl md:rounded-full py-2 px-4 md:px-6 xl:px-8'
+                : 'bg-background/40 backdrop-blur-md border border-border/30 shadow-[0_4px_20px_rgba(0,0,0,0.04)] rounded-2xl md:rounded-full py-3 md:py-3.5 px-4 md:px-6 xl:px-8'
             }`}
           >
             {/* Logo */}
             <div className="flex justify-start items-center mr-auto">
-              <Link href="/" className="flex items-center gap-3 flex-shrink-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg">
+              <Link href="/" className="flex items-center gap-3 flex-shrink-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg">
                 <Image
                   src="/assets/logo-v4.png"
                   alt="YukceritaIN Logo"
@@ -89,11 +89,11 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
                   href={link.href}
                   className={
                     link.isFeature
-                      ? `relative flex items-center justify-center px-4 py-2 text-[0.875rem] lg:text-[0.925rem] font-bold text-blue-700 bg-blue-100 border-2 border-blue-200 rounded-full hover:bg-blue-200 hover:scale-105 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 shadow-sm mx-1`
-                      : `relative px-3.5 lg:px-4 py-2 text-[0.875rem] lg:text-[0.925rem] font-medium rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 ${
+                      ? `relative flex items-center justify-center px-4 py-2 text-[0.875rem] lg:text-[0.925rem] font-bold text-primary bg-primary/20 border-2 border-primary/40 rounded-full hover:bg-primary/30 hover:scale-105 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 shadow-sm mx-1`
+                      : `relative px-3.5 lg:px-4 py-2 text-[0.875rem] lg:text-[0.925rem] font-medium rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
                           link.active
-                            ? 'text-blue-600 bg-blue-50'
-                            : 'text-neutral-500 hover:text-blue-600 hover:bg-blue-50'
+                            ? 'text-primary bg-primary/10'
+                            : 'text-muted-foreground hover:text-primary hover:bg-primary/10'
                         }`
                   }
                 >
@@ -107,14 +107,14 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
             <div className="hidden md:flex justify-end items-center gap-3 lg:gap-4">
               <Link
                 href="/cek-status"
-                className="text-[0.875rem] font-medium text-neutral-500 hover:text-blue-600 transition-colors px-3 py-2 rounded-full hover:bg-blue-50/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+                className="text-[0.875rem] font-medium text-muted-foreground hover:text-primary transition-colors px-3 py-2 rounded-full hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
               >
                 Cek Status
               </Link>
 
               <Link
                 href="/community"
-                className="flex items-center justify-center px-5 lg:px-6 py-2.5 text-[0.875rem] lg:text-[0.925rem] font-semibold text-white bg-blue-600 rounded-full shadow-[0_2px_8px_rgba(37,99,235,0.25)] hover:bg-blue-700 hover:shadow-[0_4px_16px_rgba(37,99,235,0.35)] hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+                className="flex items-center justify-center px-5 lg:px-6 py-2.5 text-[0.875rem] lg:text-[0.925rem] font-semibold text-white bg-primary rounded-full shadow-[0_2px_8px_rgba(37,99,235,0.25)] hover:bg-primary hover:shadow-[0_4px_16px_rgba(37,99,235,0.35)] hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
               >
                 Yuk Ceritain
               </Link>
@@ -124,40 +124,40 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
       )}
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-[998] bg-white/95 backdrop-blur-xl border-t border-white/50 shadow-[0_-8px_32px_rgba(0,0,0,0.08)] rounded-t-[32px] px-4 py-2 flex items-center justify-between pb-safe">
-        <Link href="/" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
-          <Home size={22} className={pathname === '/' ? 'text-blue-600' : ''} />
-          <span className={`text-[10px] font-medium ${pathname === '/' ? 'text-blue-600' : ''}`}>Beranda</span>
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-[998] bg-background/95 backdrop-blur-xl border-t border-border/50 shadow-[0_-8px_32px_rgba(0,0,0,0.08)] rounded-t-[32px] px-4 py-2 flex items-center justify-between pb-safe">
+        <Link href="/" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
+          <Home size={22} className={pathname === '/' ? 'text-primary' : ''} />
+          <span className={`text-[10px] font-medium ${pathname === '/' ? 'text-primary' : ''}`}>Beranda</span>
         </Link>
-        <Link href="/events" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
-          <Calendar size={22} className={pathname?.startsWith('/events') ? 'text-blue-600' : ''} />
-          <span className={`text-[10px] font-medium ${pathname?.startsWith('/events') ? 'text-blue-600' : ''}`}>Event</span>
+        <Link href="/events" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
+          <Calendar size={22} className={pathname?.startsWith('/events') ? 'text-primary' : ''} />
+          <span className={`text-[10px] font-medium ${pathname?.startsWith('/events') ? 'text-primary' : ''}`}>Event</span>
         </Link>
-        <Link href="/community" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors group">
-          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white shadow-[0_8px_20px_rgba(0,0,0,0.12)] border-2 ${pathname?.startsWith('/community') ? 'border-blue-50' : 'border-neutral-50'} transition-transform duration-300 group-hover:-translate-y-1`}>
+        <Link href="/community" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors group">
+          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-background shadow-[0_8px_20px_rgba(0,0,0,0.12)] border-2 ${pathname?.startsWith('/community') ? 'border-primary/20' : 'border-border'} transition-transform duration-300 group-hover:-translate-y-1`}>
             <Image src="/assets/navbar-bawah.png" alt="Yukceritain" width={36} height={36} className={`object-contain transition-all duration-300 ${pathname?.startsWith('/community') ? 'opacity-100 scale-105 drop-shadow-md' : 'opacity-80'}`} />
           </div>
-          <span className={`text-[10px] font-medium ${pathname?.startsWith('/community') ? 'text-blue-600' : ''}`}>Yukceritain</span>
+          <span className={`text-[10px] font-medium ${pathname?.startsWith('/community') ? 'text-primary' : ''}`}>Yukceritain</span>
         </Link>
-        <Link href="/blog" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
-          <BookOpen size={22} className={pathname?.startsWith('/blog') ? 'text-blue-600' : ''} />
-          <span className={`text-[10px] font-medium ${pathname?.startsWith('/blog') ? 'text-blue-600' : ''}`}>Blog</span>
+        <Link href="/blog" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
+          <BookOpen size={22} className={pathname?.startsWith('/blog') ? 'text-primary' : ''} />
+          <span className={`text-[10px] font-medium ${pathname?.startsWith('/blog') ? 'text-primary' : ''}`}>Blog</span>
         </Link>
-        <button onClick={() => setMenuOpen(true)} className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-neutral-500 hover:text-blue-600 transition-colors">
-          <MoreHorizontal size={22} className={menuOpen ? 'text-blue-600' : ''} />
-          <span className={`text-[10px] font-medium ${menuOpen ? 'text-blue-600' : ''}`}>Lainnya</span>
+        <button onClick={() => setMenuOpen(true)} className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
+          <MoreHorizontal size={22} className={menuOpen ? 'text-primary' : ''} />
+          <span className={`text-[10px] font-medium ${menuOpen ? 'text-primary' : ''}`}>Lainnya</span>
         </button>
       </nav>
 
       {/* Mobile Drawer (Bottom Sheet) */}
       <div
-        className={`fixed inset-x-0 bottom-0 bg-white/95 backdrop-blur-2xl border-t border-neutral-100 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] rounded-t-[32px] p-6 pb-28 transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] md:hidden z-[1000] flex flex-col ${
+        className={`fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-2xl border-t border-border shadow-[0_-8px_30px_rgba(0,0,0,0.08)] rounded-t-[32px] p-6 pb-28 transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] md:hidden z-[1000] flex flex-col ${
           menuOpen ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
         <div className="flex justify-between items-center mb-6">
-          <h3 className="font-bold text-lg text-neutral-800">Menu Lainnya</h3>
-          <button onClick={() => setMenuOpen(false)} aria-label="Tutup Menu" className="p-2 bg-neutral-100 hover:bg-neutral-200 rounded-full text-neutral-600 transition-colors">
+          <h3 className="font-bold text-lg text-foreground">Menu Lainnya</h3>
+          <button onClick={() => setMenuOpen(false)} aria-label="Tutup Menu" className="p-2 bg-muted hover:bg-muted-foreground/20 rounded-full text-muted-foreground transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -169,7 +169,7 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
                 key={link.label}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="px-4 py-3.5 text-[1rem] font-semibold rounded-xl transition-colors focus:outline-none text-neutral-700 hover:bg-neutral-50 hover:text-blue-600"
+                className="px-4 py-3.5 text-[1rem] font-semibold rounded-xl transition-colors focus:outline-none text-foreground hover:bg-accent hover:text-primary"
               >
                 {link.label}
               </Link>
@@ -181,7 +181,7 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
       {/* Backdrop */}
       {menuOpen && (
         <div
-          className="fixed inset-0 bg-neutral-900/20 backdrop-blur-sm z-[999] md:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-[999] md:hidden transition-opacity duration-300"
           onClick={() => setMenuOpen(false)}
           aria-hidden="true"
         />

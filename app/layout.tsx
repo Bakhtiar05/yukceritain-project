@@ -88,17 +88,21 @@ export const metadata: Metadata = {
 import { Toaster } from "@/components/ui/toaster"
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd"
 
+import RootThemeProvider from '@/components/community/RootThemeProvider'
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="id" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="id" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
       <body className="font-body antialiased">
         <OrganizationJsonLd />
         <WebSiteJsonLd />
-        {children}
+        <RootThemeProvider>
+          {children}
+        </RootThemeProvider>
         <Toaster />
       </body>
     </html>

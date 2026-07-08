@@ -42,7 +42,7 @@ export default function AuthModalProvider({ children }: { children: React.ReactN
     <AuthModalContext.Provider value={{ isOpen, openModal, closeModal }}>
       {children}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="w-[90vw] max-w-[400px] bg-white rounded-[24px] shadow-2xl border-0 p-6 sm:p-8">
+        <DialogContent className="w-[90vw] max-w-[400px] bg-card rounded-[24px] shadow-2xl border-0 p-6 sm:p-8">
           <DialogHeader className="text-center flex flex-col items-center">
             <div className="w-16 h-16 rounded-[16px] flex items-center justify-center overflow-hidden mb-3">
               <Image 
@@ -53,15 +53,15 @@ export default function AuthModalProvider({ children }: { children: React.ReactN
                 className="w-full h-full object-cover" 
               />
             </div>
-            <DialogTitle className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Bergabung Sekarang</DialogTitle>
-            <DialogDescription className="text-slate-500 text-[15px] pt-1.5 leading-relaxed">
+            <DialogTitle className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">Bergabung Sekarang</DialogTitle>
+            <DialogDescription className="text-muted-foreground text-[15px] pt-1.5 leading-relaxed">
               Ruang aman untuk saling berbagi cerita dan mendukung satu sama lain.
             </DialogDescription>
           </DialogHeader>
           <div className="mt-6 flex justify-center">
             <Button 
               onClick={handleGoogleLogin}
-              className="w-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 h-12 rounded-full text-[15px] font-semibold shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all active:scale-[0.98]"
+              className="w-full bg-card hover:bg-muted dark:hover:bg-muted text-muted-foreground border border-border h-12 rounded-full text-[15px] font-semibold shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all active:scale-[0.98]"
             >
               <svg className="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>

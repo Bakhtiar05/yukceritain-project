@@ -7,16 +7,16 @@ import { ChevronDown, ChevronUp, TrendingUp, BarChart3, Users, HeartHandshake, C
 const GuidelineItem = ({ title, content }: { title: string, content: string }) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
-    <div className="border-b border-slate-100 last:border-0 py-2.5">
+    <div className="border-b border-border last:border-0 py-2.5">
       <button 
         onClick={() => setIsOpen(!isOpen)} 
         className="flex items-center justify-between w-full text-left group"
       >
-        <span className="text-[14px] font-bold text-slate-800 group-hover:text-blue-600 transition-colors">{title}</span>
-        {isOpen ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+        <span className="text-[14px] font-bold text-foreground group-hover:text-blue-600 transition-colors">{title}</span>
+        {isOpen ? <ChevronUp className="w-4 h-4 text-slate-400 dark:text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-slate-400 dark:text-muted-foreground" />}
       </button>
       {isOpen && (
-        <p className="mt-2 text-[13px] text-slate-500 leading-relaxed animate-in fade-in slide-in-from-top-1">
+        <p className="mt-2 text-[13px] text-muted-foreground leading-relaxed animate-in fade-in slide-in-from-top-1">
           {content}
         </p>
       )}
@@ -43,39 +43,39 @@ export default function RightSidebar() {
       </div>
 
       {/* Today's Mood Distribution */}
-      <div className="bg-white rounded-3xl p-5 border border-slate-100/80 shadow-sm">
-        <h3 className="font-bold text-slate-800 mb-4 flex items-center text-[14px] uppercase tracking-wider">
+      <div className="bg-card rounded-3xl p-5 border border-border/80 shadow-sm">
+        <h3 className="font-bold text-foreground mb-4 flex items-center text-[14px] uppercase tracking-wider">
           <BarChart3 className="w-4 h-4 mr-2 text-blue-500" />
           Suasana Komunitas
         </h3>
         <div className="space-y-3">
           <div className="flex items-center justify-between text-sm">
             <span className="flex items-center space-x-2"><span className="text-lg">😌</span> <span>Tenang</span></span>
-            <span className="text-slate-500 font-medium">42%</span>
+            <span className="text-muted-foreground font-medium">42%</span>
           </div>
-          <div className="w-full bg-slate-100 rounded-full h-1.5">
+          <div className="w-full bg-muted rounded-full h-1.5">
             <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '42%' }}></div>
           </div>
           
           <div className="flex items-center justify-between text-sm pt-1">
             <span className="flex items-center space-x-2"><span className="text-lg">😰</span> <span>Cemas</span></span>
-            <span className="text-slate-500 font-medium">28%</span>
+            <span className="text-muted-foreground font-medium">28%</span>
           </div>
-          <div className="w-full bg-slate-100 rounded-full h-1.5">
+          <div className="w-full bg-muted rounded-full h-1.5">
             <div className="bg-amber-400 h-1.5 rounded-full" style={{ width: '28%' }}></div>
           </div>
         </div>
       </div>
 
       {/* Trending Topics */}
-      <div className="bg-white rounded-3xl p-5 border border-slate-100/80 shadow-sm">
-        <h3 className="font-bold text-slate-800 mb-4 flex items-center text-[14px] uppercase tracking-wider">
+      <div className="bg-card rounded-3xl p-5 border border-border/80 shadow-sm">
+        <h3 className="font-bold text-foreground mb-4 flex items-center text-[14px] uppercase tracking-wider">
           <TrendingUp className="w-4 h-4 mr-2 text-rose-500" />
           Topik Hangat
         </h3>
         <div className="flex flex-wrap gap-2">
           {['#burnout', '#relationships', '#career-anxiety', '#healing', '#self-love'].map((tag) => (
-            <Link key={tag} href={`/community/explore?tag=${tag.replace('#', '')}`} className="px-3 py-1.5 bg-slate-50 hover:bg-blue-50 text-slate-600 hover:text-blue-700 text-[13px] font-medium rounded-lg transition-colors border border-slate-100">
+            <Link key={tag} href={`/community/explore?tag=${tag.replace('#', '')}`} className="px-3 py-1.5 bg-muted hover:bg-blue-50 dark:hover:bg-blue-500/10 dark:bg-blue-500/10 dark:hover:bg-blue-500/10 dark:bg-blue-500/10 text-muted-foreground hover:text-blue-700 text-[13px] font-medium rounded-lg transition-colors border border-border">
               {tag}
             </Link>
           ))}
@@ -83,55 +83,55 @@ export default function RightSidebar() {
       </div>
 
       {/* Community Statistics */}
-      <div className="bg-white rounded-3xl p-5 border border-slate-100/80 shadow-sm">
-        <h3 className="font-bold text-slate-800 mb-4 flex items-center text-[14px] uppercase tracking-wider">
+      <div className="bg-card rounded-3xl p-5 border border-border/80 shadow-sm">
+        <h3 className="font-bold text-foreground mb-4 flex items-center text-[14px] uppercase tracking-wider">
           <Users className="w-4 h-4 mr-2 text-indigo-500" />
           Dampak Hari Ini
         </h3>
         <div className="grid grid-cols-2 gap-3">
-          <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+          <div className="p-3 bg-muted rounded-2xl border border-border">
             <div className="text-xl mb-1">📝</div>
-            <div className="text-lg font-bold text-slate-800">124</div>
-            <div className="text-[11px] font-medium text-slate-500 uppercase">Cerita Dibagikan</div>
+            <div className="text-lg font-bold text-foreground">124</div>
+            <div className="text-[11px] font-medium text-muted-foreground uppercase">Cerita Dibagikan</div>
           </div>
-          <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+          <div className="p-3 bg-muted rounded-2xl border border-border">
             <div className="text-xl mb-1">🫂</div>
-            <div className="text-lg font-bold text-slate-800">892</div>
-            <div className="text-[11px] font-medium text-slate-500 uppercase">Pelukan Dikirim</div>
+            <div className="text-lg font-bold text-foreground">892</div>
+            <div className="text-[11px] font-medium text-muted-foreground uppercase">Pelukan Dikirim</div>
           </div>
         </div>
       </div>
 
       {/* Upcoming Sessions & Volunteers */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100/80 shadow-sm group cursor-pointer hover:border-blue-200 transition-colors">
+        <div className="flex items-center justify-between p-4 bg-card rounded-2xl border border-border/80 shadow-sm group cursor-pointer hover:border-blue-200 transition-colors">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-emerald-50 rounded-xl text-emerald-600">
               <HeartHandshake className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-[13px] font-bold text-slate-800">12 Relawan</div>
-              <div className="text-[12px] text-slate-500">Sedang aktif</div>
+              <div className="text-[13px] font-bold text-foreground">12 Relawan</div>
+              <div className="text-[12px] text-muted-foreground">Sedang aktif</div>
             </div>
           </div>
         </div>
         
-        <Link href="/konsultasi" className="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100/80 shadow-sm group cursor-pointer hover:border-blue-200 transition-colors">
+        <Link href="/konsultasi" className="flex items-center justify-between p-4 bg-card rounded-2xl border border-border/80 shadow-sm group cursor-pointer hover:border-blue-200 transition-colors">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-blue-50 rounded-xl text-blue-600">
+            <div className="p-2 bg-blue-50 dark:bg-blue-500/10 rounded-xl text-blue-600">
               <CalendarClock className="w-5 h-5" />
             </div>
             <div>
-              <div className="text-[13px] font-bold text-slate-800">Butuh Konseling?</div>
-              <div className="text-[12px] text-slate-500">Pesan sesi hari ini</div>
+              <div className="text-[13px] font-bold text-foreground">Butuh Konseling?</div>
+              <div className="text-[12px] text-muted-foreground">Pesan sesi hari ini</div>
             </div>
           </div>
         </Link>
       </div>
 
       {/* Community Guidelines */}
-      <div className="bg-white rounded-3xl p-5 border border-slate-100/80 shadow-sm">
-        <h3 className="font-bold text-slate-800 mb-3 flex items-center text-[14px] uppercase tracking-wider">
+      <div className="bg-card rounded-3xl p-5 border border-border/80 shadow-sm">
+        <h3 className="font-bold text-foreground mb-3 flex items-center text-[14px] uppercase tracking-wider">
           <span className="text-lg mr-2">📜</span>
           Pedoman
         </h3>
@@ -144,11 +144,11 @@ export default function RightSidebar() {
       </div>
 
       {/* Footer Links */}
-      <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-[12px] font-medium text-slate-400 px-2 pt-4">
-        <Link href="/about" className="hover:text-slate-600 transition-colors">Tentang</Link>
-        <Link href="/blog" className="hover:text-slate-600 transition-colors">Blog</Link>
-        <Link href="/konsultasi" className="hover:text-slate-600 transition-colors">Konseling</Link>
-        <Link href="/privacy" className="hover:text-slate-600 transition-colors">Privasi</Link>
+      <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-[12px] font-medium text-slate-400 dark:text-muted-foreground px-2 pt-4">
+        <Link href="/about" className="hover:text-muted-foreground transition-colors">Tentang</Link>
+        <Link href="/blog" className="hover:text-muted-foreground transition-colors">Blog</Link>
+        <Link href="/konsultasi" className="hover:text-muted-foreground transition-colors">Konseling</Link>
+        <Link href="/privacy" className="hover:text-muted-foreground transition-colors">Privasi</Link>
         <span className="w-full text-center mt-2 opacity-60">© 2026 YukCeritain</span>
       </div>
 

@@ -954,9 +954,9 @@ body {
 
 /* Floating feed card */
 .community-card {
-  background: #ffffff;
+  background: hsl(var(--card));
   border-radius: 22px;
-  border: 1px solid #E5E7EB;
+  border: 1px solid hsl(var(--border));
   padding: 20px;
   margin: 0 16px;
   transition: box-shadow 240ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -974,12 +974,12 @@ body {
   align-items: center;
   gap: 5px;
   padding: 3px 10px;
-  background: #EFF6FF;
-  border: 1px solid #BFDBFE;
+  background: hsl(var(--primary) / 0.1);
+  border: 1px solid hsl(var(--primary) / 0.3);
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
-  color: #2563EB;
+  color: hsl(var(--primary));
 }
 
 /* Rounded action icon container */
@@ -990,19 +990,19 @@ body {
   gap: 6px;
   padding: 7px 12px;
   border-radius: 999px;
-  background: #F9FAFB;
+  background: transparent;
   border: 1px solid transparent;
   font-size: 13px;
   font-weight: 600;
-  color: #6B7280;
+  color: hsl(var(--muted-foreground));
   cursor: pointer;
   transition: background 200ms, color 200ms, border-color 200ms, transform 150ms;
   -webkit-tap-highlight-color: transparent;
 }
 
 .community-action-btn:hover {
-  background: #F3F4F6;
-  color: #111827;
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
 }
 
 .community-action-btn:active {
@@ -1010,14 +1010,14 @@ body {
 }
 
 .community-action-btn.liked {
-  background: #EFF6FF;
-  color: #2563EB;
-  border-color: #BFDBFE;
+  background: hsl(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+  border-color: hsl(var(--primary) / 0.3);
 }
 
 .community-action-btn.liked svg {
-  fill: #93C5FD;
-  color: #2563EB;
+  fill: hsl(var(--primary) / 0.5);
+  color: hsl(var(--primary));
 }
 
 /* Post content read-more clamp */
@@ -1076,9 +1076,9 @@ body {
 .community-skeleton {
   background: linear-gradient(
     90deg,
-    #F3F4F6 25%,
-    #E9EAEC 50%,
-    #F3F4F6 75%
+    hsl(var(--muted)) 25%,
+    hsl(var(--border)) 50%,
+    hsl(var(--muted)) 75%
   );
   background-size: 800px 100%;
   animation: community-shimmer 1.6s infinite linear;
@@ -1107,10 +1107,10 @@ body {
   top: 0;
   z-index: 50;
   height: 64px;
-  background: rgba(255, 255, 255, 0.92);
+  background: hsl(var(--card) / 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid #F2F4F7;
+  border-bottom: 1px solid hsl(var(--border));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1166,3 +1166,48 @@ body {
   padding: 4px 0 8px;
 }
 
+
+
+/* ============================================
+   COMMUNITY SEMANTIC THEME
+   ============================================ */
+
+.community-light {
+  --background: 210 33% 99%; /* #FAFBFC */
+  --foreground: 222 47% 11%; /* #111827 */
+  --card: 0 0% 100%;         /* #FFFFFF */
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 221.2 83.2% 53.3%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 221.2 83.2% 53.3%;
+}
+
+.community-dark {
+  --background: 240 10% 3.9%;      /* #09090B */
+  --foreground: 0 0% 100%;
+  --card: 240 5% 10%;            /* #18181B */
+  --card-foreground: 0 0% 100%;
+  --popover: 240 5% 10%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 217.2 91.2% 59.8%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 240 3.7% 15.9%;       /* #27272A */
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 100%;
+  --border: 240 3.7% 15.9%;        /* #3F3F46 */
+  --input: 240 3.7% 15.9%;
+  --ring: 224.3 76.3% 48%;
+}

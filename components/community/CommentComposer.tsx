@@ -70,15 +70,15 @@ export default function CommentComposer({
 
       {/* ── Reply Composer Card ───────────────────────────── */}
       <div
-        className={`bg-white rounded-[22px] border transition-all duration-200 overflow-hidden ${
+        className={`bg-card rounded-[22px] border transition-all duration-200 overflow-hidden ${
           isFocused
-            ? 'border-[#2563EB] shadow-[0_0_0_3px_rgba(37,99,235,0.08)]'
-            : 'border-[#E5E7EB] shadow-[0_1px_4px_rgba(0,0,0,0.04)]'
+            ? 'border-primary shadow-[0_0_0_3px_rgba(37,99,235,0.08)]'
+            : 'border-border shadow-[0_1px_4px_rgba(0,0,0,0.04)]'
         }`}
       >
         <div className="flex gap-3 p-4">
           {/* Avatar */}
-          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-[#60A5FA]">
+          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[#EFF6FF] dark:bg-blue-500/10 border border-[#BFDBFE] dark:border-blue-500/30 flex items-center justify-center text-[#60A5FA]">
             <User className="w-4 h-4" />
           </div>
 
@@ -92,10 +92,10 @@ export default function CommentComposer({
               onBlur={() => setIsFocused(false)}
               placeholder="Write a supportive response..."
               rows={1}
-              className="w-full bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-[#111827] text-[15px] leading-relaxed resize-none placeholder:text-[#9CA3AF] placeholder:font-medium"
+              className="w-full bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-foreground text-[15px] leading-relaxed resize-none placeholder:text-muted-foreground placeholder:font-medium"
               style={{ minHeight: '28px' }}
             />
-            <p className="text-[11.5px] text-[#9CA3AF] font-medium mt-1">
+            <p className="text-[11.5px] text-muted-foreground font-medium mt-1">
               Please be respectful and supportive.
             </p>
           </div>
@@ -124,7 +124,7 @@ export default function CommentComposer({
                           prev ? `${prev} ${chip.emoji} ` : `${chip.emoji} `
                         )
                       }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F9FAFB] border border-[#E5E7EB] text-[12.5px] font-semibold text-[#6B7280] hover:bg-[#EFF6FF] hover:border-[#BFDBFE] hover:text-[#2563EB] transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted border border-border text-[12.5px] font-semibold text-muted-foreground hover:bg-[#EFF6FF] dark:bg-blue-500/10 hover:border-[#BFDBFE] dark:border-blue-500/30 hover:text-primary transition-colors"
                     >
                       <span>{chip.emoji}</span>
                       <span>{chip.label}</span>
@@ -133,15 +133,15 @@ export default function CommentComposer({
                 </div>
 
                 {/* Bottom bar */}
-                <div className="flex items-center justify-between pt-1 border-t border-[#F3F4F6]">
-                  <span className={`text-[12px] font-semibold tabular-nums ${remaining < 80 ? 'text-amber-500' : 'text-[#9CA3AF]'}`}>
+                <div className="flex items-center justify-between pt-1 border-t border-border">
+                  <span className={`text-[12px] font-semibold tabular-nums ${remaining < 80 ? 'text-amber-500' : 'text-muted-foreground'}`}>
                     {remaining} left
                   </span>
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onMouseDown={(e) => { e.preventDefault(); setContent(''); setIsFocused(false) }}
-                      className="h-8 px-3 rounded-full text-[13px] font-semibold text-[#6B7280] hover:text-[#374151] hover:bg-[#F3F4F6] transition-colors"
+                      className="h-8 px-3 rounded-full text-[13px] font-semibold text-muted-foreground hover:text-muted-foreground hover:bg-muted transition-colors"
                     >
                       Cancel
                     </button>
@@ -149,7 +149,7 @@ export default function CommentComposer({
                       type="button"
                       onMouseDown={(e) => { e.preventDefault(); handleSubmit() }}
                       disabled={!hasContent || isSubmitting}
-                      className="h-8 px-4 rounded-full text-[13px] font-semibold text-white bg-[#2563EB] hover:bg-[#1D4ED8] disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-[0_2px_8px_rgba(37,99,235,0.25)] active:scale-95"
+                      className="h-8 px-4 rounded-full text-[13px] font-semibold text-white bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-[0_2px_8px_rgba(37,99,235,0.25)] active:scale-95"
                     >
                       {isSubmitting ? '…' : 'Post Reply'}
                     </button>
@@ -162,19 +162,19 @@ export default function CommentComposer({
       </div>
 
       {/* ── Community Guidelines (collapsible) ───────────── */}
-      <div className="rounded-[16px] border border-[#E5E7EB] bg-white overflow-hidden">
+      <div className="rounded-[16px] border border-border bg-card overflow-hidden">
         <button
           type="button"
           onClick={() => setGuidelinesOpen(!guidelinesOpen)}
           className="w-full flex items-center justify-between px-4 py-3 text-left"
         >
-          <span className="text-[13px] font-bold text-[#374151] flex items-center gap-2">
+          <span className="text-[13px] font-bold text-muted-foreground flex items-center gap-2">
             📋 Community Guidelines
           </span>
           <motion.span
             animate={{ rotate: guidelinesOpen ? 180 : 0 }}
             transition={{ duration: 0.2 }}
-            className="text-[#9CA3AF] text-xs"
+            className="text-muted-foreground text-xs"
           >
             ▼
           </motion.span>
@@ -188,7 +188,7 @@ export default function CommentComposer({
               transition={{ duration: 0.22 }}
               className="overflow-hidden"
             >
-              <ul className="px-4 pb-4 space-y-1.5 border-t border-[#F3F4F6]">
+              <ul className="px-4 pb-4 space-y-1.5 border-t border-border">
                 {[
                   'Be respectful and kind',
                   'Avoid judgment — everyone\'s journey is valid',
@@ -197,8 +197,8 @@ export default function CommentComposer({
                   'Support each other with empathy',
                 ].map((rule) => (
                   <li key={rule} className="flex items-start gap-2 pt-2">
-                    <span className="text-[#2563EB] mt-0.5 text-[13px]">•</span>
-                    <span className="text-[13px] text-[#6B7280] leading-snug">{rule}</span>
+                    <span className="text-primary mt-0.5 text-[13px]">•</span>
+                    <span className="text-[13px] text-muted-foreground leading-snug">{rule}</span>
                   </li>
                 ))}
               </ul>

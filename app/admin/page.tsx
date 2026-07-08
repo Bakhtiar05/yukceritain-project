@@ -13,6 +13,14 @@ export default async function AdminRootPage() {
     redirect("/admin/konseling");
   }
 
+  if (role === "admin_community") {
+    redirect("/admin/community");
+  }
+
+  if (role === "admin_events") {
+    redirect("/admin/events");
+  }
+
   // If super_admin (or null, though null shouldn't happen if they are logged in and have a role)
   return (
     <div>

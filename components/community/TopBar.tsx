@@ -27,7 +27,7 @@ export default function TopBar() {
   }, [])
 
   return (
-    <div className="md:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+    <div className="md:hidden sticky top-0 z-40 bg-card/80 backdrop-blur-md border-b border-border px-4 py-3 flex items-center justify-between">
       <div className="flex items-center">
         <Image
           src="/assets/logo-v4.png"
@@ -40,21 +40,21 @@ export default function TopBar() {
       </div>
 
       <div className="flex items-center space-x-3">
-        <button className="w-9 h-9 flex items-center justify-center text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+        <button className="w-9 h-9 flex items-center justify-center text-muted-foreground hover:bg-accent hover:text-accent-foreground dark:bg-muted dark:hover:bg-muted rounded-full transition-colors">
           <Search className="w-5 h-5" />
         </button>
 
         {isAuthenticated === false && (
           <button 
             onClick={openModal}
-            className="text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded-full transition-colors"
+            className="text-sm font-semibold text-primary-foreground bg-primary hover:bg-primary/90 px-4 py-1.5 rounded-full transition-colors"
           >
             Login
           </button>
         )}
         
         {isAuthenticated === true && (
-          <Link href="/community/profile" className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+          <Link href="/community/profile" className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center">
             <User className="w-5 h-5" />
           </Link>
         )}

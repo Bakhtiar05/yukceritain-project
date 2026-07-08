@@ -101,7 +101,7 @@ function ResponseCard({
       initial="hidden"
       animate="visible"
       transition={{ duration: 0.35, delay, ease: 'easeOut' }}
-      className="bg-white rounded-[20px] border border-[#E5E7EB] p-5 shadow-[0_1px_6px_rgba(0,0,0,0.04)]"
+      className="bg-card rounded-[20px] border border-border p-5 shadow-[0_1px_6px_rgba(0,0,0,0.04)]"
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
@@ -110,20 +110,20 @@ function ResponseCard({
             <img
               src={avatarFor(profile?.username, profile?.avatar_url)}
               alt={profile?.display_name}
-              className="w-10 h-10 rounded-full object-cover bg-[#F3F4F6] ring-2 ring-[#F9FAFB]"
+              className="w-10 h-10 rounded-full object-cover bg-muted ring-2 ring-background"
             />
           </Link>
           <div>
             <Link
               href={`/community/user/${profile?.username}`}
-              className="text-[15px] font-bold text-[#111827] hover:text-[#2563EB] transition-colors leading-tight block"
+              className="text-[15px] font-bold text-foreground hover:text-primary transition-colors leading-tight block"
             >
               {profile?.display_name}
             </Link>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="text-[12px] text-[#9CA3AF] font-medium">@{profile?.username}</span>
+              <span className="text-[12px] text-muted-foreground font-medium">@{profile?.username}</span>
               <span className="text-[#D1D5DB] text-[10px]">·</span>
-              <span className="text-[12px] text-[#9CA3AF] font-medium">{formatDate(comment.created_at)}</span>
+              <span className="text-[12px] text-muted-foreground font-medium">{formatDate(comment.created_at)}</span>
             </div>
           </div>
         </div>
@@ -132,7 +132,7 @@ function ResponseCard({
         <div className="relative">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="w-8 h-8 flex items-center justify-center rounded-full text-[#9CA3AF] hover:text-[#374151] hover:bg-[#F3F4F6] transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-full text-muted-foreground hover:text-muted-foreground hover:bg-muted transition-colors"
           >
             <MoreHorizontal className="w-4 h-4" />
           </button>
@@ -143,26 +143,26 @@ function ResponseCard({
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.94, y: -4 }}
                 transition={{ duration: 0.15 }}
-                className="absolute right-0 top-full mt-1.5 w-44 bg-white rounded-[14px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-[#F3F4F6] py-1.5 z-20"
+                className="absolute right-0 top-full mt-1.5 w-44 bg-card rounded-[14px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-border py-1.5 z-20"
               >
                 <button
                   onClick={() => { setIsMenuOpen(false) }}
-                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[13px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[13px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                 >
-                  <Flag className="w-3.5 h-3.5 text-[#9CA3AF]" /> Report
+                  <Flag className="w-3.5 h-3.5 text-muted-foreground" /> Report
                 </button>
                 <button
                   onClick={() => { setIsMenuOpen(false) }}
-                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[13px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                  className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[13px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                 >
-                  <EyeOff className="w-3.5 h-3.5 text-[#9CA3AF]" /> Hide
+                  <EyeOff className="w-3.5 h-3.5 text-muted-foreground" /> Hide
                 </button>
                 {canDelete && (
                   <>
-                    <div className="h-px bg-[#F3F4F6] my-1 mx-2" />
+                    <div className="h-px bg-muted my-1 mx-2" />
                     <button
                       onClick={() => { setIsMenuOpen(false); setIsDeleteOpen(true) }}
-                      className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[13px] font-semibold text-red-600 hover:bg-red-50 transition-colors"
+                      className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-[13px] font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5 text-red-400" /> Delete
                     </button>
@@ -175,7 +175,7 @@ function ResponseCard({
       </div>
 
       {/* Content */}
-      <p className="text-[16px] text-[#111827] leading-[1.7] whitespace-pre-wrap break-words mb-3">
+      <p className="text-[16px] text-foreground leading-[1.7] whitespace-pre-wrap break-words mb-3">
         {comment.content}
       </p>
 
@@ -186,8 +186,8 @@ function ResponseCard({
           onClick={handleHelpful}
           className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[13px] font-semibold transition-all duration-200 ${
             helpful
-              ? 'bg-[#DBEAFE] text-[#1D4ED8] border border-[#BFDBFE]'
-              : 'bg-[#F9FAFB] text-[#6B7280] border border-[#E5E7EB] hover:bg-[#EFF6FF] hover:text-[#2563EB] hover:border-[#BFDBFE]'
+              ? 'bg-[#DBEAFE] text-[#1D4ED8] border border-[#BFDBFE] dark:border-blue-500/30'
+              : 'bg-muted text-muted-foreground border border-border hover:bg-[#EFF6FF] dark:bg-blue-500/10 hover:text-primary hover:border-[#BFDBFE] dark:border-blue-500/30'
           }`}
         >
           <span className="text-[15px]">{helpful ? '💙' : '💙'}</span>
@@ -200,16 +200,16 @@ function ResponseCard({
       <Dialog.Root open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[9998] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-          <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[90vw] max-w-sm translate-x-[-50%] translate-y-[-50%] bg-white rounded-[24px] p-6 shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
+          <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[90vw] max-w-sm translate-x-[-50%] translate-y-[-50%] bg-card rounded-[24px] p-6 shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
             <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center mb-4">
                 <AlertCircle className="w-5 h-5 text-red-500" />
               </div>
-              <Dialog.Title className="text-[17px] font-bold text-[#111827] mb-2">Delete this response?</Dialog.Title>
-              <Dialog.Description className="text-[#6B7280] text-[14px] mb-6">This cannot be undone.</Dialog.Description>
+              <Dialog.Title className="text-[17px] font-bold text-foreground mb-2">Delete this response?</Dialog.Title>
+              <Dialog.Description className="text-muted-foreground text-[14px] mb-6">This cannot be undone.</Dialog.Description>
               <div className="flex gap-3 w-full">
                 <Dialog.Close asChild>
-                  <button className="flex-1 px-4 py-2.5 bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#374151] rounded-full font-semibold text-[14px] transition-colors">Cancel</button>
+                  <button className="flex-1 px-4 py-2.5 bg-muted hover:bg-muted text-muted-foreground rounded-full font-semibold text-[14px] transition-colors">Cancel</button>
                 </Dialog.Close>
                 <button onClick={handleDelete} disabled={isDeleting} className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold text-[14px] transition-colors disabled:opacity-50">
                   {isDeleting ? 'Deleting…' : 'Delete'}
@@ -306,15 +306,15 @@ export default function StoryDetailClient({
   }
 
   return (
-    <div className="w-full min-h-screen bg-[#FAFBFC] pb-28">
+    <div className="w-full min-h-screen bg-background pb-28">
 
       {/* ── Sticky Header ─────────────────────────────────────── */}
-      <header className="sticky top-0 z-40 bg-white/92 backdrop-blur-xl border-b border-[#F2F4F7] md:hidden">
+      <header className="sticky top-0 z-40 bg-card/92 backdrop-blur-xl border-b border-border md:hidden">
         <div className="h-16 flex items-center justify-between px-3">
           {/* Back */}
           <button
             onClick={() => router.back()}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-[#F3F4F6] hover:bg-[#E9EAEC] text-[#374151] transition-colors active:scale-95"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-muted hover:bg-muted text-muted-foreground transition-colors active:scale-95 flex-shrink-0"
             aria-label="Back"
           >
             <ChevronLeft className="w-5 h-5" strokeWidth={2.2} />
@@ -322,17 +322,13 @@ export default function StoryDetailClient({
 
           {/* Center */}
           <div className="flex flex-col items-center flex-1 px-3">
-            <span className="text-[17px] font-bold text-[#111827] leading-tight">Story</span>
-            <span className="text-[11.5px] font-medium text-[#9CA3AF] mt-0.5">Community Discussion</span>
+            <span className="text-[17px] font-bold text-foreground leading-tight tracking-tight text-center">
+              Story Community Discussion
+            </span>
           </div>
 
-          {/* Bookmark */}
-          <button
-            className="w-10 h-10 flex items-center justify-center rounded-full border border-[#E5E7EB] text-[#6B7280] hover:bg-[#F9FAFB] transition-colors active:scale-95"
-            aria-label="Bookmark"
-          >
-            <Bookmark className="w-[18px] h-[18px]" strokeWidth={1.8} />
-          </button>
+          {/* Right placeholder to keep center alignment */}
+          <div className="w-10 h-10 flex-shrink-0" />
         </div>
       </header>
 
@@ -340,7 +336,7 @@ export default function StoryDetailClient({
       <div className="hidden md:flex px-6 pt-6 pb-2">
         <Link
           href="/community/for-you"
-          className="inline-flex items-center gap-2 text-[14px] font-semibold text-[#6B7280] hover:text-[#2563EB] transition-colors"
+          className="inline-flex items-center gap-2 text-[14px] font-semibold text-muted-foreground hover:text-primary transition-colors"
         >
           <ChevronLeft className="w-4 h-4" /> Back to Feed
         </Link>
@@ -353,7 +349,7 @@ export default function StoryDetailClient({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
-          className="bg-white rounded-[24px] border border-[#E5E7EB] shadow-[0_2px_16px_rgba(0,0,0,0.05)] overflow-hidden"
+          className="bg-card rounded-[24px] border border-border shadow-[0_2px_16px_rgba(0,0,0,0.05)] overflow-hidden"
         >
           <div className="p-6">
 
@@ -363,14 +359,14 @@ export default function StoryDetailClient({
                 <img
                   src={avatarUrl}
                   alt={displayName}
-                  className="w-12 h-12 rounded-full object-cover bg-[#F3F4F6] ring-2 ring-[#F9FAFB] flex-shrink-0"
+                  className="w-12 h-12 rounded-full object-cover bg-muted ring-2 ring-background flex-shrink-0"
                 />
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
                     {post.is_anonymous ? (
-                      <span className="text-[17px] font-bold text-[#111827]">{displayName}</span>
+                      <span className="text-[17px] font-bold text-foreground">{displayName}</span>
                     ) : (
-                      <Link href={`/community/user/${username}`} className="text-[17px] font-bold text-[#111827] hover:text-[#2563EB] transition-colors">
+                      <Link href={`/community/user/${username}`} className="text-[17px] font-bold text-foreground hover:text-primary transition-colors">
                         {displayName}
                       </Link>
                     )}
@@ -378,7 +374,7 @@ export default function StoryDetailClient({
                       <span className="community-badge-anon">🛡 Anonymous</span>
                     )}
                   </div>
-                  <span className="text-[13px] text-[#9CA3AF] font-medium">{formatDate(post.created_at)}</span>
+                  <span className="text-[13px] text-muted-foreground font-medium">{formatDate(post.created_at)}</span>
                 </div>
               </div>
 
@@ -386,7 +382,7 @@ export default function StoryDetailClient({
               <div className="relative">
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="w-9 h-9 flex items-center justify-center rounded-full text-[#9CA3AF] hover:text-[#374151] hover:bg-[#F3F4F6] transition-colors"
+                  className="w-9 h-9 flex items-center justify-center rounded-full text-muted-foreground hover:text-muted-foreground hover:bg-muted transition-colors"
                 >
                   <MoreHorizontal className="w-5 h-5" />
                 </button>
@@ -397,33 +393,33 @@ export default function StoryDetailClient({
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.94, y: -4 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-[#F3F4F6] py-2 z-20"
+                      className="absolute right-0 top-full mt-1.5 w-52 bg-card rounded-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-border py-2 z-20"
                     >
                       {isOwner && (
                         <>
                           <button
                             onClick={() => { setIsEditing(true); setIsMenuOpen(false) }}
-                            className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                           >
-                            <Check className="w-4 h-4 text-[#9CA3AF]" /> Edit Post
+                            <Check className="w-4 h-4 text-muted-foreground" /> Edit Post
                           </button>
                           <button
                             onClick={() => { setIsDeleteOpen(true); setIsMenuOpen(false) }}
-                            className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-red-600 hover:bg-red-50 transition-colors"
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-colors"
                           >
                             <Trash2 className="w-4 h-4 text-red-400" /> Delete Post
                           </button>
-                          <div className="h-px bg-[#F3F4F6] my-1.5 mx-3" />
+                          <div className="h-px bg-muted my-1.5 mx-3" />
                         </>
                       )}
-                      <button onClick={handleShare} className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors">
-                        <LinkIcon className="w-4 h-4 text-[#9CA3AF]" /> Share Story
+                      <button onClick={handleShare} className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
+                        <LinkIcon className="w-4 h-4 text-muted-foreground" /> Share Story
                       </button>
-                      <button className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors">
-                        <Flag className="w-4 h-4 text-[#9CA3AF]" /> Report
+                      <button className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
+                        <Flag className="w-4 h-4 text-muted-foreground" /> Report
                       </button>
-                      <button className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors">
-                        <EyeOff className="w-4 h-4 text-[#9CA3AF]" /> Hide Story
+                      <button className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
+                        <EyeOff className="w-4 h-4 text-muted-foreground" /> Hide Story
                       </button>
                     </motion.div>
                   )}
@@ -437,17 +433,17 @@ export default function StoryDetailClient({
                 <textarea
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
-                  className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-[16px] px-4 py-3 text-[#111827] text-[17px] leading-[1.8] focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB] outline-none resize-none min-h-[120px] transition-all"
+                  className="w-full bg-muted border border-border rounded-[16px] px-4 py-3 text-foreground text-[17px] leading-[1.8] focus:ring-2 focus:ring-ring focus:border-primary outline-none resize-none min-h-[120px] transition-all"
                 />
                 <div className="flex justify-end gap-2 mt-3">
-                  <button onClick={() => { setIsEditing(false); setEditContent(post.content) }} className="px-4 py-2 text-[14px] font-semibold text-[#6B7280] hover:bg-[#F3F4F6] rounded-full transition-colors">Cancel</button>
-                  <button onClick={handleEditSave} disabled={isSubmitting} className="px-4 py-2 text-[14px] font-semibold text-white bg-[#2563EB] hover:bg-[#1D4ED8] rounded-full transition-colors disabled:opacity-50">
+                  <button onClick={() => { setIsEditing(false); setEditContent(post.content) }} className="px-4 py-2 text-[14px] font-semibold text-muted-foreground hover:bg-muted rounded-full transition-colors">Cancel</button>
+                  <button onClick={handleEditSave} disabled={isSubmitting} className="px-4 py-2 text-[14px] font-semibold text-white bg-primary hover:bg-primary/90 rounded-full transition-colors disabled:opacity-50">
                     {isSubmitting ? 'Saving…' : 'Save'}
                   </button>
                 </div>
               </div>
             ) : (
-              <p className="text-[17px] text-[#111827] leading-[1.8] whitespace-pre-wrap break-words mb-5">
+              <p className="text-[17px] text-foreground leading-[1.8] whitespace-pre-wrap break-words mb-5">
                 {post.content}
               </p>
             )}
@@ -483,7 +479,7 @@ export default function StoryDetailClient({
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}
-          className="bg-white rounded-[22px] border border-[#E5E7EB] shadow-[0_1px_6px_rgba(0,0,0,0.04)] overflow-hidden"
+          className="bg-card rounded-[22px] border border-border shadow-[0_1px_6px_rgba(0,0,0,0.04)] overflow-hidden"
         >
           <CommentComposer postId={post.id} isAuthenticated={isAuthenticated} />
         </motion.div>
@@ -497,15 +493,15 @@ export default function StoryDetailClient({
           {/* Section header */}
           <div className="flex items-center justify-between px-1 py-2">
             <div>
-              <h2 className="text-[18px] font-bold text-[#111827]">Responses</h2>
-              <p className="text-[13px] text-[#9CA3AF] font-medium mt-0.5">
+              <h2 className="text-[18px] font-bold text-foreground">Responses</h2>
+              <p className="text-[13px] text-muted-foreground font-medium mt-0.5">
                 {comments.length === 0
                   ? 'No responses yet'
                   : `${comments.length} supportive repl${comments.length === 1 ? 'y' : 'ies'}`}
               </p>
             </div>
           </div>
-          <div className="h-px bg-[#E5E7EB] mb-4" />
+          <div className="h-px bg-muted mb-4" />
 
           {/* Empty state */}
           {comments.length === 0 ? (
@@ -518,8 +514,8 @@ export default function StoryDetailClient({
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center mb-5 shadow-inner">
                 <span className="text-4xl">💌</span>
               </div>
-              <h3 className="text-[19px] font-bold text-[#111827] mb-2">No responses yet</h3>
-              <p className="text-[14px] text-[#6B7280] leading-relaxed max-w-[220px]">
+              <h3 className="text-[19px] font-bold text-foreground mb-2">No responses yet</h3>
+              <p className="text-[14px] text-muted-foreground leading-relaxed max-w-[220px]">
                 Be the first to offer kindness and encouragement.
               </p>
             </motion.div>
@@ -547,18 +543,18 @@ export default function StoryDetailClient({
       <Dialog.Root open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[9998] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-          <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[90vw] max-w-sm translate-x-[-50%] translate-y-[-50%] bg-white rounded-[24px] p-6 shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
+          <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[90vw] max-w-sm translate-x-[-50%] translate-y-[-50%] bg-card rounded-[24px] p-6 shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
             <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center mb-4">
                 <AlertCircle className="w-5 h-5 text-red-500" />
               </div>
-              <Dialog.Title className="text-[18px] font-bold text-[#111827] mb-2">Delete this story?</Dialog.Title>
-              <Dialog.Description className="text-[#6B7280] text-[14px] mb-6 leading-relaxed">
+              <Dialog.Title className="text-[18px] font-bold text-foreground mb-2">Delete this story?</Dialog.Title>
+              <Dialog.Description className="text-muted-foreground text-[14px] mb-6 leading-relaxed">
                 This action cannot be undone. Your story and all replies will be permanently deleted.
               </Dialog.Description>
               <div className="flex gap-3 w-full">
                 <Dialog.Close asChild>
-                  <button className="flex-1 px-4 py-2.5 bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#374151] rounded-full font-semibold text-[14px] transition-colors">Cancel</button>
+                  <button className="flex-1 px-4 py-2.5 bg-muted hover:bg-muted text-muted-foreground rounded-full font-semibold text-[14px] transition-colors">Cancel</button>
                 </Dialog.Close>
                 <button onClick={handleDelete} disabled={isDeleting} className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold text-[14px] transition-colors disabled:opacity-50">
                   {isDeleting ? 'Deleting…' : 'Delete'}

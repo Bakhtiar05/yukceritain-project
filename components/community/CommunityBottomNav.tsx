@@ -72,7 +72,7 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 340, damping: 30, delay: 0.1 }}
-          className="flex items-center justify-between h-[72px] px-5 bg-white/95 backdrop-blur-xl rounded-[24px] border border-[#E5E7EB] shadow-[0_8px_32px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.06)]"
+          className="flex items-center justify-between h-[72px] px-5 bg-card/95 backdrop-blur-xl rounded-[24px] border border-border shadow-[0_8px_32px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.06)]"
         >
           {NAV_ITEMS.map((item) => {
             const active = isActive(item)
@@ -91,11 +91,11 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
                   <motion.div
                     animate={bounce ? { scale: [1, 0.85, 1.1, 1] } : {}}
                     transition={{ duration: 0.35, ease: 'easeOut' }}
-                    className="w-14 h-14 -mt-8 rounded-full bg-[#2563EB] flex items-center justify-center shadow-[0_6px_20px_rgba(37,99,235,0.40)] border-4 border-white"
+                    className="w-14 h-14 -mt-8 rounded-full bg-primary flex items-center justify-center shadow-[0_6px_20px_rgba(37,99,235,0.40)] border-4 border-white"
                   >
                     <Icon size={22} strokeWidth={2} className="text-white" />
                   </motion.div>
-                  <span className={`text-[10px] font-semibold mt-0.5 ${active ? 'text-[#2563EB]' : 'text-[#9CA3AF]'}`}>
+                  <span className={`text-[10px] font-semibold mt-0.5 ${active ? 'text-primary' : 'text-muted-foreground'}`}>
                     {item.label}
                   </span>
                 </button>
@@ -115,17 +115,17 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
                   transition={{ duration: 0.30, ease: 'easeOut' }}
                   className={`w-10 h-10 flex items-center justify-center rounded-[12px] transition-all duration-200 ${
                     active
-                      ? 'bg-[#EFF6FF] shadow-[0_2px_8px_rgba(37,99,235,0.12)]'
+                      ? 'bg-[#EFF6FF] dark:bg-blue-500/10 shadow-[0_2px_8px_rgba(37,99,235,0.12)]'
                       : 'bg-transparent'
                   }`}
                 >
                   <Icon
                     size={22}
                     strokeWidth={active ? 2.2 : 1.8}
-                    className={`transition-colors duration-200 ${active ? 'text-[#2563EB]' : 'text-[#9CA3AF]'}`}
+                    className={`transition-colors duration-200 ${active ? 'text-primary dark:text-blue-400' : 'text-muted-foreground'}`}
                   />
                 </motion.div>
-                <span className={`text-[10px] font-semibold transition-colors duration-200 ${active ? 'text-[#2563EB]' : 'text-[#9CA3AF]'}`}>
+                <span className={`text-[10px] font-semibold transition-colors duration-200 ${active ? 'text-primary dark:text-blue-400' : 'text-muted-foreground'}`}>
                   {item.label}
                 </span>
               </button>

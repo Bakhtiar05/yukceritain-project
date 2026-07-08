@@ -92,10 +92,10 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.42, ease: [0.25, 0.46, 0.45, 0.94] }}
       /* Card */
-      className={`mx-4 mb-3 bg-white rounded-[24px] border transition-all duration-300 ${
+      className={`mx-4 mb-3 bg-card rounded-[24px] border transition-all duration-300 ${
         isFocused
-          ? 'border-[#2563EB] shadow-[0_4px_24px_rgba(37,99,235,0.10)]'
-          : 'border-[#E5E7EB] shadow-[0_2px_12px_rgba(0,0,0,0.05)]'
+          ? 'border-primary shadow-[0_4px_24px_rgba(37,99,235,0.10)]'
+          : 'border-border shadow-[0_2px_12px_rgba(0,0,0,0.05)]'
       }`}
     >
       <div className="p-6 flex flex-col gap-5">
@@ -103,16 +103,16 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
         {/* ── HEADER ─────────────────────────────────────────── */}
         <div className="flex items-center gap-4">
           {/* Avatar */}
-          <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-[#EFF6FF] to-[#DBEAFE] border border-[#BFDBFE] flex items-center justify-center text-[#3B82F6] shadow-sm">
+          <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-[#EFF6FF] to-[#DBEAFE] border border-[#BFDBFE] dark:border-blue-500/30 flex items-center justify-center text-[#3B82F6] shadow-sm">
             <User className="w-5 h-5" strokeWidth={1.8} />
           </div>
 
           {/* Title block */}
           <div>
-            <h2 className="text-[20px] font-bold text-[#111827] leading-tight">
+            <h2 className="text-[20px] font-bold text-foreground leading-tight">
               Share Your Story
             </h2>
-            <p className="text-[14px] text-[#6B7280] leading-snug mt-0.5">
+            <p className="text-[14px] text-muted-foreground leading-snug mt-0.5">
               Your story may help someone feel less alone.
             </p>
           </div>
@@ -135,7 +135,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
             placeholder={
               `What's on your mind today?\n\nShare your thoughts, experiences, or feelings in a safe and supportive space...`
             }
-            className="w-full bg-transparent outline-none focus:outline-none focus:ring-0 border-0 resize-none text-[16px] text-[#111827] leading-[1.7] placeholder:text-[#9CA3AF] placeholder:leading-[1.7] p-5 rounded-[16px] custom-scrollbar"
+            className="w-full bg-transparent outline-none focus:outline-none focus:ring-0 border-0 resize-none text-[16px] text-foreground leading-[1.7] placeholder:text-muted-foreground placeholder:leading-[1.7] p-5 rounded-[16px] custom-scrollbar"
             style={{ minHeight: '160px' }}
           />
         </div>
@@ -151,7 +151,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
               className="overflow-hidden"
             >
               <div className="pt-1">
-                <p className="text-[13px] font-semibold text-[#6B7280] mb-3 uppercase tracking-wide">
+                <p className="text-[13px] font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
                   How are you feeling today?
                 </p>
                 <div className="grid grid-cols-4 gap-2">
@@ -192,12 +192,12 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 8 }}
               transition={{ duration: 0.26, ease: 'easeOut' }}
-              className="rounded-[16px] bg-[#EFF6FF] border border-[#BFDBFE] px-4 py-3.5 flex items-center justify-between gap-4"
+              className="rounded-[16px] bg-[#EFF6FF] dark:bg-blue-500/10 border border-[#BFDBFE] dark:border-blue-500/30 px-4 py-3.5 flex items-center justify-between gap-4"
             >
               {/* Left */}
               <div className="flex items-center gap-3">
-                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-white border border-[#BFDBFE] flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-[#2563EB]" strokeWidth={1.8} />
+                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-card border border-[#BFDBFE] dark:border-blue-500/30 flex items-center justify-center">
+                  <Shield className="w-4 h-4 text-primary" strokeWidth={1.8} />
                 </div>
                 <div>
                   <p className="text-[13.5px] font-bold text-[#1E40AF] leading-tight">
@@ -216,12 +216,12 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                 aria-checked={isAnonymous}
                 onClick={() => setIsAnonymous(!isAnonymous)}
                 className={`relative flex-shrink-0 h-6 w-11 rounded-full border-2 border-transparent focus:outline-none transition-colors duration-200 ${
-                  isAnonymous ? 'bg-[#2563EB]' : 'bg-[#CBD5E1]'
+                  isAnonymous ? 'bg-primary' : 'bg-[#CBD5E1]'
                 }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <motion.span
-                  className="pointer-events-none absolute top-0.5 left-0.5 h-[18px] w-[18px] rounded-full bg-white shadow-sm"
+                  className="pointer-events-none absolute top-0.5 left-0.5 h-[18px] w-[18px] rounded-full bg-card shadow-sm"
                   animate={{ x: isAnonymous ? 20 : 0 }}
                   transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 />
@@ -248,7 +248,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                 <button
                   key={label}
                   type="button"
-                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-[14px] border border-[#E5E7EB] text-[13px] font-semibold text-[#6B7280] hover:border-[#2563EB] hover:text-[#2563EB] hover:bg-[#EFF6FF] transition-all duration-200 active:scale-95"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-[14px] border border-border text-[13px] font-semibold text-muted-foreground hover:border-primary hover:text-primary hover:bg-[#EFF6FF] dark:bg-blue-500/10 transition-all duration-200 active:scale-95"
                 >
                   {icon}
                   {label}
@@ -259,7 +259,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
         </AnimatePresence>
 
         {/* ── FOOTER ──────────────────────────────────────────── */}
-        <div className={`flex items-center justify-between gap-4 ${(isFocused || hasContent) ? 'pt-1 border-t border-[#F3F4F6]' : ''}`}>
+        <div className={`flex items-center justify-between gap-4 ${(isFocused || hasContent) ? 'pt-1 border-t border-border' : ''}`}>
           {/* Left: counter + discard */}
           <div className="flex items-center gap-3">
             {/* Char counter — only when focused */}
@@ -286,7 +286,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                   exit={{ opacity: 0, scale: 0.9 }}
                   type="button"
                   onClick={handleDiscard}
-                  className="inline-flex items-center gap-1.5 h-10 px-4 rounded-[14px] border border-[#E5E7EB] text-[14px] font-semibold text-[#6B7280] hover:border-[#EF4444] hover:text-[#EF4444] hover:bg-red-50 transition-all duration-200"
+                  className="inline-flex items-center gap-1.5 h-10 px-4 rounded-[14px] border border-border text-[14px] font-semibold text-muted-foreground hover:border-[#EF4444] hover:text-[#EF4444] hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-all duration-200"
                 >
                   <X className="w-3.5 h-3.5" />
                   Discard
@@ -306,8 +306,8 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
             transition={{ duration: 0.18 }}
             className={`inline-flex items-center gap-2 h-12 px-6 rounded-[16px] text-[15px] font-semibold text-white transition-colors duration-200 ${
               hasContent
-                ? 'bg-[#2563EB] hover:bg-[#1D4ED8] shadow-[0_4px_14px_rgba(37,99,235,0.30)] cursor-pointer'
-                : 'bg-[#2563EB] cursor-default'
+                ? 'bg-primary hover:bg-primary/90 shadow-[0_4px_14px_rgba(37,99,235,0.30)] cursor-pointer'
+                : 'bg-primary cursor-default'
             } disabled:cursor-wait`}
           >
             {isSubmitting ? (
@@ -328,7 +328,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
         </div>
 
         {/* ── GUIDANCE ────────────────────────────────────────── */}
-        <p className="text-[12.5px] text-[#9CA3AF] leading-snug text-center">
+        <p className="text-[12.5px] text-muted-foreground leading-snug text-center">
           💙 Please be respectful, protect privacy, and remember that kindness matters.
         </p>
 

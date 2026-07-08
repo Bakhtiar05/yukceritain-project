@@ -188,7 +188,7 @@ export default function StoryCard({
               <img
                 src={avatarUrl}
                 alt={displayName}
-                className="w-12 h-12 rounded-full object-cover bg-[#F3F4F6] ring-2 ring-[#F9FAFB]"
+                className="w-12 h-12 rounded-full object-cover bg-muted ring-2 ring-background"
               />
             </div>
 
@@ -196,14 +196,14 @@ export default function StoryCard({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 {is_anonymous ? (
-                  <span className="text-[16px] font-bold text-[#111827] leading-tight">
+                  <span className="text-[16px] font-bold text-foreground leading-tight">
                     {displayName}
                   </span>
                 ) : (
                   <Link
                     href={`/community/user/${username}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="text-[16px] font-bold text-[#111827] hover:text-[#2563EB] transition-colors leading-tight"
+                    className="text-[16px] font-bold text-foreground hover:text-primary transition-colors leading-tight"
                   >
                     {displayName}
                   </Link>
@@ -217,10 +217,10 @@ export default function StoryCard({
               </div>
               <div className="flex items-center gap-1.5 mt-0.5">
                 {!is_anonymous && (
-                  <span className="text-[13px] text-[#9CA3AF] font-medium truncate">@{username}</span>
+                  <span className="text-[13px] text-muted-foreground font-medium truncate">@{username}</span>
                 )}
                 {!is_anonymous && <span className="text-[#D1D5DB] text-[11px]">·</span>}
-                <span className="text-[13px] text-[#9CA3AF] font-medium whitespace-nowrap">
+                <span className="text-[13px] text-muted-foreground font-medium whitespace-nowrap">
                   {formatDate(created_at)}
                 </span>
               </div>
@@ -231,7 +231,7 @@ export default function StoryCard({
           <div className="relative flex-shrink-0 ml-2" ref={menuRef}>
             <button
               onClick={(e) => { e.stopPropagation(); setIsMenuOpen(!isMenuOpen) }}
-              className="w-9 h-9 flex items-center justify-center rounded-full text-[#9CA3AF] hover:text-[#374151] hover:bg-[#F3F4F6] transition-colors active:scale-95"
+              className="w-9 h-9 flex items-center justify-center rounded-full text-muted-foreground hover:text-muted-foreground hover:bg-muted transition-colors active:scale-95"
               aria-label="More options"
             >
               <MoreHorizontal className="w-5 h-5" />
@@ -239,45 +239,45 @@ export default function StoryCard({
 
             {/* Dropdown */}
             {isMenuOpen && (
-              <div className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-[#F3F4F6] py-2 z-20 animate-community-expand-down">
+              <div className="absolute right-0 top-full mt-1.5 w-52 bg-card rounded-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-border py-2 z-20 animate-community-expand-down">
                 {isOwner && (
                   <>
                     <button
                       onClick={(e) => { e.stopPropagation(); setIsEditing(true); setIsMenuOpen(false) }}
-                      className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                     >
-                      <Check className="w-4 h-4 text-[#9CA3AF]" />
+                      <Check className="w-4 h-4 text-muted-foreground" />
                       Edit Post
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); setIsDeleteModalOpen(true); setIsMenuOpen(false) }}
-                      className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-red-600 hover:bg-red-50 transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-colors"
                     >
                       <Trash2 className="w-4 h-4 text-red-400" />
                       Delete Post
                     </button>
-                    <div className="h-px bg-[#F3F4F6] my-1.5 mx-3" />
+                    <div className="h-px bg-muted my-1.5 mx-3" />
                   </>
                 )}
                 <button
                   onClick={(e) => { e.stopPropagation(); handleShare() }}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                 >
-                  <LinkIcon className="w-4 h-4 text-[#9CA3AF]" />
+                  <LinkIcon className="w-4 h-4 text-muted-foreground" />
                   Share Story
                 </button>
                 <button
                   onClick={(e) => e.stopPropagation()}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                 >
-                  <Flag className="w-4 h-4 text-[#9CA3AF]" />
+                  <Flag className="w-4 h-4 text-muted-foreground" />
                   Report
                 </button>
                 <button
                   onClick={(e) => e.stopPropagation()}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-[#374151] hover:bg-[#F9FAFB] transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                 >
-                  <EyeOff className="w-4 h-4 text-[#9CA3AF]" />
+                  <EyeOff className="w-4 h-4 text-muted-foreground" />
                   Hide Post
                 </button>
               </div>
@@ -291,19 +291,19 @@ export default function StoryCard({
             <textarea
               value={editContent}
               onChange={(e) => setEditContent(e.target.value)}
-              className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-[14px] px-4 py-3 text-[#111827] text-[15px] leading-relaxed focus:ring-2 focus:ring-[#2563EB] focus:border-[#2563EB] outline-none resize-none min-h-[80px] transition-all"
+              className="w-full bg-muted border border-border rounded-[14px] px-4 py-3 text-foreground text-[15px] leading-relaxed focus:ring-2 focus:ring-ring focus:border-primary outline-none resize-none min-h-[80px] transition-all"
             />
             <div className="flex justify-end gap-2 mt-2">
               <button
                 onClick={(e) => { e.stopPropagation(); setIsEditing(false); setEditContent(content) }}
-                className="px-3 py-1.5 text-[13px] font-semibold text-[#6B7280] hover:text-[#374151] hover:bg-[#F3F4F6] rounded-full transition-colors"
+                className="px-3 py-1.5 text-[13px] font-semibold text-muted-foreground hover:text-muted-foreground hover:bg-muted rounded-full transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); handleEditSave() }}
                 disabled={isSubmitting}
-                className="px-4 py-1.5 text-[13px] font-semibold text-white bg-[#2563EB] hover:bg-[#1D4ED8] rounded-full transition-colors disabled:opacity-50"
+                className="px-4 py-1.5 text-[13px] font-semibold text-white bg-primary hover:bg-primary/90 rounded-full transition-colors disabled:opacity-50"
               >
                 {isSubmitting ? 'Saving…' : 'Save'}
               </button>
@@ -313,7 +313,7 @@ export default function StoryCard({
           <div className="mb-3">
             <p
               ref={contentRef}
-              className={`text-[#111827] text-[16px] leading-[1.7] whitespace-pre-wrap break-words community-post-content ${
+              className={`text-foreground text-[16px] leading-[1.7] whitespace-pre-wrap break-words community-post-content ${
                 isExpanded ? 'expanded' : ''
               }`}
             >
@@ -322,7 +322,7 @@ export default function StoryCard({
             {needsClamp && !isExpanded && (
               <button
                 onClick={(e) => { e.stopPropagation(); setIsExpanded(true) }}
-                className="mt-1 text-[13.5px] font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition-colors"
+                className="mt-1 text-[13.5px] font-semibold text-primary hover:text-primary/90 transition-colors"
               >
                 Read More
               </button>
@@ -331,7 +331,7 @@ export default function StoryCard({
         )}
 
         {/* ── Card Footer ─────────────────────────────────── */}
-        <div className="flex items-center gap-2 pt-2 border-t border-[#F3F4F6]">
+        <div className="flex items-center gap-2 pt-2 border-t border-border">
 
           {/* Support (like) */}
           <button
@@ -377,20 +377,20 @@ export default function StoryCard({
       <Dialog.Root open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <Dialog.Portal>
           <Dialog.Overlay className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[9998] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-          <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[90vw] max-w-sm translate-x-[-50%] translate-y-[-50%] bg-white rounded-[24px] p-6 shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
+          <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[90vw] max-w-sm translate-x-[-50%] translate-y-[-50%] bg-card rounded-[24px] p-6 shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
             <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4 text-red-600">
+              <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4 text-red-600">
                 <AlertCircle className="w-6 h-6" />
               </div>
-              <Dialog.Title className="text-[18px] font-bold text-[#111827] mb-2">
+              <Dialog.Title className="text-[18px] font-bold text-foreground mb-2">
                 Delete this story?
               </Dialog.Title>
-              <Dialog.Description className="text-[#6B7280] text-[14px] mb-6 leading-relaxed">
+              <Dialog.Description className="text-muted-foreground text-[14px] mb-6 leading-relaxed">
                 This action cannot be undone. Your story and all its replies will be permanently deleted.
               </Dialog.Description>
               <div className="flex gap-3 w-full">
                 <Dialog.Close asChild>
-                  <button className="flex-1 px-4 py-2.5 bg-[#F3F4F6] hover:bg-[#E5E7EB] text-[#374151] rounded-full font-semibold text-[14px] transition-colors">
+                  <button className="flex-1 px-4 py-2.5 bg-muted hover:bg-muted text-muted-foreground rounded-full font-semibold text-[14px] transition-colors">
                     Cancel
                   </button>
                 </Dialog.Close>

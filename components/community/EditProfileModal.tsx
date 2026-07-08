@@ -61,13 +61,13 @@ export default function EditProfileModal({
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[9998] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[95vw] max-w-md translate-x-[-50%] translate-y-[-50%] bg-white p-6 shadow-xl sm:rounded-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]">
+        <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[95vw] max-w-md translate-x-[-50%] translate-y-[-50%] bg-card p-6 shadow-xl sm:rounded-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]">
           <div className="flex items-center justify-between mb-5">
-            <Dialog.Title className="text-xl font-bold text-slate-900">
+            <Dialog.Title className="text-xl font-bold text-foreground">
               Edit Profile
             </Dialog.Title>
             <Dialog.Close asChild>
-              <button className="rounded-full p-2 hover:bg-slate-100 text-slate-500 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+              <button className="rounded-full p-2 hover:bg-accent hover:text-accent-foreground dark:bg-muted dark:hover:bg-muted text-muted-foreground transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
                 <X className="w-5 h-5" />
               </button>
             </Dialog.Close>
@@ -75,13 +75,13 @@ export default function EditProfileModal({
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm font-medium">
+              <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 rounded-lg text-sm font-medium">
                 {error}
               </div>
             )}
 
             <div>
-              <label htmlFor="displayName" className="block text-sm font-semibold text-slate-700 mb-1.5">
+              <label htmlFor="displayName" className="block text-sm font-semibold text-muted-foreground mb-1.5">
                 Display Name
               </label>
               <input
@@ -90,32 +90,32 @@ export default function EditProfileModal({
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 maxLength={50}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                 placeholder="How you want to be called"
               />
             </div>
 
             <div>
-              <label htmlFor="username" className="block text-sm font-semibold text-slate-700 mb-1.5">
+              <label htmlFor="username" className="block text-sm font-semibold text-muted-foreground mb-1.5">
                 Username
               </label>
               <div className="relative">
-                <span className="absolute left-4 top-2.5 text-slate-400 font-medium">@</span>
+                <span className="absolute left-4 top-2.5 text-slate-400 dark:text-muted-foreground font-medium">@</span>
                 <input
                   id="username"
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   maxLength={20}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                  className="w-full bg-muted border border-border rounded-xl pl-8 pr-4 py-2.5 text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
                   placeholder="username"
                 />
               </div>
-              <p className="mt-1 text-xs text-slate-500">Only letters, numbers, and underscores.</p>
+              <p className="mt-1 text-xs text-muted-foreground">Only letters, numbers, and underscores.</p>
             </div>
 
             <div>
-              <label htmlFor="bio" className="block text-sm font-semibold text-slate-700 mb-1.5">
+              <label htmlFor="bio" className="block text-sm font-semibold text-muted-foreground mb-1.5">
                 Bio
               </label>
               <textarea
@@ -124,11 +124,11 @@ export default function EditProfileModal({
                 onChange={(e) => setBio(e.target.value)}
                 maxLength={160}
                 rows={3}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow resize-none"
+                className="w-full bg-muted border border-border rounded-xl px-4 py-2.5 text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow resize-none"
                 placeholder="Write a short bio about yourself..."
               />
               <div className="text-right mt-1">
-                <span className={`text-xs ${bio.length >= 150 ? 'text-amber-500' : 'text-slate-400'}`}>
+                <span className={`text-xs ${bio.length >= 150 ? 'text-amber-500' : 'text-slate-400 dark:text-muted-foreground'}`}>
                   {bio.length} / 160
                 </span>
               </div>
