@@ -1,0 +1,16 @@
+{
+  "welcomeHero": {
+    "headline": "Berbagi Bebas. Merasa Didengar.",
+    "description": "Setiap cerita layak mendapat tempat yang aman."
+  },
+  "bottomNav": {
+    "home": "Beranda",
+    "explore": "Jelajahi",
+    "story": "Cerita",
+    "profile": "Profil"
+  },
+  "profile": {
+    "language": "Bahasa",
+    "languageDesc": "Bahasa Indonesia"
+  }
+}

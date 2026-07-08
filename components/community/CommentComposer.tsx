@@ -60,13 +60,7 @@ export default function CommentComposer({
   return (
     <div className="px-4 py-5 space-y-3">
 
-      {/* ── Encouragement Banner ──────────────────────────── */}
-      <div className="flex items-center gap-3 bg-[#DBEAFE] rounded-[18px] px-4 py-3.5">
-        <span className="text-xl flex-shrink-0">💙</span>
-        <p className="text-[13px] font-semibold text-[#1E40AF] leading-snug">
-          Your kind words may help someone feel less alone.
-        </p>
-      </div>
+
 
       {/* ── Reply Composer Card ───────────────────────────── */}
       <div

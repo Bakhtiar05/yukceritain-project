@@ -5,6 +5,7 @@ import AuthModalProvider from '@/components/community/AuthModalProvider'
 import CommunityMobileHeader from '@/components/community/CommunityMobileHeader'
 import CommunityBottomNav from '@/components/community/CommunityBottomNav'
 import { createClient } from '@/lib/supabase/server'
+import { CommunityLanguageProvider } from '@/lib/i18n/CommunityLanguageProvider'
 
 export default async function CommunityLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -12,8 +13,9 @@ export default async function CommunityLayout({ children }: { children: React.Re
   const isAuthenticated = !!session
 
   return (
-    <AuthModalProvider>
-      {/* Premium floating bottom nav — community only */}
+    <CommunityLanguageProvider>
+      <AuthModalProvider>
+        {/* Premium floating bottom nav — community only */}
       <CommunityBottomNav isAuthenticated={isAuthenticated} />
 
       {/* Premium mobile header — only on mobile */}
@@ -41,6 +43,7 @@ export default async function CommunityLayout({ children }: { children: React.Re
 
         </div>
       </div>
-    </AuthModalProvider>
+      </AuthModalProvider>
+    </CommunityLanguageProvider>
   )
 }

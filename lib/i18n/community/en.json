@@ -1,0 +1,16 @@
+{
+  "welcomeHero": {
+    "headline": "Share Freely. Feel Heard.",
+    "description": "Every story deserves a safe place."
+  },
+  "bottomNav": {
+    "home": "Home",
+    "explore": "Explore",
+    "story": "Story",
+    "profile": "Profile"
+  },
+  "profile": {
+    "language": "Language",
+    "languageDesc": "English"
+  }
+}

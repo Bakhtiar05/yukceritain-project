@@ -8,7 +8,7 @@ export default function CommunityMobileHeader() {
   const router = useRouter()
   const pathname = usePathname()
 
-  if (pathname?.includes('/community/post/')) {
+  if (pathname?.includes('/community/post/') || pathname?.includes('/community/create')) {
     return null
   }
 

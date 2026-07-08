@@ -14,25 +14,12 @@ import {
   X,
 } from 'lucide-react'
 
-/* ─────────────────────── Data ────────────────────────── */
-const MOODS = [
-  { emoji: '😊', label: 'Happy',      bg: '#FEF9C3', color: '#92400E', ring: '#FDE68A' },
-  { emoji: '😔', label: 'Sad',        bg: '#EEF2FF', color: '#3730A3', ring: '#C7D2FE' },
-  { emoji: '😰', label: 'Anxious',    bg: '#FDF2F8', color: '#9D174D', ring: '#FBCFE8' },
-  { emoji: '😌', label: 'Calm',       bg: '#ECFDF5', color: '#065F46', ring: '#A7F3D0' },
-  { emoji: '❤️', label: 'Grateful',  bg: '#FFF1F2', color: '#9F1239', ring: '#FECDD3' },
-  { emoji: '😤', label: 'Frustrated', bg: '#FFF7ED', color: '#9A3412', ring: '#FED7AA' },
-  { emoji: '😴', label: 'Tired',      bg: '#F5F3FF', color: '#4C1D95', ring: '#DDD6FE' },
-  { emoji: '🌤', label: 'Hopeful',    bg: '#EFF6FF', color: '#1E40AF', ring: '#BFDBFE' },
-]
-
 const MAX_LENGTH = 1000
 
 /* ─────────────────────── Component ──────────────────── */
 export default function StoryComposer({ isAuthenticated }: { isAuthenticated: boolean }) {
   const [content, setContent]           = useState('')
   const [isAnonymous, setIsAnonymous]   = useState(false)
-  const [selectedMood, setSelectedMood] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isFocused, setIsFocused]       = useState(false)
   const { openModal }                   = useAuthModal()
@@ -58,7 +45,6 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
 
   const handleDiscard = () => {
     setContent('')
-    setSelectedMood(null)
     setIsAnonymous(false)
     setIsFocused(false)
     if (textareaRef.current) {
@@ -103,7 +89,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
         {/* ── HEADER ─────────────────────────────────────────── */}
         <div className="flex items-center gap-4">
           {/* Avatar */}
-          <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-[#EFF6FF] to-[#DBEAFE] border border-[#BFDBFE] dark:border-blue-500/30 flex items-center justify-center text-[#3B82F6] shadow-sm">
+          <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-sm">
             <User className="w-5 h-5" strokeWidth={1.8} />
           </div>
 
@@ -122,8 +108,8 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
         <div
           className={`relative rounded-[16px] border transition-all duration-200 ${
             isFocused
-              ? 'border-[#3B82F6] shadow-[0_0_0_3px_rgba(59,130,246,0.10)]'
-              : 'border-[#D1D5DB] hover:border-[#9CA3AF]'
+              ? 'border-primary shadow-[0_0_0_3px_hsl(var(--primary)_/_0.1)]'
+              : 'border-border hover:border-muted-foreground/30'
           }`}
         >
           <textarea
@@ -139,50 +125,6 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
             style={{ minHeight: '160px' }}
           />
         </div>
-
-        {/* ── MOOD SELECTOR ───────────────────────────────────── */}
-        <AnimatePresence>
-          {(isFocused || hasContent) && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.26, ease: 'easeInOut' }}
-              className="overflow-hidden"
-            >
-              <div className="pt-1">
-                <p className="text-[13px] font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
-                  How are you feeling today?
-                </p>
-                <div className="grid grid-cols-4 gap-2">
-                  {MOODS.map((mood) => {
-                    const sel = selectedMood === mood.label
-                    return (
-                      <motion.button
-                        key={mood.label}
-                        type="button"
-                        onClick={() => setSelectedMood(sel ? null : mood.label)}
-                        whileTap={{ scale: 0.92 }}
-                        animate={sel ? { scale: 1.04 } : { scale: 1 }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 22 }}
-                        className="flex flex-col items-center gap-1 py-2.5 px-1 rounded-full text-center transition-all duration-200"
-                        style={{
-                          background:   sel ? mood.bg   : '#F9FAFB',
-                          color:        sel ? mood.color : '#6B7280',
-                          border:       `1.5px solid ${sel ? mood.ring : '#E5E7EB'}`,
-                          boxShadow:    sel ? `0 2px 8px ${mood.ring}80` : 'none',
-                        }}
-                      >
-                        <span className="text-[18px] leading-none">{mood.emoji}</span>
-                        <span className="text-[11px] font-semibold leading-none">{mood.label}</span>
-                      </motion.button>
-                    )
-                  })}
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {/* ── PRIVACY CARD ────────────────────────────────────── */}
         <AnimatePresence>
@@ -248,7 +190,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                 <button
                   key={label}
                   type="button"
-                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-[14px] border border-border text-[13px] font-semibold text-muted-foreground hover:border-primary hover:text-primary hover:bg-[#EFF6FF] dark:bg-blue-500/10 transition-all duration-200 active:scale-95"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full border border-border text-[13px] font-semibold text-muted-foreground hover:border-primary hover:text-primary hover:bg-[#EFF6FF] dark:bg-blue-500/10 transition-all duration-200 active:scale-95"
                 >
                   {icon}
                   {label}
@@ -286,7 +228,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
                   exit={{ opacity: 0, scale: 0.9 }}
                   type="button"
                   onClick={handleDiscard}
-                  className="inline-flex items-center gap-1.5 h-10 px-4 rounded-[14px] border border-border text-[14px] font-semibold text-muted-foreground hover:border-[#EF4444] hover:text-[#EF4444] hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-all duration-200"
+                  className="inline-flex items-center gap-1.5 h-10 px-4 rounded-full border border-border text-[14px] font-semibold text-muted-foreground hover:border-[#EF4444] hover:text-[#EF4444] hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
                 >
                   <X className="w-3.5 h-3.5" />
                   Discard
@@ -304,7 +246,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
             whileHover={hasContent ? { scale: 1.02 } : {}}
             whileTap={hasContent ? { scale: 0.97 } : {}}
             transition={{ duration: 0.18 }}
-            className={`inline-flex items-center gap-2 h-12 px-6 rounded-[16px] text-[15px] font-semibold text-white transition-colors duration-200 ${
+            className={`inline-flex items-center gap-2 h-12 px-6 rounded-full text-[15px] font-semibold text-white transition-colors duration-200 ${
               hasContent
                 ? 'bg-primary hover:bg-primary/90 shadow-[0_4px_14px_rgba(37,99,235,0.30)] cursor-pointer'
                 : 'bg-primary cursor-default'

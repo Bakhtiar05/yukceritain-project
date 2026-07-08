@@ -25,8 +25,10 @@ import {
 } from 'lucide-react'
 import EditProfileModal from './EditProfileModal'
 import AppearanceModal from './AppearanceModal'
+import LanguageModal from './LanguageModal'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 
 /* ─────────────────────── Types ────────────────────── */
 type Profile = {
@@ -79,8 +81,10 @@ export default function ProfileClient({
   session: any
 }) {
   const router = useRouter()
+  const { language, t } = useCommunityLanguage()
   const [isEditOpen, setIsEditOpen]     = useState(false)
   const [isAppearanceOpen, setIsAppearanceOpen] = useState(false)
+  const [isLanguageOpen, setIsLanguageOpen]     = useState(false)
   const [isAnonymous, setIsAnonymous]   = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
@@ -121,7 +125,7 @@ export default function ProfileClient({
     { icon: <Edit3  className="w-4 h-4" />, title: 'Edit Profile',   desc: 'Update your name, username, bio', action: () => setIsEditOpen(true) },
     { icon: <Lock   className="w-4 h-4" />, title: 'Privacy',        desc: 'Control your data and visibility', action: () => {} },
     { icon: <Shield className="w-4 h-4" />, title: 'Security',       desc: 'Password and login settings',      action: () => {} },
-    { icon: <Globe  className="w-4 h-4" />, title: 'Language',       desc: 'Bahasa Indonesia',                 action: () => {} },
+    { icon: <Globe  className="w-4 h-4" />, title: t('profile.language'), desc: t('profile.languageDesc'), action: () => setIsLanguageOpen(true) },
     { icon: <Moon   className="w-4 h-4" />, title: 'Appearance',     desc: 'Theme and display settings',       action: () => setIsAppearanceOpen(true) },
     { icon: <Bell   className="w-4 h-4" />, title: 'Notifications',  desc: 'Manage alerts and reminders',      action: () => {} },
   ]
@@ -386,6 +390,14 @@ export default function ProfileClient({
         <AppearanceModal
           isOpen={isAppearanceOpen}
           setIsOpen={setIsAppearanceOpen}
+        />
+      )}
+
+      {/* Language Modal */}
+      {isLanguageOpen && (
+        <LanguageModal
+          isOpen={isLanguageOpen}
+          setIsOpen={setIsLanguageOpen}
         />
       )}
     </div>

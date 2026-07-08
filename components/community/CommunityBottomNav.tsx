@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuthModal } from './AuthModalProvider'
+import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 
 /* ── Nav items ─────────────────────────────────────────── */
 type NavItem = {
@@ -37,6 +38,7 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
   const pathname    = usePathname()
   const router      = useRouter()
   const { openModal } = useAuthModal()
+  const { t } = useCommunityLanguage()
   const [tapped, setTapped] = useState<string | null>(null)
 
   const isActive = (item: typeof NAV_ITEMS[number]) => {
@@ -91,12 +93,12 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
                   <motion.div
                     animate={bounce ? { scale: [1, 0.85, 1.1, 1] } : {}}
                     transition={{ duration: 0.35, ease: 'easeOut' }}
-                    className="w-14 h-14 -mt-8 rounded-full bg-primary flex items-center justify-center shadow-[0_6px_20px_rgba(37,99,235,0.40)] border-4 border-white"
+                    className="w-14 h-14 -mt-8 rounded-full bg-primary flex items-center justify-center shadow-[0_6px_20px_hsl(var(--primary)_/_0.40)] border-4 border-background"
                   >
-                    <Icon size={22} strokeWidth={2} className="text-white" />
+                    <Icon size={22} strokeWidth={2} className="text-primary-foreground" />
                   </motion.div>
                   <span className={`text-[10px] font-semibold mt-0.5 ${active ? 'text-primary' : 'text-muted-foreground'}`}>
-                    {item.label}
+                    {t(`bottomNav.${item.id}`) !== `bottomNav.${item.id}` ? t(`bottomNav.${item.id}`) : item.label}
                   </span>
                 </button>
               )
@@ -115,18 +117,18 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
                   transition={{ duration: 0.30, ease: 'easeOut' }}
                   className={`w-10 h-10 flex items-center justify-center rounded-[12px] transition-all duration-200 ${
                     active
-                      ? 'bg-[#EFF6FF] dark:bg-blue-500/10 shadow-[0_2px_8px_rgba(37,99,235,0.12)]'
+                      ? 'bg-primary/10 shadow-[0_2px_8px_hsl(var(--primary)_/_0.12)]'
                       : 'bg-transparent'
                   }`}
                 >
                   <Icon
                     size={22}
                     strokeWidth={active ? 2.2 : 1.8}
-                    className={`transition-colors duration-200 ${active ? 'text-primary dark:text-blue-400' : 'text-muted-foreground'}`}
+                    className={`transition-colors duration-200 ${active ? 'text-primary' : 'text-muted-foreground'}`}
                   />
                 </motion.div>
-                <span className={`text-[10px] font-semibold transition-colors duration-200 ${active ? 'text-primary dark:text-blue-400' : 'text-muted-foreground'}`}>
-                  {item.label}
+                <span className={`text-[10px] font-semibold transition-colors duration-200 ${active ? 'text-primary' : 'text-muted-foreground'}`}>
+                  {t(`bottomNav.${item.id}`) !== `bottomNav.${item.id}` ? t(`bottomNav.${item.id}`) : item.label}
                 </span>
               </button>
             )
