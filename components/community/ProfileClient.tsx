@@ -435,10 +435,7 @@ export default function ProfileClient({
                       <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Globe className="w-4 h-4" /></div>
                       <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">{t('profile.language')}</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">{t('profile.languageDesc')}</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
                     </button>
-                    <button onClick={() => { setIsSettingsOpen(false); setIsAppearanceOpen(true) }} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
-                      <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Moon className="w-4 h-4" /></div>
-                      <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">{t('profile.appearance')}</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">{t('profile.appearanceDesc')}</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
-                    </button>
+
                     <button onClick={() => {}} className="w-full flex items-center gap-3 px-5 py-4 hover:bg-muted transition-colors text-left">
                       <div className="w-9 h-9 rounded-[10px] bg-muted flex items-center justify-center text-muted-foreground flex-shrink-0"><Bell className="w-4 h-4" /></div>
                       <div className="flex-1 min-w-0"><p className="text-[15px] font-semibold text-foreground leading-tight">Notifications</p><p className="text-[12.5px] text-muted-foreground mt-0.5 leading-snug truncate">Manage alerts and reminders</p></div><ChevronRight className="w-4 h-4 text-[#CBD5E1] flex-shrink-0" />
