@@ -70,6 +70,13 @@ export default function CommentComposer({
     if (replyingTo) {
       setIsFocused(true)
       
+      setContent((prev) => {
+        const mention = `@${replyingTo.username} `
+        if (prev.includes(mention)) return prev
+        if (prev.trim().startsWith('@') && prev.trim().split(' ').length === 1) return mention
+        return prev.length > 0 ? mention + prev : mention
+      })
+
       // Slight delay to ensure the UI has expanded before focusing
       setTimeout(() => {
         if (textareaRef.current) {

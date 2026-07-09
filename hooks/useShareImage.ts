@@ -16,7 +16,7 @@ export function useShareImage() {
       // pixelRatio 3 ensures high quality
       const dataUrl = await toPng(ref.current, {
         pixelRatio: 3,
-        backgroundColor: 'transparent',
+        backgroundColor: '#F3F8FF',
         cacheBust: true,
         skipFonts: true, // Often fixes [object Event] caused by Google Fonts failing to load in foreignObject
         imagePlaceholder: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' // Transparent 1x1 pixel fallback for broken images

@@ -47,7 +47,7 @@ export const StoryShareCard = forwardRef<HTMLDivElement, StoryShareCardProps>(
           width: '1080px',
           height: `${height}px`,
           backgroundColor: '#F3F8FF',
-          colorScheme: 'light',
+          colorScheme: 'light only',
           printColorAdjust: 'exact',
           WebkitPrintColorAdjust: 'exact',
         }}

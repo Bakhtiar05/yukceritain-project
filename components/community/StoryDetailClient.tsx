@@ -361,7 +361,9 @@ export default function StoryDetailClient({
           ) : (
             <div className="space-y-3">
               {(() => {
-                const topLevelComments = comments.filter(c => !c.parent_id)
+                const topLevelComments = comments
+                  .filter(c => !c.parent_id)
+                  .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
                 return topLevelComments.map((comment, index) => {
                   const isOwner = session?.user?.id === post.profile_id
                   const isCommenter = session?.user?.id === comment.profile_id
