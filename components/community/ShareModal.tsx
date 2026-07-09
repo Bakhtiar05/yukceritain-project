@@ -7,6 +7,7 @@ import { X, Image as ImageIcon, Link as LinkIcon, Share2, Download, Check, Loade
 import { useShareImage } from '@/hooks/useShareImage'
 import { StoryShareCard } from './StoryShareCard'
 import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
+import { useTheme } from 'next-themes'
 
 type Profile = {
   display_name?: string
@@ -27,9 +28,11 @@ type ShareModalProps = {
 
 export default function ShareModal({ isOpen, onClose, post }: ShareModalProps) {
   const { t } = useCommunityLanguage()
+  const { resolvedTheme } = useTheme()
   const [view, setView] = useState<'options' | 'preview'>('options')
   const [dataUrl, setDataUrl] = useState<string | null>(null)
   const [isCopied, setIsCopied] = useState(false)
+  const [aspectRatio, setAspectRatio] = useState<'4:5' | '9:16'>('4:5')
   
   const cardRef = useRef<HTMLDivElement>(null)
   const { generateImage, shareImage, downloadImage, isGenerating, error } = useShareImage()
@@ -82,15 +85,17 @@ export default function ShareModal({ isOpen, onClose, post }: ShareModalProps) {
     }
   }
 
-  const handleGeneratePreview = async () => {
+  const handleGeneratePreview = async (ratio: '4:5' | '9:16' = aspectRatio) => {
     setView('preview')
+    setDataUrl(null)
+    setAspectRatio(ratio)
     // We need to wait a tick for the StoryShareCard to be rendered in the DOM before capturing it
     setTimeout(async () => {
       const generated = await generateImage(cardRef)
       if (generated) {
         setDataUrl(generated)
       }
-    }, 100)
+    }, 150)
   }
 
   const handleShareImage = async () => {
@@ -155,8 +160,8 @@ export default function ShareModal({ isOpen, onClose, post }: ShareModalProps) {
                   {view === 'options' && (
                     <div className="flex flex-col gap-3">
                       <button 
-                        onClick={handleGeneratePreview}
-                        className="w-full flex items-center gap-4 p-4 rounded-[16px] bg-primary/5 hover:bg-primary/10 border border-primary/10 transition-colors text-left group"
+                        onClick={() => handleGeneratePreview(aspectRatio)}
+                        className="w-full flex items-center gap-4 p-4 rounded-full bg-primary/5 hover:bg-primary/10 border border-primary/10 transition-colors text-left group"
                       >
                         <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-105 transition-transform">
                           <ImageIcon className="w-5 h-5" />
@@ -169,7 +174,7 @@ export default function ShareModal({ isOpen, onClose, post }: ShareModalProps) {
 
                       <button 
                         onClick={handleCopyLink}
-                        className="w-full flex items-center gap-4 p-4 rounded-[16px] bg-muted/50 hover:bg-muted border border-transparent transition-colors text-left group"
+                        className="w-full flex items-center gap-4 p-4 rounded-full bg-muted/50 hover:bg-muted border border-transparent transition-colors text-left group"
                       >
                         <div className="w-10 h-10 rounded-full bg-background text-foreground flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm">
                           {isCopied ? <Check className="w-5 h-5 text-green-500" /> : <LinkIcon className="w-5 h-5" />}
@@ -183,7 +188,7 @@ export default function ShareModal({ isOpen, onClose, post }: ShareModalProps) {
 
                       <button 
                         onClick={handleShareDevice}
-                        className="w-full flex items-center gap-4 p-4 rounded-[16px] bg-muted/50 hover:bg-muted border border-transparent transition-colors text-left group"
+                        className="w-full flex items-center gap-4 p-4 rounded-full bg-muted/50 hover:bg-muted border border-transparent transition-colors text-left group"
                       >
                         <div className="w-10 h-10 rounded-full bg-background text-foreground flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm">
                           <Share2 className="w-5 h-5" />
@@ -197,7 +202,24 @@ export default function ShareModal({ isOpen, onClose, post }: ShareModalProps) {
 
                   {view === 'preview' && (
                     <div className="flex flex-col items-center">
-                      <div className="w-full aspect-square bg-muted rounded-[20px] overflow-hidden relative shadow-inner flex items-center justify-center mb-6">
+                      
+                      {/* Aspect Ratio Selector */}
+                      <div className="w-full flex bg-muted p-1 rounded-full mb-4">
+                        <button 
+                          onClick={() => handleGeneratePreview('4:5')}
+                          className={`flex-1 py-1.5 text-[13px] font-semibold rounded-full transition-all ${aspectRatio === '4:5' ? 'bg-background shadow text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                          4:5 (Portrait)
+                        </button>
+                        <button 
+                          onClick={() => handleGeneratePreview('9:16')}
+                          className={`flex-1 py-1.5 text-[13px] font-semibold rounded-full transition-all ${aspectRatio === '9:16' ? 'bg-background shadow text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                          9:16 (Story)
+                        </button>
+                      </div>
+
+                      <div className={`w-full ${aspectRatio === '9:16' ? 'aspect-[9/16] max-h-[50vh]' : 'aspect-[4/5] max-h-[45vh]'} bg-muted rounded-[20px] overflow-hidden relative shadow-inner flex items-center justify-center mb-6`}>
                         {isGenerating && !dataUrl ? (
                           <div className="flex flex-col items-center text-muted-foreground">
                             <Loader2 className="w-8 h-8 animate-spin mb-3 text-primary" />
@@ -256,6 +278,8 @@ export default function ShareModal({ isOpen, onClose, post }: ShareModalProps) {
                       isAnonymous={post.is_anonymous} 
                       profile={post.profile} 
                       url={storyUrl} 
+                      aspectRatio={aspectRatio}
+                      theme={resolvedTheme as 'light' | 'dark'}
                     />
                   )}
                 </div>
