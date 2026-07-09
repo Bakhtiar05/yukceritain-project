@@ -62,7 +62,15 @@
     "deleteTitle": "Delete this story?",
     "deleteDesc": "This action cannot be undone. Your story and all replies will be permanently deleted.",
     "delete": "Delete",
-    "deleting": "Deleting..."
+    "deleting": "Deleting...",
+    "shareAsImage": "Share as Image",
+    "copyLink": "Copy Link",
+    "shareViaDevice": "Share via Device",
+    "download": "Download",
+    "downloading": "Downloading...",
+    "linkCopied": "Link copied!",
+    "generatingImage": "Preparing image...",
+    "readFullStory": "Read the full story on community.yukceritain.com"
   },
   "comment": {
     "deleteResponseTitle": "Delete this response?",

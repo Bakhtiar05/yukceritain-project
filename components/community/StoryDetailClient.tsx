@@ -10,8 +10,9 @@ import {
 } from 'lucide-react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useAuthModal } from './AuthModalProvider'
+import { useCommentSheet } from './CommentSheetProvider'
 import { toggleLike, deleteStory, updateStory, deleteComment } from '@/lib/actions/community'
-import CommentComposer from './CommentComposer'
+import ShareModal from './ShareModal'
 import { useRouter } from 'next/navigation'
 import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 
@@ -80,6 +81,7 @@ export default function StoryDetailClient({
   commentsCount: number
 }) {
   const { openModal }     = useAuthModal()
+  const { openSheet }     = useCommentSheet()
   const router            = useRouter()
   const { t }             = useCommunityLanguage()
   const [isLiked, setIsLiked]           = useState(isLikedByMe)
@@ -90,6 +92,7 @@ export default function StoryDetailClient({
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isDeleting, setIsDeleting]     = useState(false)
   const [isMenuOpen, setIsMenuOpen]     = useState(false)
+  const [isShareOpen, setIsShareOpen]   = useState(false)
 
   const isOwner = session?.user?.id === post.profile_id
   const displayName = post.is_anonymous ? t('storyDetail.anonymous') : post.profile?.display_name
@@ -99,20 +102,7 @@ export default function StoryDetailClient({
     : avatarFor(post.profile?.username, post.profile?.avatar_url)
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/community/post/${post.id}`
-    const title = 'YukceritaIN Community'
-    const text = post.content.substring(0, 100) + '...'
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ title, text, url })
-      } catch (err) {
-        // user cancelled or share failed
-      }
-    } else {
-      navigator.clipboard.writeText(url).catch(() => {})
-      // optionally add toast here
-    }
+    setIsShareOpen(true)
     setIsMenuOpen(false)
   }
 
@@ -209,11 +199,12 @@ export default function StoryDetailClient({
                         {displayName}
                       </Link>
                     )}
-                    {post.is_anonymous && (
-                      <span className="community-badge-anon">🛡 {t('storyDetail.anonymous')}</span>
-                    )}
                   </div>
-                  <span className="text-[13px] text-muted-foreground font-medium" suppressHydrationWarning>{formatDate(post.created_at, t)}</span>
+                  <div className="flex items-center gap-1.5 text-[13px] text-muted-foreground font-medium mt-0.5">
+                    <span>{post.is_anonymous ? '@anonim' : `@${username}`}</span>
+                    <span>•</span>
+                    <span suppressHydrationWarning>{formatDate(post.created_at, t)}</span>
+                  </div>
                 </div>
               </div>
 
@@ -227,40 +218,50 @@ export default function StoryDetailClient({
                 </button>
                 <AnimatePresence>
                   {isMenuOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.94, y: -4 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.94, y: -4 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-full mt-1.5 w-52 bg-card rounded-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-border py-2 z-20"
-                    >
-                      {isOwner && (
-                        <>
-                          <button
-                            onClick={() => { setIsEditing(true); setIsMenuOpen(false) }}
-                            className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
-                          >
-                            <Check className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.editPost')}
-                          </button>
-                          <button
-                            onClick={() => { setIsDeleteOpen(true); setIsMenuOpen(false) }}
-                            className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4 text-red-400" /> {t('storyDetail.deletePost')}
-                          </button>
-                          <div className="h-px bg-muted my-1.5 mx-3" />
-                        </>
-                      )}
-                      <button onClick={handleShare} className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
-                        <LinkIcon className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.shareStory')}
-                      </button>
-                      <button className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
-                        <Flag className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.report')}
-                      </button>
-                      <button className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
-                        <EyeOff className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.hideStory')}
-                      </button>
-                    </motion.div>
+                    <>
+                      <div 
+                        className="fixed inset-0 z-10" 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          setIsMenuOpen(false);
+                        }}
+                      />
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.94, y: -4 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.94, y: -4 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 top-full mt-1.5 w-52 bg-card rounded-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-border py-2 z-20"
+                      >
+                        {isOwner && (
+                          <>
+                            <button
+                              onClick={() => { setIsEditing(true); setIsMenuOpen(false) }}
+                              className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
+                            >
+                              <Check className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.editPost')}
+                            </button>
+                            <button
+                              onClick={() => { setIsDeleteOpen(true); setIsMenuOpen(false) }}
+                              className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4 text-red-400" /> {t('storyDetail.deletePost')}
+                            </button>
+                            <div className="h-px bg-muted my-1.5 mx-3" />
+                          </>
+                        )}
+                        <button onClick={handleShare} className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
+                          <LinkIcon className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.shareStory')}
+                        </button>
+                        <button className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
+                          <Flag className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.report')}
+                        </button>
+                        <button className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors">
+                          <EyeOff className="w-4 h-4 text-muted-foreground" /> {t('storyDetail.hideStory')}
+                        </button>
+                      </motion.div>
+                    </>
                   )}
                 </AnimatePresence>
               </div>
@@ -299,11 +300,17 @@ export default function StoryDetailClient({
                 <span className="hidden sm:inline">{t('storyDetail.support')}</span>
               </motion.button>
 
-              <div className="community-action-btn cursor-default">
+              <button 
+                onClick={() => {
+                  if (!isAuthenticated) { openModal(); return }
+                  openSheet(post.id)
+                }}
+                className="community-action-btn"
+              >
                 <MessageCircle className="w-4 h-4" strokeWidth={1.8} />
                 <span className="tabular-nums">{commentsCount}</span>
                 <span className="hidden sm:inline">{t('storyDetail.responses')}</span>
-              </div>
+              </button>
 
               <button onClick={handleShare} className="community-action-btn">
                 <Share2 className="w-4 h-4" strokeWidth={1.8} />
@@ -313,15 +320,7 @@ export default function StoryDetailClient({
           </div>
         </motion.div>
 
-        {/* ── Reply Composer ───────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}
-          className="bg-card rounded-[22px] border border-border shadow-[0_1px_6px_rgba(0,0,0,0.04)] overflow-hidden max-w-[95%] sm:max-w-[88%] mx-auto"
-        >
-          <CommentComposer postId={post.id} isAuthenticated={isAuthenticated} />
-        </motion.div>
+
 
         {/* ── Responses Section ────────────────────────────────── */}
         <motion.div
@@ -402,6 +401,13 @@ export default function StoryDetailClient({
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
+
+      {/* ── Share Story Modal ────────────────────────────────── */}
+      <ShareModal 
+        isOpen={isShareOpen} 
+        onClose={() => setIsShareOpen(false)} 
+        post={post} 
+      />
 
     </div>
   )

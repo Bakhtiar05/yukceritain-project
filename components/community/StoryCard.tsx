@@ -7,6 +7,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { Heart, MessageCircle, Share2, MoreVertical, Trash2, X, AlertCircle, Link as LinkIcon, Flag, EyeOff, Check } from 'lucide-react'
 import { useAuthModal } from './AuthModalProvider'
 import { useCommentSheet } from './CommentSheetProvider'
+import ShareModal from './ShareModal'
 import { toggleLike, deleteStory, updateStory } from '@/lib/actions/community'
 
 type Profile = {
@@ -55,22 +56,14 @@ export default function StoryCard({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isDeleting, setIsDeleting]       = useState(false)
   const [isMenuOpen, setIsMenuOpen]       = useState(false)
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [isExpanded, setIsExpanded]       = useState(false)
   const [needsClamp, setNeedsClamp]       = useState(false)
   const menuRef    = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLParagraphElement>(null)
   const heartRef   = useRef<HTMLButtonElement>(null)
 
-  /* ── Click-outside for dropdown menu ─────────────────── */
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setIsMenuOpen(false)
-      }
-    }
-    if (isMenuOpen) document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [isMenuOpen])
+
 
   /* ── Detect if content overflows 5 lines ─────────────── */
   useEffect(() => {
@@ -82,20 +75,9 @@ export default function StoryCard({
   }, [content])
 
   /* ── Helpers ──────────────────────────────────────────── */
-  const handleShare = async () => {
-    const url = `${window.location.origin}/community/post/${id}`
-    const title = 'YukceritaIN Community'
-    const text = content.substring(0, 100) + '...'
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ title, text, url })
-      } catch (err) {}
-    } else {
-      try {
-        await navigator.clipboard.writeText(url)
-      } catch {}
-    }
+  const handleShare = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation()
+    setIsShareModalOpen(true)
     setIsMenuOpen(false)
   }
 
@@ -234,7 +216,16 @@ export default function StoryCard({
 
             {/* Dropdown */}
             {isMenuOpen && (
-              <div className="absolute right-0 top-full mt-1.5 w-52 bg-card rounded-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-border py-2 z-20 animate-community-expand-down">
+              <>
+                <div 
+                  className="fixed inset-0 z-10" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setIsMenuOpen(false);
+                  }}
+                />
+                <div className="absolute right-0 top-full mt-1.5 w-52 bg-card rounded-[16px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-border py-2 z-20 animate-community-expand-down">
                 {isOwner && (
                   <>
                     <button
@@ -275,7 +266,8 @@ export default function StoryCard({
                   <EyeOff className="w-4 h-4 text-muted-foreground" />
                   Hide Post
                 </button>
-              </div>
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -401,6 +393,18 @@ export default function StoryCard({
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>
+
+      {/* ── Share Modal ────────────────────────────────────── */}
+      <ShareModal 
+        isOpen={isShareModalOpen} 
+        onClose={() => setIsShareModalOpen(false)} 
+        post={{
+          id,
+          content,
+          is_anonymous,
+          profile
+        }}
+      />
     </>
   )
 }

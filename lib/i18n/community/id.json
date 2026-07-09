@@ -41,7 +41,7 @@
     "identityHidden": "Identitas Anda tetap tersembunyi saat berbagi cerita."
   },
   "storyDetail": {
-    "anonymous": "Anonim",
+    "anonymous": "Teman Anonim",
     "header": "Diskusi Cerita",
     "backToFeed": "Kembali",
     "editPost": "Edit Cerita",
@@ -62,7 +62,15 @@
     "deleteTitle": "Hapus cerita ini?",
     "deleteDesc": "Tindakan ini tidak dapat dibatalkan. Cerita Anda beserta semua komentar akan dihapus permanen.",
     "delete": "Hapus",
-    "deleting": "Menghapus..."
+    "deleting": "Menghapus...",
+    "shareAsImage": "Bagikan sebagai Gambar",
+    "copyLink": "Salin Link",
+    "shareViaDevice": "Bagikan melalui Device",
+    "download": "Download",
+    "downloading": "Mendownload...",
+    "linkCopied": "Link berhasil disalin!",
+    "generatingImage": "Menyiapkan gambar...",
+    "readFullStory": "Baca cerita lengkap di community.yukceritain.com"
   },
   "comment": {
     "deleteResponseTitle": "Hapus balasan ini?",

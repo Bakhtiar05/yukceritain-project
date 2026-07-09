@@ -27,7 +27,6 @@ import {
   Share2
 } from 'lucide-react'
 import EditProfileModal from './EditProfileModal'
-import AppearanceModal from './AppearanceModal'
 import LanguageModal from './LanguageModal'
 import StoryCard from './StoryCard'
 import { createClient } from '@/lib/supabase/client'
@@ -89,7 +88,6 @@ export default function ProfileClient({
   const [isSettingsOpen, setIsSettingsOpen]     = useState(false)
   const [activeTab, setActiveTab] = useState<'aktivitas' | 'cerita' | 'pengaturan'>('pengaturan')
   const [isEditOpen, setIsEditOpen]     = useState(false)
-  const [isAppearanceOpen, setIsAppearanceOpen] = useState(false)
   const [isLanguageOpen, setIsLanguageOpen]     = useState(false)
   const [isAnonymous, setIsAnonymous]   = useState(false)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
@@ -339,19 +337,7 @@ export default function ProfileClient({
                       </div>
                       <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
                     </button>
-                    {/* Appearance */}
-                    <button onClick={() => setIsAppearanceOpen(true)} className="w-full flex items-center justify-between p-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors text-left group">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-[#F8FAFC] dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
-                          <Moon className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <p className="text-[15px] font-semibold text-slate-800 dark:text-foreground leading-tight">{t('profile.appearance')}</p>
-                          <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">{t('profile.appearanceDesc')}</p>
-                        </div>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
-                    </button>
+
                     {/* Notifications */}
                     <button onClick={() => {}} className="w-full flex items-center justify-between p-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors text-left group">
                       <div className="flex items-center gap-4">
@@ -390,13 +376,7 @@ export default function ProfileClient({
         />
       )}
 
-      {/* Appearance Modal */}
-      {isAppearanceOpen && (
-        <AppearanceModal
-          isOpen={isAppearanceOpen}
-          setIsOpen={setIsAppearanceOpen}
-        />
-      )}
+
 
       {/* Language Modal */}
       {isLanguageOpen && (

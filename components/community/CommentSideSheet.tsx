@@ -23,15 +23,19 @@ export default function CommentSideSheet({ session }: { session: any }) {
 
   // Fetch data when sheet opens
   useEffect(() => {
+    let isMounted = true
+    
     if (isOpen && activePostId) {
       setLoading(true)
       fetchPostAndComments(activePostId)
         .then(({ post, comments }) => {
+          if (!isMounted) return
           setPostData(post)
           setCommentsData(comments)
           setLoading(false)
         })
         .catch(err => {
+          if (!isMounted) return
           console.error(err)
           setLoading(false)
         })
@@ -43,6 +47,10 @@ export default function CommentSideSheet({ session }: { session: any }) {
           setCommentsData([])
         }, 300)
       }
+    }
+    
+    return () => {
+      isMounted = false
     }
   }, [isOpen, activePostId])
 

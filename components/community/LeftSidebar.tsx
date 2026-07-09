@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import { Home, Compass, PenSquare, Calendar, User, Settings, LogOut, Globe } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useAuthModal } from './AuthModalProvider'
+import ThemeToggle from './ThemeToggle'
 
 export default function LeftSidebar() {
   const pathname = usePathname()
@@ -120,6 +121,11 @@ export default function LeftSidebar() {
       </div>
 
       <div className="pt-6 mt-4 border-t border-border/80">
+        <div className="flex items-center justify-between px-4 mb-4">
+          <span className="text-[13px] font-bold text-slate-400 dark:text-muted-foreground uppercase tracking-wider">Tampilan</span>
+          <ThemeToggle />
+        </div>
+
         {profile ? (
           <div className="flex items-center space-x-3 p-3 rounded-2xl hover:bg-muted dark:hover:bg-muted transition-colors cursor-pointer border border-transparent hover:border-border group">
             <div className="relative">
