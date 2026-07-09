@@ -318,7 +318,7 @@ export default function StoryDetailClient({
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1, ease: 'easeOut' }}
-          className="bg-card rounded-[22px] border border-border shadow-[0_1px_6px_rgba(0,0,0,0.04)] overflow-hidden"
+          className="bg-card rounded-[22px] border border-border shadow-[0_1px_6px_rgba(0,0,0,0.04)] overflow-hidden max-w-[95%] sm:max-w-[88%] mx-auto"
         >
           <CommentComposer postId={post.id} isAuthenticated={isAuthenticated} />
         </motion.div>
@@ -345,17 +345,16 @@ export default function StoryDetailClient({
           {/* Empty state */}
           {comments.length === 0 ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
-              className="flex flex-col items-center justify-center py-16 text-center px-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+              className="text-center py-10 px-4"
             >
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center mb-5 shadow-inner">
-                <span className="text-4xl">💌</span>
+              <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
+                <MessageCircle className="w-5 h-5 text-muted-foreground" />
               </div>
-              <h3 className="text-[19px] font-bold text-foreground mb-2">{t('storyDetail.noResponses')}</h3>
-              <p className="text-[14px] text-muted-foreground leading-relaxed max-w-[220px]">
-                {t('storyDetail.beTheFirst')}
+              <p className="text-sm text-muted-foreground">
+                {t('storyDetail.noResponses')}. {t('storyDetail.beTheFirst')}
               </p>
             </motion.div>
           ) : (

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuthModal } from './AuthModalProvider'
+import { useCreateStoryDrawer } from './CreateStoryDrawerProvider'
 import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 
 /* ── Nav items ─────────────────────────────────────────── */
@@ -29,7 +30,7 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { id: 'home',    label: 'Home',       icon: House,         href: '/community/for-you' },
   { id: 'explore',  label: 'Explore',     icon: Search,        href: '/community/explore' },
-  { id: 'create',  label: 'Story',      icon: Plus,          href: '/community/create', isPrimary: true },
+  { id: 'create',  label: 'Story',      icon: Plus,          href: '#', isPrimary: true },
   { id: 'counsel', label: 'Konseling',  icon: HeartHandshake, href: '/' },
   { id: 'profile', label: 'Profile',   icon: CircleUser,    href: '/community/profile' },
 ]
@@ -38,13 +39,14 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
   const pathname    = usePathname()
   const router      = useRouter()
   const { openModal } = useAuthModal()
+  const { openDrawer } = useCreateStoryDrawer()
   const { t } = useCommunityLanguage()
   const [tapped, setTapped] = useState<string | null>(null)
 
   const isActive = (item: typeof NAV_ITEMS[number]) => {
     if (item.id === 'home')    return pathname === '/community/for-you'
     if (item.id === 'explore')  return pathname?.startsWith('/community/explore')
-    if (item.id === 'create')  return pathname?.startsWith('/community/create')
+    if (item.id === 'create')  return false
     if (item.id === 'counsel') return false
     if (item.id === 'profile') return pathname?.startsWith('/community/profile')
     return false
@@ -58,10 +60,15 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
       openModal()
       return
     }
+    
+    if (item.id === 'create') {
+      openDrawer()
+      return
+    }
 
     if (item.href.startsWith('http')) {
       window.location.href = item.href
-    } else {
+    } else if (item.href !== '#') {
       router.push(item.href)
     }
   }
@@ -92,10 +99,11 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
                 >
                   <motion.div
                     animate={bounce ? { scale: [1, 0.85, 1.1, 1] } : {}}
+                    whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.35, ease: 'easeOut' }}
-                    className="w-14 h-14 -mt-8 rounded-full bg-primary flex items-center justify-center shadow-[0_6px_20px_hsl(var(--primary)_/_0.40)] border-4 border-background"
+                    className="relative w-[56px] h-[56px] -mt-8 rounded-full bg-gradient-to-br from-primary via-blue-500 to-indigo-500 flex items-center justify-center shadow-[0_8px_30px_hsl(var(--primary)_/_0.50)] border-[4px] border-background before:absolute before:inset-0 before:rounded-full before:border before:border-white/20"
                   >
-                    <Icon size={22} strokeWidth={2} className="text-primary-foreground" />
+                    <Icon size={26} strokeWidth={2.5} className="text-white drop-shadow-sm" />
                   </motion.div>
                   <span className={`text-[10px] font-semibold mt-0.5 ${active ? 'text-primary' : 'text-muted-foreground'}`}>
                     {t(`bottomNav.${item.id}`) !== `bottomNav.${item.id}` ? t(`bottomNav.${item.id}`) : item.label}

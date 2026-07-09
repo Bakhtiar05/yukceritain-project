@@ -213,22 +213,22 @@ export default function ProfileClient({
         </motion.div>
 
         {/* ── TABS ───────────────────────────────────────── */}
-        <motion.div {...fadeUp(0.05)} className="bg-[#F1F5F9] dark:bg-slate-800/60 p-1.5 rounded-[16px] flex items-center shadow-inner">
+        <motion.div {...fadeUp(0.05)} className="bg-[#F1F5F9] dark:bg-slate-800/60 p-1.5 rounded-full flex items-center shadow-inner">
           <button 
              onClick={() => setActiveTab('aktivitas')}
-             className={`flex-1 text-center text-[14px] font-semibold py-2.5 rounded-[12px] transition-all ${activeTab === 'aktivitas' ? 'bg-white dark:bg-card shadow-sm text-slate-800 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
+             className={`flex-1 text-center text-[14px] font-semibold py-2.5 rounded-full transition-all ${activeTab === 'aktivitas' ? 'bg-white dark:bg-card shadow-sm text-slate-800 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
           >
              Aktivitas
           </button>
           <button 
              onClick={() => setActiveTab('cerita')}
-             className={`flex-1 text-center text-[14px] font-semibold py-2.5 rounded-[12px] transition-all ${activeTab === 'cerita' ? 'bg-white dark:bg-card shadow-sm text-slate-800 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
+             className={`flex-1 text-center text-[14px] font-semibold py-2.5 rounded-full transition-all ${activeTab === 'cerita' ? 'bg-white dark:bg-card shadow-sm text-slate-800 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
           >
-             Cerita Publik
+             {t('profile.myStories')}
           </button>
           <button 
              onClick={() => setActiveTab('pengaturan')}
-             className={`flex-1 text-center text-[14px] font-semibold py-2.5 rounded-[12px] transition-all ${activeTab === 'pengaturan' ? 'bg-white dark:bg-card shadow-sm text-slate-800 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
+             className={`flex-1 text-center text-[14px] font-semibold py-2.5 rounded-full transition-all ${activeTab === 'pengaturan' ? 'bg-white dark:bg-card shadow-sm text-slate-800 dark:text-white' : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'}`}
           >
              Pengaturan
           </button>
@@ -240,35 +240,7 @@ export default function ProfileClient({
             {activeTab === 'aktivitas' && (
               <motion.div key="aktivitas" initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-10}} transition={{duration: 0.2}}>
                 <div className="space-y-4">
-                  {/* ANONYMOUS MODE CARD */}
-                  <div className="bg-[#EFF6FF] dark:bg-blue-500/10 rounded-[20px] border border-[#BFDBFE] dark:border-blue-500/30 p-5">
-                    <div className="flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-11 h-11 rounded-[14px] bg-card border border-[#BFDBFE] dark:border-blue-500/30 flex items-center justify-center flex-shrink-0">
-                          <Shield className="w-5 h-5 text-primary" strokeWidth={1.8} />
-                        </div>
-                        <div>
-                          <p className="text-[15px] font-bold text-[#1E40AF] dark:text-blue-400">{t('profile.anonymousMode')}</p>
-                          <p className="text-[12.5px] text-[#3B82F6] dark:text-blue-300 leading-snug mt-0.5 max-w-[200px]">
-                            {t('profile.identityHidden')}
-                          </p>
-                        </div>
-                      </div>
-                      <motion.button
-                        type="button"
-                        role="switch"
-                        aria-checked={isAnonymous}
-                        onClick={() => setIsAnonymous(!isAnonymous)}
-                        className={`relative flex-shrink-0 h-6 w-11 rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${isAnonymous ? 'bg-primary' : 'bg-[#CBD5E1] dark:bg-slate-600'}`}
-                      >
-                        <motion.span
-                          className="pointer-events-none absolute top-0.5 left-0.5 h-[18px] w-[18px] rounded-full bg-card shadow-sm"
-                          animate={{ x: isAnonymous ? 20 : 0 }}
-                          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                        />
-                      </motion.button>
-                    </div>
-                  </div>
+                  {/* removed anonymous mode */}
                 </div>
               </motion.div>
             )}
@@ -276,11 +248,6 @@ export default function ProfileClient({
             {activeTab === 'cerita' && (
               <motion.div key="cerita" initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-10}} transition={{duration: 0.2}}>
                 {/* RECENT STORIES */}
-                <div className="flex items-center justify-between px-1 mb-3">
-                  <h2 className="text-[14px] font-bold text-muted-foreground uppercase tracking-wider">{t('profile.recentStories')}</h2>
-                  <span className="text-[12px] font-semibold text-muted-foreground">{posts.length} total</span>
-                </div>
-
                 {posts.length === 0 ? (
                   <div className="bg-card rounded-[20px] border border-border p-10 flex flex-col items-center text-center">
                     <span className="text-4xl mb-3">✏️</span>

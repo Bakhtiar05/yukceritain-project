@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { User, Send } from 'lucide-react'
 
 import StoryComposerLink from '@/components/community/StoryComposerLink'
+import EmptyStateButton from './EmptyStateButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -33,7 +34,7 @@ export default async function ForYouPage() {
       <WelcomeHero />
 
       {/* ── STORY COMPOSER LINK ────────────────────────────────────── */}
-      <StoryComposerLink />
+      <StoryComposerLink isAuthenticated={isAuthenticated} />
 
       {/* ── FEED ──────────────────────────────────────────────── */}
       <div className="community-feed pt-2 pb-10 min-h-screen">
@@ -57,12 +58,7 @@ export default async function ForYouPage() {
             <p className="text-[14px] text-[#6B7280] leading-relaxed max-w-[220px]">
               Be the first to share your thoughts and inspire the community.
             </p>
-            <Link
-              href="/community/create"
-              className="mt-6 inline-flex items-center gap-2 bg-[#2563EB] text-white text-[14px] font-semibold px-6 py-3 rounded-full shadow-[0_4px_14px_rgba(37,99,235,0.3)] hover:bg-[#1D4ED8] hover:-translate-y-0.5 transition-all active:scale-95"
-            >
-              <span>✏️</span> Create Story
-            </Link>
+            <EmptyStateButton isAuthenticated={isAuthenticated} />
           </div>
         ) : (
           <InfiniteFeed initialPosts={posts || []} mode="for-you" session={session} />

@@ -170,10 +170,10 @@ export default function StoryCard({
     }
   }
 
-  const displayName = is_anonymous ? 'Anonymous' : profile?.display_name
-  const username    = is_anonymous ? 'anonymous' : profile?.username
+  const displayName = is_anonymous ? 'Teman Anonim' : profile?.display_name
+  const username    = is_anonymous ? 'anonim' : profile?.username
   const avatarUrl   = is_anonymous
-    ? 'https://api.dicebear.com/7.x/notionists/svg?seed=anonymous'
+    ? 'https://api.dicebear.com/7.x/notionists/svg?seed=anonim'
     : profile?.avatar_url || `https://api.dicebear.com/7.x/notionists/svg?seed=${username}`
 
   return (
@@ -211,18 +211,10 @@ export default function StoryCard({
                     {displayName}
                   </span>
                 )}
-                {/* Anonymous badge */}
-                {is_anonymous && (
-                  <span className="community-badge-anon">
-                    🛡 Anonymous
-                  </span>
-                )}
               </div>
               <div className="flex items-center gap-1.5 mt-0.5">
-                {!is_anonymous && (
-                  <span className="text-[13px] text-muted-foreground font-medium truncate">@{username}</span>
-                )}
-                {!is_anonymous && <span className="text-[#D1D5DB] text-[11px]">·</span>}
+                <span className="text-[13px] text-muted-foreground font-medium truncate">@{username}</span>
+                <span className="text-[#D1D5DB] text-[11px]">·</span>
                 <span className="text-[13px] text-muted-foreground font-medium whitespace-nowrap" suppressHydrationWarning>
                   {formatDate(created_at)}
                 </span>

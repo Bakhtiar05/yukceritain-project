@@ -9,22 +9,33 @@ interface InfiniteFeedProps {
   initialPosts: any[]
   mode: 'for-you' | 'explore'
   session: any
+  searchQuery?: string
 }
 
-export default function InfiniteFeed({ initialPosts, mode, session }: InfiniteFeedProps) {
+export default function InfiniteFeed({ initialPosts, mode, session, searchQuery = '' }: InfiniteFeedProps) {
   const [posts, setPosts] = useState<any[]>(initialPosts)
   const [hasMore, setHasMore] = useState(initialPosts.length >= 5)
   const [loading, setLoading] = useState(false)
   
   const observerRef = useRef<IntersectionObserver | null>(null)
   const loadingNodeRef = useRef<HTMLDivElement | null>(null)
+  const [currentQuery, setCurrentQuery] = useState(searchQuery)
+
+  // Reset feed when search query changes
+  useEffect(() => {
+    if (searchQuery !== currentQuery) {
+      setPosts([])
+      setHasMore(true)
+      setCurrentQuery(searchQuery)
+    }
+  }, [searchQuery, currentQuery])
 
   const loadMorePosts = useCallback(async () => {
     if (loading || !hasMore) return
     setLoading(true)
 
     try {
-      const nextPosts = await fetchFeedBatch(posts.length, 5, mode)
+      const nextPosts = await fetchFeedBatch(posts.length, 5, mode, currentQuery)
       if (nextPosts && nextPosts.length > 0) {
         setPosts((prev) => {
           // Filter out duplicates based on id
@@ -45,7 +56,7 @@ export default function InfiniteFeed({ initialPosts, mode, session }: InfiniteFe
     } finally {
       setLoading(false)
     }
-  }, [loading, hasMore, posts.length, mode])
+  }, [loading, hasMore, posts.length, mode, currentQuery])
 
   useEffect(() => {
     if (observerRef.current) observerRef.current.disconnect()

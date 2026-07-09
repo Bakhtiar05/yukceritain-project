@@ -9,6 +9,7 @@ import {
   User,
   Shield,
   ImageIcon,
+  Smile,
   Tag,
   MapPin,
   Send,
@@ -19,7 +20,7 @@ import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 const MAX_LENGTH = 2000
 
 /* ─────────────────────── Component ──────────────────── */
-export default function StoryComposer({ isAuthenticated }: { isAuthenticated: boolean }) {
+export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isAuthenticated: boolean, onStoryCreated?: () => void }) {
   const [content, setContent]           = useState('')
   const [isAnonymous, setIsAnonymous]   = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -39,7 +40,7 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
     setContent(val)
     const el = e.target
     el.style.height = 'auto'
-    el.style.height = `${Math.max(el.scrollHeight, 160)}px`
+    el.style.height = `${Math.max(el.scrollHeight, 240)}px`
   }, [])
 
   const handleFocus = () => {
@@ -47,12 +48,28 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
     setIsFocused(true)
   }
 
+  const handleEmojiClick = (emoji: string) => {
+    setContent(prev => {
+      const val = (prev + emoji).slice(0, MAX_LENGTH)
+      if (textareaRef.current) {
+        // adjust height safely
+        setTimeout(() => {
+          if(textareaRef.current) {
+            textareaRef.current.style.height = 'auto'
+            textareaRef.current.style.height = `${Math.max(textareaRef.current.scrollHeight, 240)}px`
+          }
+        }, 10)
+      }
+      return val
+    })
+  }
+
   const handleDiscard = () => {
     setContent('')
     setIsAnonymous(false)
     setIsFocused(false)
     if (textareaRef.current) {
-      textareaRef.current.style.height = '160px'
+      textareaRef.current.style.height = '240px'
     }
   }
 
@@ -63,7 +80,11 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
       setIsSubmitting(true)
       await createStory(content, isAnonymous)
       handleDiscard()
-      router.push('/community/for-you')
+      if (onStoryCreated) {
+        onStoryCreated()
+      } else {
+        router.push('/community/for-you')
+      }
     } catch (err) {
       console.error('Failed to post story:', err)
     } finally {
@@ -82,14 +103,8 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.42, ease: [0.25, 0.46, 0.45, 0.94] }}
-      /* Card */
-      className={`mx-4 mb-3 bg-card rounded-[24px] border transition-all duration-300 ${
-        isFocused
-          ? 'border-primary shadow-[0_4px_24px_rgba(37,99,235,0.10)]'
-          : 'border-border shadow-[0_2px_12px_rgba(0,0,0,0.05)]'
-      }`}
+      className="flex flex-col gap-5"
     >
-      <div className="p-6 flex flex-col gap-5">
 
         {/* ── HEADER ─────────────────────────────────────────── */}
         <div className="flex items-center gap-4">
@@ -111,10 +126,10 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
 
         {/* ── WRITING AREA ────────────────────────────────────── */}
         <div
-          className={`relative rounded-[16px] border transition-all duration-200 ${
+          className={`relative rounded-[16px] transition-all duration-200 ${
             isFocused
-              ? 'border-primary shadow-[0_0_0_3px_hsl(var(--primary)_/_0.1)]'
-              : 'border-border hover:border-muted-foreground/30'
+              ? 'bg-primary/5 dark:bg-primary/10'
+              : 'bg-muted/30 hover:bg-muted/50'
           }`}
         >
           <textarea
@@ -125,84 +140,51 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
             onBlur={() => setIsFocused(false)}
             placeholder={t('composer.placeholder')}
             className="w-full bg-transparent outline-none focus:outline-none focus:ring-0 border-0 resize-none text-[16px] text-foreground leading-[1.7] placeholder:text-muted-foreground placeholder:leading-[1.7] p-5 rounded-[16px] custom-scrollbar"
-            style={{ minHeight: '160px' }}
+            style={{ minHeight: '240px' }}
           />
         </div>
 
-        {/* ── PRIVACY CARD ────────────────────────────────────── */}
-        <AnimatePresence>
-          {(isFocused || hasContent) && (
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 8 }}
-              transition={{ duration: 0.26, ease: 'easeOut' }}
-              className="rounded-[16px] bg-[#EFF6FF] dark:bg-blue-500/10 border border-[#BFDBFE] dark:border-blue-500/30 px-4 py-3.5 flex items-center justify-between gap-4"
-            >
-              {/* Left */}
-              <div className="flex items-center gap-3">
-                <div className="flex-shrink-0 w-9 h-9 rounded-full bg-card border border-[#BFDBFE] dark:border-blue-500/30 flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-primary" strokeWidth={1.8} />
-                </div>
-                <div>
-                  <p className="text-[13.5px] font-bold text-[#1E40AF] leading-tight">
-                    {t('composer.postAnonymously')}
-                  </p>
-                  <p className="text-[12px] text-[#3B82F6] leading-snug mt-0.5">
-                    {t('composer.anonymousDesc')}
-                  </p>
-                </div>
-              </div>
-
-              {/* Toggle */}
-              <motion.button
+        {/* ── OPTIONAL ACTIONS & COMPACT PRIVACY ──────────────── */}
+        <div className="flex items-center gap-2 flex-wrap relative">
+              <button
                 type="button"
-                role="switch"
-                aria-checked={isAnonymous}
                 onClick={() => setIsAnonymous(!isAnonymous)}
-                className={`relative flex-shrink-0 h-6 w-11 rounded-full border-2 border-transparent focus:outline-none transition-colors duration-200 ${
-                  isAnonymous ? 'bg-primary' : 'bg-[#CBD5E1]'
+                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-full border text-[13px] font-semibold transition-all duration-200 active:scale-95 ${
+                  isAnonymous 
+                    ? 'border-primary text-primary bg-[#EFF6FF] dark:bg-blue-500/10' 
+                    : 'border-border text-muted-foreground hover:border-primary hover:text-primary hover:bg-[#EFF6FF] dark:bg-blue-500/10'
                 }`}
-                whileTap={{ scale: 0.95 }}
               >
-                <motion.span
-                  className="pointer-events-none absolute top-0.5 left-0.5 h-[18px] w-[18px] rounded-full bg-card shadow-sm"
-                  animate={{ x: isAnonymous ? 20 : 0 }}
-                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                />
-              </motion.button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <Shield className="w-3.5 h-3.5" />
+                {t('composer.postAnonymously')}
+              </button>
 
-        {/* ── OPTIONAL ACTIONS ────────────────────────────────── */}
-        <AnimatePresence>
-          {(isFocused || hasContent) && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.22 }}
-              className="flex items-center gap-2 flex-wrap"
-            >
-              {[
-                { icon: <ImageIcon className="w-3.5 h-3.5" />, label: t('composer.addImage') },
-              ].map(({ icon, label }) => (
-                <button
-                  key={label}
-                  type="button"
-                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full border border-border text-[13px] font-semibold text-muted-foreground hover:border-primary hover:text-primary hover:bg-[#EFF6FF] dark:bg-blue-500/10 transition-all duration-200 active:scale-95"
-                >
-                  {icon}
-                  {label}
-                </button>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full border border-border text-[13px] font-semibold text-muted-foreground hover:border-primary hover:text-primary hover:bg-[#EFF6FF] dark:bg-blue-500/10 transition-all duration-200 active:scale-95"
+              >
+                <ImageIcon className="w-3.5 h-3.5" />
+                {t('composer.addImage')}
+              </button>
+              
+              <div className="flex items-center gap-1.5 ml-2">
+                {['😊', '😂', '🥰', '😢', '🙏'].map(emoji => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      handleEmojiClick(emoji)
+                    }}
+                    className="w-9 h-9 flex items-center justify-center text-[18px] rounded-full hover:bg-muted transition-colors active:scale-95"
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+          </div>
 
-        {/* ── FOOTER ──────────────────────────────────────────── */}
-        <div className={`flex flex-wrap items-center justify-between gap-3 ${(isFocused || hasContent) ? 'pt-4 mt-2 border-t border-border' : ''}`}>
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 mt-1">
           {/* Left: counter + discard */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Discard */}
@@ -254,13 +236,6 @@ export default function StoryComposer({ isAuthenticated }: { isAuthenticated: bo
             )}
           </motion.button>
         </div>
-
-        {/* ── GUIDANCE ────────────────────────────────────────── */}
-        <p className="text-[12.5px] text-muted-foreground leading-snug text-center">
-          {t('composer.guidance')}
-        </p>
-
-      </div>
     </motion.div>
   )
 }

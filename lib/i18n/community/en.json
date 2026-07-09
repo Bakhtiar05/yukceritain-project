@@ -1,10 +1,14 @@
 {
   "welcomeHero": {
-    "badge": "Your safe space",
+    "badge_1": "Your safe space",
     "headline_1": "Speak Without Fear.",
+    "description_1": "Every story deserves a safe place.",
+    "badge_2": "Listen and Empathize",
     "headline_2": "You Are Not Alone.",
+    "description_2": "Find support from people who understand.",
+    "badge_3": "Free Expression",
     "headline_3": "Share Your Story.",
-    "description": "Every story deserves a safe place."
+    "description_3": "Use an anonymous identity to share honestly."
   },
   "bottomNav": {
     "home": "Home",
@@ -104,6 +108,6 @@
     "shareStoryBtn": "Share Story",
     "sharing": "Sharing...",
     "addImage": "Add Image",
-    "guidance": "💙 Please be respectful, protect privacy, and remember that kindness matters."
+    "guidance": "Please be respectful, protect privacy, and remember that kindness matters."
   }
 }

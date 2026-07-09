@@ -1,10 +1,14 @@
 {
   "welcomeHero": {
-    "badge": "Ruang Aman Bercerita",
+    "badge_1": "Ruang Aman Bercerita",
     "headline_1": "Bicara Tanpa Rasa Takut.",
+    "description_1": "Setiap cerita layak mendapat tempat yang aman.",
+    "badge_2": "Saling Mendengarkan",
     "headline_2": "Kamu Tidak Sendirian.",
+    "description_2": "Temukan dukungan dari orang-orang yang mengerti.",
+    "badge_3": "Ekspresi Bebas",
     "headline_3": "Bagikan Ceritamu.",
-    "description": "Setiap cerita layak mendapat tempat yang aman."
+    "description_3": "Gunakan identitas anonim untuk bercerita dengan jujur."
   },
   "bottomNav": {
     "home": "Beranda",
@@ -104,6 +108,6 @@
     "shareStoryBtn": "Kirim Cerita",
     "sharing": "Mengirim...",
     "addImage": "Tambah Gambar",
-    "guidance": "💙 Harap saling menghargai, jaga privasi, dan ingatlah untuk selalu berbuat baik."
+    "guidance": "Harap saling menghargai, jaga privasi, dan ingatlah untuk selalu berbuat baik."
   }
 }

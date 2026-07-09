@@ -212,10 +212,10 @@ export async function fetchPostAndComments(postId: string) {
   return { post, comments }
 }
 
-export async function fetchFeedBatch(offset: number, limit: number = 5, mode: 'for-you' | 'explore' = 'for-you') {
+export async function fetchFeedBatch(offset: number, limit: number = 5, mode: 'for-you' | 'explore' = 'for-you', searchQuery?: string) {
   const supabase = await createClient()
 
-  const query = supabase
+  let query = supabase
     .from('community_posts')
     .select(`
       *,
@@ -225,6 +225,10 @@ export async function fetchFeedBatch(offset: number, limit: number = 5, mode: 'f
     `)
     .order('created_at', { ascending: false })
     .range(offset, offset + limit - 1)
+
+  if (searchQuery && searchQuery.trim() !== '') {
+    query = query.ilike('content', `%${searchQuery}%`)
+  }
 
   const { data, error } = await query
 
