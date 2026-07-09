@@ -6,7 +6,8 @@ import { usePathname } from 'next/navigation'
 import { 
   LayoutDashboard, FileText, PenTool, ArrowLeft, 
   ShieldAlert, UsersRound, MessageCircle, Calendar, 
-  CreditCard, UserCircle2, LineChart, Percent
+  CreditCard, UserCircle2, LineChart, Percent,
+  ShieldMinus
 } from 'lucide-react'
 
 interface AdminSidebarProps {
@@ -110,6 +111,10 @@ export default function AdminSidebar({ role }: AdminSidebarProps) {
             <Link href="/admin/community/reports" className={linkClass('/admin/community/reports')}>
               <ShieldAlert className="w-4 h-4" />
               Reports
+            </Link>
+            <Link href="/admin/community/profanity" className={linkClass('/admin/community/profanity')}>
+              <ShieldMinus className="w-4 h-4" />
+              Profanity Filter
             </Link>
             <Link href="/admin/community/users" className={linkClass('/admin/community/users')}>
               <UsersRound className="w-4 h-4" />

@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { containsProfanity } from './profanity'
 
 export async function createStory(content: string, isAnonymous: boolean) {
   const supabase = await createClient()
@@ -9,6 +10,11 @@ export async function createStory(content: string, isAnonymous: boolean) {
 
   if (!user) {
     throw new Error('Not authenticated')
+  }
+
+  const profanityCheck = await containsProfanity(content)
+  if (profanityCheck.hasProfanity) {
+    throw new Error(`Pesan mengandung kata yang tidak pantas: ${profanityCheck.foundWords.join(', ')}`)
   }
 
   const { data, error } = await supabase
@@ -70,12 +76,17 @@ export async function toggleLike(postId: string) {
   revalidatePath('/community/explore')
 }
 
-export async function addComment(postId: string, content: string) {
+export async function addComment(postId: string, content: string, parentId?: string) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
     throw new Error('Not authenticated')
+  }
+
+  const profanityCheck = await containsProfanity(content)
+  if (profanityCheck.hasProfanity) {
+    throw new Error(`Komentar mengandung kata yang tidak pantas: ${profanityCheck.foundWords.join(', ')}`)
   }
 
   const { data, error } = await supabase
@@ -84,6 +95,7 @@ export async function addComment(postId: string, content: string) {
       post_id: postId,
       profile_id: user.id,
       content,
+      parent_id: parentId || null,
     })
     .select()
     .single()

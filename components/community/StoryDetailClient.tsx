@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   ChevronLeft, Bookmark, Heart, MessageCircle, Share2,
   MoreVertical, Trash2, AlertCircle, Link as LinkIcon,
-  Flag, EyeOff, Check
+  Flag, EyeOff, Check, ChevronDown, ChevronUp
 } from 'lucide-react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useAuthModal } from './AuthModalProvider'
@@ -15,6 +15,7 @@ import { toggleLike, deleteStory, updateStory, deleteComment } from '@/lib/actio
 import ShareModal from './ShareModal'
 import { useRouter } from 'next/navigation'
 import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
+import ResponseCard from './ResponseCard'
 
 /* ─────────────────────── Types ─────────────────────── */
 type Profile = { display_name: string; username: string; avatar_url: string }
@@ -23,6 +24,7 @@ type Comment = {
   profile_id: string
   content: string
   created_at: string
+  parent_id?: string | null
   profile: Profile | Profile[]
 }
 type Post = {
@@ -60,7 +62,6 @@ const fadeUp = {
   visible: { opacity: 1, y: 0,  scale: 1    },
 }
 
-import ResponseCard from './ResponseCard'
 
 /* ═══════════════════════════════════════════════════════
    STORY DETAIL CLIENT (main export)
@@ -93,6 +94,7 @@ export default function StoryDetailClient({
   const [isDeleting, setIsDeleting]     = useState(false)
   const [isMenuOpen, setIsMenuOpen]     = useState(false)
   const [isShareOpen, setIsShareOpen]   = useState(false)
+  const [expandedReplies, setExpandedReplies] = useState<Record<string, boolean>>({})
 
   const isOwner = session?.user?.id === post.profile_id
   const displayName = post.is_anonymous ? t('storyDetail.anonymous') : post.profile?.display_name
@@ -358,18 +360,78 @@ export default function StoryDetailClient({
             </motion.div>
           ) : (
             <div className="space-y-3">
-              {comments.map((comment, i) => {
-                const canDelete = session?.user?.id === comment.profile_id || session?.user?.id === post.profile_id
-                return (
-                  <ResponseCard
-                    key={comment.id}
-                    comment={comment}
-                    canDelete={canDelete}
-                    postId={post.id}
-                    delay={0.08 * i}
-                  />
-                )
-              })}
+              {(() => {
+                const topLevelComments = comments.filter(c => !c.parent_id)
+                return topLevelComments.map((comment, index) => {
+                  const isOwner = session?.user?.id === post.profile_id
+                  const isCommenter = session?.user?.id === comment.profile_id
+                  const replies = comments.filter(c => c.parent_id === comment.id)
+                  const profile = Array.isArray(comment.profile) ? comment.profile[0] : comment.profile
+                  
+                  return (
+                    <div key={comment.id} className="flex flex-col">
+                      <ResponseCard
+                        comment={comment}
+                        canDelete={isOwner || isCommenter}
+                        postId={post.id}
+                        delay={0.08 * index}
+                        onReply={() => openSheet(post.id, { id: comment.id, username: profile?.username || 'user' })}
+                        footerActions={
+                          replies.length > 0 && (
+                            <button
+                              onClick={() => setExpandedReplies(prev => ({ ...prev, [comment.id]: !prev[comment.id] }))}
+                              className="flex items-center gap-1.5 text-[12px] font-semibold text-muted-foreground hover:text-primary transition-colors"
+                            >
+                              {expandedReplies[comment.id] ? (
+                                <>
+                                  <ChevronUp className="w-3.5 h-3.5" />
+                                  Tutup balasan
+                                </>
+                              ) : (
+                                <>
+                                  <ChevronDown className="w-3.5 h-3.5" />
+                                  Lihat {replies.length} balasan
+                                </>
+                              )}
+                            </button>
+                          )
+                        }
+                      />
+                      {replies.length > 0 && (
+                        <div className="ml-12 mt-1">
+                          <AnimatePresence>
+                            {expandedReplies[comment.id] && (
+                              <motion.div 
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="flex flex-col ml-1 relative mt-1 overflow-hidden"
+                              >
+                                <div className="absolute left-5 top-0 bottom-0 w-px bg-border/50" />
+                                {replies.map((reply, rIndex) => {
+                                  const isReplyOwner = session?.user?.id === reply.profile_id
+                                  const replyProfile = Array.isArray(reply.profile) ? reply.profile[0] : reply.profile
+                                  return (
+                                    <ResponseCard
+                                      key={reply.id}
+                                      comment={reply}
+                                      canDelete={isOwner || isReplyOwner}
+                                      postId={post.id}
+                                      delay={(index * 0.08) + ((rIndex + 1) * 0.05)}
+                                      isReply
+                                      onReply={() => openSheet(post.id, { id: comment.id, username: replyProfile?.username || 'user' })}
+                                    />
+                                  )
+                                })}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })
+              })()}
             </div>
           )}
         </motion.div>

@@ -75,7 +75,7 @@ export default function CommentsClient({ initialComments }: { initialComments: a
     {
       header: 'Date',
       accessor: 'created_at',
-      render: (comment) => <span className="text-slate-500 text-sm">{new Date(comment.created_at).toLocaleDateString()}</span>
+      render: (comment) => <span suppressHydrationWarning className="text-slate-500 text-sm">{new Date(comment.created_at).toLocaleDateString()}</span>
     },
     {
       header: 'Actions',

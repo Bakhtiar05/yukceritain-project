@@ -279,7 +279,6 @@ export default function ShareModal({ isOpen, onClose, post }: ShareModalProps) {
                       profile={post.profile} 
                       url={storyUrl} 
                       aspectRatio={aspectRatio}
-                      theme={resolvedTheme as 'light' | 'dark'}
                     />
                   )}
                 </div>

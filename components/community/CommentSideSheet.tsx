@@ -9,15 +9,18 @@ import ResponseCard from './ResponseCard'
 import CommentComposer from './CommentComposer'
 import { useAuthModal } from './AuthModalProvider'
 import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 
 export default function CommentSideSheet({ session }: { session: any }) {
-  const { isOpen, activePostId, closeSheet } = useCommentSheet()
+  const { isOpen, activePostId, initialReplyingTo, closeSheet } = useCommentSheet()
   const { openModal } = useAuthModal()
   const { t } = useCommunityLanguage()
   
   const [loading, setLoading] = useState(true)
   const [postData, setPostData] = useState<any>(null)
   const [commentsData, setCommentsData] = useState<any[]>([])
+  const [replyingTo, setReplyingTo] = useState<{ id: string; username: string } | null>(null)
+  const [expandedReplies, setExpandedReplies] = useState<Record<string, boolean>>({})
 
   const isAuthenticated = !!session
 
@@ -26,6 +29,10 @@ export default function CommentSideSheet({ session }: { session: any }) {
     let isMounted = true
     
     if (isOpen && activePostId) {
+      if (initialReplyingTo) {
+        setReplyingTo(initialReplyingTo)
+      }
+
       setLoading(true)
       fetchPostAndComments(activePostId)
         .then(({ post, comments }) => {
@@ -125,20 +132,83 @@ export default function CommentSideSheet({ session }: { session: any }) {
                         <p className="text-sm text-muted-foreground">{t('storyDetail.noResponses')}. {t('storyDetail.beTheFirst')}</p>
                       </div>
                     ) : (
-                      commentsData.map((comment, index) => {
-                        const isOwner = session?.user?.id === postData.profile_id
-                        const isCommenter = session?.user?.id === comment.profile_id
-                        return (
-                          <ResponseCard
-                            key={comment.id}
-                            comment={comment}
-                            canDelete={isOwner || isCommenter}
-                            postId={activePostId!}
-                            delay={index * 0.05}
-                            onCommentDeleted={handleCommentDeleted}
-                          />
-                        )
-                      })
+                      (() => {
+                        const topLevelComments = commentsData.filter(c => !c.parent_id)
+                        return topLevelComments.map((comment, index) => {
+                          const isOwner = session?.user?.id === postData.profile_id
+                          const isCommenter = session?.user?.id === comment.profile_id
+                          const replies = commentsData.filter(c => c.parent_id === comment.id)
+                          
+                          const profile = Array.isArray(comment.profile) ? comment.profile[0] : comment.profile
+
+                          return (
+                            <div key={comment.id} className="flex flex-col">
+                              <ResponseCard
+                                comment={comment}
+                                canDelete={isOwner || isCommenter}
+                                postId={activePostId!}
+                                delay={index * 0.05}
+                                onCommentDeleted={handleCommentDeleted}
+                                onReply={() => setReplyingTo({ id: comment.id, username: profile?.username || 'user' })}
+                                isActiveReply={replyingTo?.id === comment.id}
+                                footerActions={
+                                  replies.length > 0 && (
+                                    <button
+                                      onClick={() => setExpandedReplies(prev => ({ ...prev, [comment.id]: !prev[comment.id] }))}
+                                      className="flex items-center gap-1.5 text-[12px] font-semibold text-muted-foreground hover:text-primary transition-colors"
+                                    >
+                                      {expandedReplies[comment.id] ? (
+                                        <>
+                                          <ChevronUp className="w-3.5 h-3.5" />
+                                          Tutup balasan
+                                        </>
+                                      ) : (
+                                        <>
+                                          <ChevronDown className="w-3.5 h-3.5" />
+                                          Lihat {replies.length} balasan
+                                        </>
+                                      )}
+                                    </button>
+                                  )
+                                }
+                              />
+                              {replies.length > 0 && (
+                                <div className="ml-12 mt-1">
+                                  <AnimatePresence>
+                                    {expandedReplies[comment.id] && (
+                                      <motion.div 
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        className="flex flex-col ml-1 relative mt-1 overflow-hidden"
+                                      >
+                                        <div className="absolute left-5 top-0 bottom-0 w-px bg-border/50" />
+                                        {replies.map((reply, rIndex) => {
+                                          const isReplyOwner = session?.user?.id === reply.profile_id
+                                          const replyProfile = Array.isArray(reply.profile) ? reply.profile[0] : reply.profile
+                                          return (
+                                            <ResponseCard
+                                              key={reply.id}
+                                              comment={reply}
+                                              canDelete={isOwner || isReplyOwner}
+                                              postId={activePostId!}
+                                              delay={(index * 0.05) + ((rIndex + 1) * 0.05)}
+                                              onCommentDeleted={handleCommentDeleted}
+                                              isReply
+                                              onReply={() => setReplyingTo({ id: comment.id, username: replyProfile?.username || 'user' })}
+                                              isActiveReply={replyingTo?.id === comment.id && replyingTo?.username === replyProfile?.username}
+                                            />
+                                          )
+                                        })}
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })
+                      })()
                     )}
                   </div>
                 </>
@@ -153,7 +223,12 @@ export default function CommentSideSheet({ session }: { session: any }) {
                 <CommentComposer
                   postId={activePostId}
                   isAuthenticated={isAuthenticated}
-                  onSuccess={handleCommentAdded}
+                  onSuccess={() => {
+                    setReplyingTo(null)
+                    handleCommentAdded()
+                  }}
+                  replyingTo={replyingTo}
+                  onCancelReply={() => setReplyingTo(null)}
                 />
               )}
             </div>

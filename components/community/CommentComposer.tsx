@@ -3,9 +3,14 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useAuthModal } from './AuthModalProvider'
 import { addComment } from '@/lib/actions/community'
+import { containsProfanity } from '@/lib/actions/profanity'
+import { useToast } from '@/hooks/use-toast'
+import ProfanityModal from './ProfanityModal'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Smile, ImageIcon, Send, Shield, Info, User, ChevronDown } from 'lucide-react'
 import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
+import { useRouter } from 'next/navigation'
+import { X } from 'lucide-react'
 
 const TONE_CHIPS = [
   { emoji: '❤️', label: 'Support' },
@@ -21,18 +26,27 @@ export default function CommentComposer({
   postId,
   isAuthenticated,
   onSuccess,
+  replyingTo,
+  onCancelReply,
 }: {
   postId: string
   isAuthenticated: boolean
   onSuccess?: () => void
+  replyingTo?: { id: string; username: string } | null
+  onCancelReply?: () => void
 }) {
   const [content, setContent]         = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [profanityWarningCount, setProfanityWarningCount] = useState(0)
+  const [profanityModalOpen, setProfanityModalOpen] = useState(false)
+  const [foundProfanities, setFoundProfanities] = useState<string[]>([])
   const [isFocused, setIsFocused]     = useState(false)
   const [guidelinesOpen, setGuidelinesOpen] = useState(false)
   const { openModal }                 = useAuthModal()
   const textareaRef                   = useRef<HTMLTextAreaElement>(null)
   const { t }                         = useCommunityLanguage()
+  const { toast }                     = useToast()
+  const router                        = useRouter()
 
   const maxLength = 1000
   const remaining = maxLength - content.length
@@ -45,17 +59,58 @@ export default function CommentComposer({
     }
   }, [content])
 
+  useEffect(() => {
+    if (replyingTo) {
+      setIsFocused(true)
+      setContent(prev => {
+        const mention = `@${replyingTo.username} `
+        if (prev.startsWith('@')) {
+          return prev.replace(/^@[^\s]+\s*/, mention)
+        }
+        return mention + prev
+      })
+      
+      // Slight delay to ensure the UI has expanded before focusing
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.focus()
+          // Optional: move cursor to end
+          const length = textareaRef.current.value.length
+          textareaRef.current.setSelectionRange(length, length)
+        }
+      }, 50)
+    }
+  }, [replyingTo])
+
   const handleSubmit = async () => {
     if (!isAuthenticated) { openModal(); return }
     if (!content.trim()) return
     try {
       setIsSubmitting(true)
-      await addComment(postId, content)
+      
+      const profanityCheck = await containsProfanity(content)
+      if (profanityCheck.hasProfanity) {
+        setProfanityWarningCount(prev => prev + 1)
+        setFoundProfanities(profanityCheck.foundWords)
+        setProfanityModalOpen(true)
+        setIsSubmitting(false)
+        return
+      }
+
+      setProfanityWarningCount(0) // Reset on success
+
+      await addComment(postId, content, replyingTo?.id)
       setContent('')
       setIsFocused(false)
+      if (onCancelReply) onCancelReply()
       if (onSuccess) onSuccess()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to post comment:', error)
+      toast({
+        title: 'Gagal Mengirim',
+        description: error.message || 'Terjadi kesalahan saat mengirim komentar.',
+        variant: 'destructive'
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -203,6 +258,13 @@ export default function CommentComposer({
         </AnimatePresence>
       </div>
 
+      {/* Modal Profanity */}
+      <ProfanityModal
+        isOpen={profanityModalOpen}
+        warningCount={profanityWarningCount}
+        foundWords={foundProfanities}
+        onClose={() => setProfanityModalOpen(false)}
+      />
     </div>
   )
 }

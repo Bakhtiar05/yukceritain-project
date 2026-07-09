@@ -78,6 +78,7 @@ export default async function PostDetailPage({ params }: { params: Promise<{ id:
       profile_id,
       content,
       created_at,
+      parent_id,
       profile:profiles(display_name, username, avatar_url)
     `)
     .eq('post_id', id)

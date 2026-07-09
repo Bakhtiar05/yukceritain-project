@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useRouter } from 'next/navigation'
 import { useAuthModal } from './AuthModalProvider'
 import { createStory } from '@/lib/actions/community'
+import { containsProfanity } from '@/lib/actions/profanity'
+import { useToast } from '@/hooks/use-toast'
+import ProfanityModal from './ProfanityModal'
 import {
   User,
   Shield,
@@ -25,10 +28,14 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
   const [isAnonymous, setIsAnonymous]   = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isFocused, setIsFocused]       = useState(false)
+  const [profanityWarningCount, setProfanityWarningCount] = useState(0)
+  const [profanityModalOpen, setProfanityModalOpen] = useState(false)
+  const [foundProfanities, setFoundProfanities] = useState<string[]>([])
   const { openModal }                   = useAuthModal()
   const textareaRef                     = useRef<HTMLTextAreaElement>(null)
   const router                          = useRouter()
   const { t } = useCommunityLanguage()
+  const { toast } = useToast()
 
   const used      = content.length
   const remaining = MAX_LENGTH - used
@@ -78,6 +85,18 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
     if (!hasContent) return
     try {
       setIsSubmitting(true)
+      
+      const profanityCheck = await containsProfanity(content)
+      if (profanityCheck.hasProfanity) {
+        setProfanityWarningCount(prev => prev + 1)
+        setFoundProfanities(profanityCheck.foundWords)
+        setProfanityModalOpen(true)
+        setIsSubmitting(false)
+        return
+      }
+
+      setProfanityWarningCount(0) // Reset on success
+
       await createStory(content, isAnonymous)
       handleDiscard()
       if (onStoryCreated) {
@@ -85,8 +104,13 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
       } else {
         router.push('/community/for-you')
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to post story:', err)
+      toast({
+        title: 'Gagal Mengirim',
+        description: err.message || 'Terjadi kesalahan saat mengirim cerita.',
+        variant: 'destructive'
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -236,6 +260,13 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
             )}
           </motion.button>
         </div>
+      {/* Modal Profanity */}
+      <ProfanityModal
+        isOpen={profanityModalOpen}
+        warningCount={profanityWarningCount}
+        foundWords={foundProfanities}
+        onClose={() => setProfanityModalOpen(false)}
+      />
     </motion.div>
   )
 }

@@ -80,7 +80,7 @@ export default function PostsClient({ initialPosts }: { initialPosts: any[] }) {
     {
       header: 'Date',
       accessor: 'created_at',
-      render: (post) => <span className="text-slate-500">{new Date(post.created_at).toLocaleDateString()}</span>,
+      render: (post) => <span suppressHydrationWarning className="text-slate-500">{new Date(post.created_at).toLocaleDateString()}</span>,
       sortable: true
     }
   ]

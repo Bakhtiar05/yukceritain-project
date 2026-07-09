@@ -14,6 +14,7 @@ type Comment = {
   profile_id: string
   content: string
   created_at: string
+  parent_id?: string | null
   profile: Profile | Profile[]
 }
 
@@ -45,12 +46,20 @@ export default function ResponseCard({
   canDelete,
   postId,
   delay = 0,
+  isReply,
+  isActiveReply,
+  footerActions,
+  onReply,
   onCommentDeleted,
 }: {
   comment: Comment
   canDelete: boolean
   postId: string
   delay?: number
+  isReply?: boolean
+  isActiveReply?: boolean
+  footerActions?: React.ReactNode
+  onReply?: () => void
   onCommentDeleted?: (commentId: string) => void
 }) {
   const profile = Array.isArray(comment.profile) ? comment.profile[0] : comment.profile
@@ -75,8 +84,11 @@ export default function ResponseCard({
       initial="hidden"
       animate="visible"
       transition={{ duration: 0.35, delay, ease: 'easeOut' }}
-      className="py-1"
+      className={`py-1 ${isReply ? 'mt-2 relative' : ''}`}
     >
+      {isReply && (
+        <div className="absolute -left-6 top-0 bottom-0 w-px bg-border/50 hidden" />
+      )}
       <div className="flex items-start gap-3">
         {/* Left Col: Avatar */}
         <div className="flex-shrink-0 mt-0.5">
@@ -153,6 +165,21 @@ export default function ResponseCard({
           <p className="text-[15px] text-foreground leading-[1.6] whitespace-pre-wrap break-words">
             {comment.content}
           </p>
+
+          {/* Action Footer */}
+          <div className="flex items-center gap-4 mt-2">
+            {onReply && (
+              <button 
+                onClick={onReply}
+                className={`text-[12px] font-semibold transition-colors flex items-center gap-1 ${
+                  isActiveReply ? 'text-primary' : 'text-muted-foreground hover:text-primary'
+                }`}
+              >
+                Balas
+              </button>
+            )}
+            {footerActions}
+          </div>
         </div>
       </div>
 

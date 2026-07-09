@@ -5,7 +5,8 @@ import React, { createContext, useContext, useState, ReactNode } from 'react'
 interface CommentSheetContextType {
   isOpen: boolean
   activePostId: string | null
-  openSheet: (postId: string) => void
+  initialReplyingTo: { id: string; username: string } | null
+  openSheet: (postId: string, replyingTo?: { id: string; username: string }) => void
   closeSheet: () => void
 }
 
@@ -14,9 +15,15 @@ const CommentSheetContext = createContext<CommentSheetContextType | undefined>(u
 export function CommentSheetProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
   const [activePostId, setActivePostId] = useState<string | null>(null)
+  const [initialReplyingTo, setInitialReplyingTo] = useState<{ id: string; username: string } | null>(null)
 
-  const openSheet = (postId: string) => {
+  const openSheet = (postId: string, replyingTo?: { id: string; username: string }) => {
     setActivePostId(postId)
+    if (replyingTo) {
+      setInitialReplyingTo(replyingTo)
+    } else {
+      setInitialReplyingTo(null)
+    }
     setIsOpen(true)
   }
 
@@ -27,7 +34,7 @@ export function CommentSheetProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <CommentSheetContext.Provider value={{ isOpen, activePostId, openSheet, closeSheet }}>
+    <CommentSheetContext.Provider value={{ isOpen, activePostId, initialReplyingTo, openSheet, closeSheet }}>
       {children}
     </CommentSheetContext.Provider>
   )

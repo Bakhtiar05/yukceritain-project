@@ -1,16 +1,54 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { User, Send } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 import { useCreateStoryDrawer } from './CreateStoryDrawerProvider'
 import { useAuthModal } from './AuthModalProvider'
 
+const PROMPTS_EN = [
+  "What's up today?....",
+  "How's your day going?....",
+  "Anything on your mind?....",
+  "Got something to share?....",
+  "What's happening today?....",
+  "What's new with you?....",
+  "How are things going?....",
+  "What's going on?....",
+  "What's on your mind right now?....",
+  "Tell us what's up...."
+]
+
+const PROMPTS_ID = [
+  "Ada cerita apa hari ini?....",
+  "Gimana harimu hari ini?....",
+  "Lagi kepikiran apa?....",
+  "Mau cerita sesuatu?....",
+  "Ada apa hari ini?....",
+  "Ada kabar apa?....",
+  "Gimana kabarmu belakangan?....",
+  "Lagi ada apa?....",
+  "Lagi kepikiran apa sekarang?....",
+  "Coba ceritain, dong...."
+]
+
 export default function StoryComposerLink({ isAuthenticated }: { isAuthenticated?: boolean }) {
-  const { t } = useCommunityLanguage()
+  const { language } = useCommunityLanguage()
   const { openDrawer } = useCreateStoryDrawer()
   const { openModal } = useAuthModal()
+  
+  const [promptIndex, setPromptIndex] = useState(0)
+
+  const prompts = language === 'id' ? PROMPTS_ID : PROMPTS_EN
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPromptIndex((prev) => (prev + 1) % prompts.length)
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [prompts.length])
 
   const handleClick = () => {
     if (!isAuthenticated) {
@@ -32,10 +70,19 @@ export default function StoryComposerLink({ isAuthenticated }: { isAuthenticated
         </div>
 
         {/* Title block */}
-        <div className="relative z-10 flex-1 px-1 sm:px-2">
-          <p className="text-[14.5px] sm:text-[15.5px] font-medium text-[#5C7796] dark:text-slate-400 leading-snug truncate">
-            {t('composer.placeholder')}
-          </p>
+        <div className="relative z-10 flex-1 px-1 sm:px-2 overflow-hidden h-[24px] flex items-center">
+          <AnimatePresence mode="popLayout">
+            <motion.p
+              key={promptIndex}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="absolute text-[14.5px] sm:text-[15.5px] font-medium text-[#5C7796] dark:text-slate-400 leading-snug truncate w-full"
+            >
+              {prompts[promptIndex]}
+            </motion.p>
+          </AnimatePresence>
         </div>
 
         {/* Action button (Send Icon) */}
