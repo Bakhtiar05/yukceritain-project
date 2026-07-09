@@ -6,21 +6,12 @@ import { addComment } from '@/lib/actions/community'
 import { containsProfanity } from '@/lib/actions/profanity'
 import { useToast } from '@/hooks/use-toast'
 import ProfanityModal from './ProfanityModal'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Smile, ImageIcon, Send, Shield, Info, User, ChevronDown } from 'lucide-react'
+import { User, ArrowUp, Loader2 } from 'lucide-react'
 import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 import { useRouter } from 'next/navigation'
 import { X } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
-const TONE_CHIPS = [
-  { emoji: '❤️', label: 'Support' },
-  { emoji: '🤗', label: 'Encouragement' },
-  { emoji: '💡', label: 'Advice' },
-  { emoji: '🌱', label: 'Experience' },
-  { emoji: '👏', label: 'Applause' },
-  { emoji: '💪', label: 'Strength' },
-  { emoji: '🤝', label: 'Agreement' },
-]
 
 export default function CommentComposer({
   postId,
@@ -41,7 +32,7 @@ export default function CommentComposer({
   const [profanityModalOpen, setProfanityModalOpen] = useState(false)
   const [foundProfanities, setFoundProfanities] = useState<string[]>([])
   const [isFocused, setIsFocused]     = useState(false)
-  const [guidelinesOpen, setGuidelinesOpen] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const { openModal }                 = useAuthModal()
   const textareaRef                   = useRef<HTMLTextAreaElement>(null)
   const { t }                         = useCommunityLanguage()
@@ -53,6 +44,22 @@ export default function CommentComposer({
   const hasContent = content.trim().length > 0
 
   useEffect(() => {
+    if (isAuthenticated) {
+      const fetchProfile = async () => {
+        const supabase = createClient()
+        const { data: { session } } = await supabase.auth.getSession()
+        if (session) {
+          const { data } = await supabase.from('profiles').select('avatar_url, username').eq('id', session.user.id).single()
+          if (data) {
+            setAvatarUrl(data.avatar_url || 'https://api.dicebear.com/7.x/notionists/svg?seed=' + data.username)
+          }
+        }
+      }
+      fetchProfile()
+    }
+  }, [isAuthenticated])
+
+  useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto'
       textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 240)}px`
@@ -62,13 +69,6 @@ export default function CommentComposer({
   useEffect(() => {
     if (replyingTo) {
       setIsFocused(true)
-      setContent(prev => {
-        const mention = `@${replyingTo.username} `
-        if (prev.startsWith('@')) {
-          return prev.replace(/^@[^\s]+\s*/, mention)
-        }
-        return mention + prev
-      })
       
       // Slight delay to ensure the UI has expanded before focusing
       setTimeout(() => {
@@ -81,6 +81,15 @@ export default function CommentComposer({
       }, 50)
     }
   }, [replyingTo])
+
+  // Auto-focus on mount so keyboard appears automatically
+  useEffect(() => {
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus()
+      }
+    }, 100)
+  }, [])
 
   const handleSubmit = async () => {
     if (!isAuthenticated) { openModal(); return }
@@ -126,11 +135,15 @@ export default function CommentComposer({
 
 
       {/* ── Reply Composer ───────────────────────────── */}
-      <div className="transition-all duration-200 relative">
-        <div className="flex gap-3 py-2">
+      <div className="transition-all duration-200 relative pb-2">
+        <div className="flex items-end gap-3 p-2 pl-2.5 border border-border/40 bg-muted/30 dark:bg-[#1D1F24]/80 rounded-[26px] shadow-sm focus-within:border-primary/40 focus-within:shadow-[0_4px_16px_rgba(37,99,235,0.06)] focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-200">
           {/* Avatar */}
-          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[#EFF6FF] dark:bg-blue-500/10 border border-[#BFDBFE] dark:border-blue-500/30 flex items-center justify-center text-[#60A5FA]">
-            <User className="w-4 h-4" />
+          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[#EFF6FF] dark:bg-blue-500/10 border border-[#BFDBFE] dark:border-blue-500/30 flex items-center justify-center text-[#60A5FA] overflow-hidden">
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+            ) : (
+              <User className="w-5 h-5" />
+            )}
           </div>
 
           {/* Textarea */}
@@ -143,119 +156,27 @@ export default function CommentComposer({
               onBlur={() => setIsFocused(false)}
               placeholder={t('comment.placeholder')}
               rows={1}
-              className="w-full bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-foreground text-[15px] leading-relaxed resize-none placeholder:text-muted-foreground placeholder:font-medium"
-              style={{ minHeight: '28px' }}
+              className="w-full bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-foreground text-[15px] leading-relaxed resize-none placeholder:text-muted-foreground placeholder:font-medium py-1.5"
+              style={{ minHeight: '36px' }}
             />
-            <p className="text-[11.5px] text-muted-foreground font-medium mt-1">
-              {t('comment.respectful')}
-            </p>
           </div>
+
+          {/* Send Button */}
+          <button
+            type="button"
+            onMouseDown={(e) => { e.preventDefault(); handleSubmit() }}
+            disabled={!hasContent || isSubmitting}
+            className="w-[36px] h-[36px] flex-shrink-0 rounded-full flex items-center justify-center text-white bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-[0_2px_8px_rgba(37,99,235,0.25)] active:scale-95"
+          >
+            {isSubmitting ? (
+              <Loader2 className="w-4 h-4 animate-spin" strokeWidth={2.5} />
+            ) : (
+              <ArrowUp className="w-[18px] h-[18px]" strokeWidth={2.5} />
+            )}
+          </button>
         </div>
 
-        {/* ── Tone Chips + Post Button ───────────────────── */}
-        <AnimatePresence>
-          {isFocused && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.22, ease: 'easeInOut' }}
-              className="overflow-hidden"
-            >
-              <div className="pb-2 space-y-3 pt-2">
-                {/* Tone chips */}
-                <div className="flex flex-wrap gap-2">
-                  {TONE_CHIPS.map((chip) => (
-                    <button
-                      key={chip.label}
-                      type="button"
-                      onMouseDown={(e) => {
-                        e.preventDefault()
-                        setContent((prev) =>
-                          prev ? `${prev} ${chip.emoji} ` : `${chip.emoji} `
-                        )
-                      }}
-                      className="inline-flex items-center justify-center text-[22px] hover:scale-110 active:scale-95 transition-transform"
-                    >
-                      <span>{chip.emoji}</span>
-                    </button>
-                  ))}
-                </div>
 
-                {/* Bottom bar */}
-                <div className="flex items-center justify-between pt-3 mt-2 border-t border-border">
-                  <div />
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onMouseDown={(e) => { e.preventDefault(); setContent(''); setIsFocused(false) }}
-                      className="h-8 px-3 rounded-full text-[13px] font-semibold text-muted-foreground hover:text-muted-foreground hover:bg-muted transition-colors"
-                    >
-                      {t('comment.cancel')}
-                    </button>
-                    <button
-                      type="button"
-                      onMouseDown={(e) => { e.preventDefault(); handleSubmit() }}
-                      disabled={!hasContent || isSubmitting}
-                      className="h-8 px-4 rounded-full text-[13px] font-semibold text-white bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-[0_2px_8px_rgba(37,99,235,0.25)] active:scale-95"
-                    >
-                      {isSubmitting ? t('comment.posting') : t('comment.postReply')}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* ── Community Guidelines (collapsible) ───────────── */}
-      <div className="rounded-[14px] bg-slate-50/50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 mt-4 overflow-hidden">
-        <button
-          type="button"
-          onClick={() => setGuidelinesOpen(!guidelinesOpen)}
-          className="w-full flex items-center justify-between px-3.5 py-2.5 text-left transition-colors hover:bg-slate-100/50 dark:hover:bg-slate-800/40"
-        >
-          <span className="text-[13px] font-medium text-slate-600 dark:text-slate-300 flex items-center gap-2">
-            <Info className="w-4 h-4 text-slate-400" />
-            {t('comment.guidelines')}
-          </span>
-          <motion.span
-            animate={{ rotate: guidelinesOpen ? 180 : 0 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="text-slate-400"
-          >
-            <ChevronDown className="w-4 h-4" />
-          </motion.span>
-        </button>
-        <AnimatePresence>
-          {guidelinesOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25, ease: 'easeInOut' }}
-              className="overflow-hidden"
-            >
-              <div className="pr-3.5 pl-[38px] pb-3.5 space-y-3 mt-1">
-                {[
-                  t('comment.rule1'),
-                  t('comment.rule2'),
-                  t('comment.rule3'),
-                  t('comment.rule4'),
-                  t('comment.rule5'),
-                ].map((rule) => (
-                  <div key={rule} className="flex items-start gap-2">
-                    <div className="w-[6px] h-[6px] rounded-full bg-blue-400/50 dark:bg-blue-500/50 shrink-0 mt-1.5" />
-                    <span className="text-[13px] text-slate-500 dark:text-slate-400 leading-[1.5]">
-                      {rule.replace(/[-—]/g, '').replace(/\s+/g, ' ').trim()}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
       {/* Modal Profanity */}

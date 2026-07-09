@@ -31,7 +31,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'home',    label: 'Home',       icon: House,         href: '/community/for-you' },
   { id: 'explore',  label: 'Explore',     icon: Search,        href: '/community/explore' },
   { id: 'create',  label: 'Story',      icon: Plus,          href: '#', isPrimary: true },
-  { id: 'counsel', label: 'Konseling',  icon: HeartHandshake, href: '/' },
+  { id: 'counsel', label: 'Konseling',  icon: HeartHandshake, href: '/konsultasi' },
   { id: 'profile', label: 'Profile',   icon: CircleUser,    href: '/community/profile' },
 ]
 
@@ -98,12 +98,12 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
                   aria-label={item.label}
                 >
                   <motion.div
-                    animate={bounce ? { scale: [1, 0.85, 1.1, 1] } : {}}
+                    animate={bounce ? { scale: [1, 0.88, 1.05, 1] } : {}}
                     whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.35, ease: 'easeOut' }}
-                    className="relative w-[56px] h-[56px] -mt-8 rounded-full bg-gradient-to-br from-primary via-blue-500 to-indigo-500 flex items-center justify-center shadow-[0_8px_30px_hsl(var(--primary)_/_0.50)] border-[4px] border-background before:absolute before:inset-0 before:rounded-full before:border before:border-white/20"
+                    transition={{ duration: 0.30, ease: 'easeOut' }}
+                    className="relative w-[48px] h-[48px] -mt-6 rounded-full bg-gradient-to-br from-primary via-blue-500 to-indigo-500 flex items-center justify-center shadow-[0_8px_24px_hsl(var(--primary)_/_0.15)] border-[3px] border-background before:absolute before:inset-0 before:rounded-full before:border before:border-white/20"
                   >
-                    <Icon size={26} strokeWidth={2.5} className="text-white drop-shadow-sm" />
+                    <Icon size={24} strokeWidth={2} className="text-white drop-shadow-sm" />
                   </motion.div>
                   <span className={`text-[10px] font-semibold mt-0.5 ${active ? 'text-primary' : 'text-muted-foreground'}`}>
                     {t(`bottomNav.${item.id}`) !== `bottomNav.${item.id}` ? t(`bottomNav.${item.id}`) : item.label}
@@ -131,7 +131,7 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
                 >
                   <Icon
                     size={22}
-                    strokeWidth={active ? 2.2 : 1.8}
+                    strokeWidth={active ? 2 : 1.75}
                     className={`transition-colors duration-200 ${active ? 'text-primary' : 'text-muted-foreground'}`}
                   />
                 </motion.div>

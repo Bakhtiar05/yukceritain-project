@@ -14,9 +14,9 @@ import {
   ImageIcon,
   Smile,
   Tag,
-  MapPin,
   Send,
   X,
+  Loader2,
 } from 'lucide-react'
 import { useCommunityLanguage } from '@/lib/i18n/CommunityLanguageProvider'
 
@@ -46,8 +46,10 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
     const val = e.target.value.slice(0, MAX_LENGTH)
     setContent(val)
     const el = e.target
-    el.style.height = 'auto'
-    el.style.height = `${Math.max(el.scrollHeight, 240)}px`
+    // Calculate new height smoothly without jumping
+    el.style.height = '0px' // Temporarily collapse to get true scrollHeight
+    const newHeight = Math.max(el.scrollHeight, 200)
+    el.style.height = `${newHeight}px`
   }, [])
 
   const handleFocus = () => {
@@ -62,8 +64,9 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
         // adjust height safely
         setTimeout(() => {
           if(textareaRef.current) {
-            textareaRef.current.style.height = 'auto'
-            textareaRef.current.style.height = `${Math.max(textareaRef.current.scrollHeight, 240)}px`
+            textareaRef.current.style.height = '0px'
+            const newHeight = Math.max(textareaRef.current.scrollHeight, 200)
+            textareaRef.current.style.height = `${newHeight}px`
           }
         }, 10)
       }
@@ -76,7 +79,7 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
     setIsAnonymous(false)
     setIsFocused(false)
     if (textareaRef.current) {
-      textareaRef.current.style.height = '240px'
+      textareaRef.current.style.height = '200px'
     }
   }
 
@@ -134,7 +137,7 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
         <div className="flex items-center gap-4">
           {/* Avatar */}
           <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-sm">
-            <User className="w-5 h-5" strokeWidth={1.8} />
+            <User className="w-5 h-5" strokeWidth={1.75} />
           </div>
 
           {/* Title block */}
@@ -150,10 +153,10 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
 
         {/* ── WRITING AREA ────────────────────────────────────── */}
         <div
-          className={`relative rounded-[16px] transition-all duration-200 ${
+          className={`relative rounded-[24px] transition-all duration-300 border bg-white dark:bg-[#0F172A] ${
             isFocused
-              ? 'bg-primary/5 dark:bg-primary/10'
-              : 'bg-muted/30 hover:bg-muted/50'
+              ? 'border-primary/30 ring-4 ring-primary/10 shadow-[0_4px_20px_rgba(37,99,235,0.06)]'
+              : 'border-border/40 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:border-border/60 hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)]'
           }`}
         >
           <textarea
@@ -162,9 +165,9 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
             onChange={handleInput}
             onFocus={handleFocus}
             onBlur={() => setIsFocused(false)}
-            placeholder={t('composer.placeholder')}
-            className="w-full bg-transparent outline-none focus:outline-none focus:ring-0 border-0 resize-none text-[16px] text-foreground leading-[1.7] placeholder:text-muted-foreground placeholder:leading-[1.7] p-5 rounded-[16px] custom-scrollbar"
-            style={{ minHeight: '240px' }}
+            placeholder="Apa yang sedang kamu rasakan hari ini?"
+            className="w-full bg-transparent outline-none focus:outline-none focus:ring-0 border-0 resize-none text-[16px] md:text-[17px] font-normal tracking-[-0.01em] text-[#1F2937] dark:text-gray-200 leading-[1.7] placeholder:text-muted-foreground/50 placeholder:transition-opacity p-5 md:p-6 rounded-[24px] caret-primary custom-scrollbar transition-opacity duration-300"
+            style={{ minHeight: '200px' }}
           />
         </div>
 
@@ -173,21 +176,21 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
               <button
                 type="button"
                 onClick={() => setIsAnonymous(!isAnonymous)}
-                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-full border text-[13px] font-semibold transition-all duration-200 active:scale-95 ${
+                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-full border text-[13px] font-semibold transition-all duration-200 active:scale-[0.98] ${
                   isAnonymous 
                     ? 'border-primary text-primary bg-[#EFF6FF] dark:bg-blue-500/10' 
-                    : 'border-border text-muted-foreground hover:border-primary hover:text-primary hover:bg-[#EFF6FF] dark:bg-blue-500/10'
+                    : 'border-border/50 text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-[#EFF6FF]/50 dark:hover:bg-blue-500/10'
                 }`}
               >
-                <Shield className="w-3.5 h-3.5" />
+                <Shield className="w-3.5 h-3.5" strokeWidth={1.75} />
                 {t('composer.postAnonymously')}
               </button>
 
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full border border-border text-[13px] font-semibold text-muted-foreground hover:border-primary hover:text-primary hover:bg-[#EFF6FF] dark:bg-blue-500/10 transition-all duration-200 active:scale-95"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full border border-border/50 text-[13px] font-semibold text-muted-foreground hover:border-primary/40 hover:text-primary hover:bg-[#EFF6FF]/50 dark:hover:bg-blue-500/10 transition-all duration-200 active:scale-[0.98]"
               >
-                <ImageIcon className="w-3.5 h-3.5" />
+                <ImageIcon className="w-3.5 h-3.5" strokeWidth={1.75} />
                 {t('composer.addImage')}
               </button>
               
@@ -200,7 +203,7 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
                       e.preventDefault()
                       handleEmojiClick(emoji)
                     }}
-                    className="w-9 h-9 flex items-center justify-center text-[18px] rounded-full hover:bg-muted transition-colors active:scale-95"
+                    className="w-9 h-9 flex items-center justify-center text-[18px] rounded-full hover:bg-muted/60 transition-colors active:scale-95"
                   >
                     {emoji}
                   </button>
@@ -208,21 +211,35 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
               </div>
           </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 mt-1">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 mt-1 min-h-[48px]">
           {/* Left: counter + discard */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <AnimatePresence>
+              {hasContent && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="text-[13px] font-medium transition-colors"
+                  style={{ color: counterColor }}
+                >
+                  {remaining}
+                </motion.div>
+              )}
+            </AnimatePresence>
+            
             {/* Discard */}
             <AnimatePresence>
               {hasContent && (
                 <motion.button
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
                   type="button"
                   onClick={handleDiscard}
-                  className="inline-flex items-center justify-center gap-1.5 h-9 sm:h-10 px-3 sm:px-4 rounded-full border border-border text-[13px] sm:text-[14px] font-semibold text-muted-foreground hover:border-[#EF4444] hover:text-[#EF4444] hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 whitespace-nowrap flex-shrink-0"
+                  className="inline-flex items-center justify-center gap-1.5 h-9 sm:h-10 px-3 sm:px-4 rounded-full border border-border/50 text-[13px] sm:text-[14px] font-semibold text-muted-foreground hover:border-[#EF4444]/40 hover:text-[#EF4444] hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 whitespace-nowrap flex-shrink-0"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-3.5 h-3.5" strokeWidth={1.75} />
                   {t('composer.discard')}
                 </motion.button>
               )}
@@ -230,35 +247,34 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
           </div>
 
           {/* Right: Share Story */}
-          <motion.button
-            type="button"
-            onClick={!hasContent ? handleFocus : handleSubmit}
-            disabled={isSubmitting}
-            animate={hasContent ? { opacity: 1, scale: 1 } : { opacity: 0.55, scale: 1 }}
-            whileHover={hasContent ? { scale: 1.02 } : {}}
-            whileTap={hasContent ? { scale: 0.97 } : {}}
-            transition={{ duration: 0.18 }}
-            className={`inline-flex items-center justify-center gap-2 h-10 sm:h-12 px-4 sm:px-6 rounded-full text-[14px] sm:text-[15px] font-semibold text-white transition-colors duration-200 whitespace-nowrap flex-shrink-0 ${
-              hasContent
-                ? 'bg-primary hover:bg-primary/90 shadow-[0_4px_14px_rgba(37,99,235,0.30)] cursor-pointer'
-                : 'bg-primary cursor-default'
-            } disabled:cursor-wait`}
-          >
-            {isSubmitting ? (
-              <>
-                <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                </svg>
-                {t('composer.sharing')}
-              </>
-            ) : (
-              <>
-                <Send className="w-4 h-4" strokeWidth={2} />
-                {t('composer.shareStoryBtn')}
-              </>
+          <AnimatePresence>
+            {hasContent && (
+              <motion.button
+                initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.96 }}
+                type="button"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
+                className="inline-flex items-center justify-center gap-2 h-10 sm:h-12 px-4 sm:px-6 rounded-full text-[14px] sm:text-[15px] font-semibold text-white transition-all duration-200 whitespace-nowrap flex-shrink-0 bg-primary hover:bg-primary/90 shadow-[0_8px_24px_rgba(37,99,235,0.12)] hover:shadow-[0_12px_30px_rgba(37,99,235,0.16)] cursor-pointer disabled:cursor-wait"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="animate-spin w-[18px] h-[18px]" strokeWidth={2.5} />
+                    {t('composer.sharing')}
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" strokeWidth={1.75} />
+                    {t('composer.shareStoryBtn')}
+                  </>
+                )}
+              </motion.button>
             )}
-          </motion.button>
+          </AnimatePresence>
         </div>
       {/* Modal Profanity */}
       <ProfanityModal

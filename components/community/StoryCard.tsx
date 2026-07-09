@@ -211,7 +211,7 @@ export default function StoryCard({
               className="w-9 h-9 flex items-center justify-center rounded-full text-muted-foreground hover:text-muted-foreground hover:bg-muted transition-colors active:scale-95"
               aria-label="More options"
             >
-              <MoreVertical className="w-5 h-5" />
+              <MoreVertical className="w-5 h-5" strokeWidth={1.75} />
             </button>
 
             {/* Dropdown */}
@@ -232,14 +232,14 @@ export default function StoryCard({
                       onClick={(e) => { e.stopPropagation(); setIsEditing(true); setIsMenuOpen(false) }}
                       className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                     >
-                      <Check className="w-4 h-4 text-muted-foreground" />
+                      <Check className="w-4 h-4 text-muted-foreground" strokeWidth={1.75} />
                       Edit Post
                     </button>
                     <button
                       onClick={(e) => { e.stopPropagation(); setIsDeleteModalOpen(true); setIsMenuOpen(false) }}
                       className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 dark:bg-red-900/20 transition-colors"
                     >
-                      <Trash2 className="w-4 h-4 text-red-400" />
+                      <Trash2 className="w-4 h-4 text-red-400" strokeWidth={1.75} />
                       Delete Post
                     </button>
                     <div className="h-px bg-muted my-1.5 mx-3" />
@@ -249,21 +249,21 @@ export default function StoryCard({
                   onClick={(e) => { e.stopPropagation(); handleShare() }}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                 >
-                  <LinkIcon className="w-4 h-4 text-muted-foreground" />
+                  <LinkIcon className="w-4 h-4 text-muted-foreground" strokeWidth={1.75} />
                   Share Story
                 </button>
                 <button
                   onClick={(e) => e.stopPropagation()}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                 >
-                  <Flag className="w-4 h-4 text-muted-foreground" />
+                  <Flag className="w-4 h-4 text-muted-foreground" strokeWidth={1.75} />
                   Report
                 </button>
                 <button
                   onClick={(e) => e.stopPropagation()}
                   className="w-full flex items-center gap-3 px-4 py-2.5 text-[13.5px] font-semibold text-muted-foreground hover:bg-muted transition-colors"
                 >
-                  <EyeOff className="w-4 h-4 text-muted-foreground" />
+                  <EyeOff className="w-4 h-4 text-muted-foreground" strokeWidth={1.75} />
                   Hide Post
                 </button>
                 </div>
@@ -329,7 +329,7 @@ export default function StoryCard({
           >
             <Heart
               className="w-4 h-4 transition-colors"
-              strokeWidth={isLiked ? 0 : 1.8}
+              strokeWidth={isLiked ? 0 : 1.75}
               fill={isLiked ? '#93C5FD' : 'none'}
             />
             {likesCount > 0 && <span className="tabular-nums">{likesCount}</span>}
@@ -342,7 +342,7 @@ export default function StoryCard({
             className="community-action-btn"
             title="Balas"
           >
-            <MessageCircle className="w-4 h-4" strokeWidth={1.8} />
+            <MessageCircle className="w-4 h-4" strokeWidth={1.75} />
             {comments_count > 0 && <span className="tabular-nums">{comments_count}</span>}
             <span className="hidden sm:inline">Reply</span>
           </button>
@@ -353,7 +353,7 @@ export default function StoryCard({
             className="community-action-btn"
             title="Bagikan"
           >
-            <Share2 className="w-4 h-4" strokeWidth={1.8} />
+            <Share2 className="w-4 h-4" strokeWidth={1.75} />
             <span className="hidden sm:inline">Share</span>
           </button>
         </div>
@@ -367,7 +367,7 @@ export default function StoryCard({
           <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[90vw] max-w-sm translate-x-[-50%] translate-y-[-50%] bg-card rounded-[24px] p-6 shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
             <div className="flex flex-col items-center text-center">
               <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4 text-red-600">
-                <AlertCircle className="w-6 h-6" />
+                <AlertCircle className="w-6 h-6" strokeWidth={1.75} />
               </div>
               <Dialog.Title className="text-[18px] font-bold text-foreground mb-2">
                 Delete this story?

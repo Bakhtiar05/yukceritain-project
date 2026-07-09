@@ -13,7 +13,7 @@ export default function ThemeToggle() {
   useEffect(() => setMounted(true), [])
 
   if (!mounted) {
-    return <div className="w-10 h-10 rounded-full bg-muted animate-pulse" />
+    return <div className="w-10 h-10" />
   }
 
   const currentTheme = theme || 'system'
@@ -30,7 +30,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700/80 text-foreground transition-all duration-300 overflow-hidden group shadow-sm hover:shadow-md"
+      className="relative flex items-center justify-center w-10 h-10 text-muted-foreground hover:text-foreground transition-all duration-300 overflow-hidden group"
       title={`Tema: ${label}`}
       aria-label="Ganti Tema"
     >
@@ -43,7 +43,7 @@ export default function ThemeToggle() {
           transition={{ duration: 0.25, ease: "easeOut" }}
           className="absolute flex items-center justify-center"
         >
-          <Icon className="w-5 h-5 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform duration-300" strokeWidth={2.2} />
+          <Icon className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" strokeWidth={2.2} />
         </motion.div>
       </AnimatePresence>
     </button>
