@@ -32,15 +32,15 @@ export function IdentityStep() {
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-full h-16 text-left text-lg font-normal rounded-2xl bg-slate-50 border-slate-200 hover:bg-slate-100 px-4",
-                      !field.value && "text-slate-400"
+                      "w-full h-16 text-left text-lg font-normal rounded-2xl bg-slate-50 dark:bg-card border-slate-200 dark:border-border hover:bg-slate-100 dark:hover:bg-slate-800 px-4",
+                      !field.value && "text-slate-400 dark:text-muted-foreground"
                     )}
                   >
                     {field.value ? format(field.value, "PPP", { locale: idLocale }) : <span>Pilih tanggal lahir</span>}
                     <CalendarIcon className="ml-auto h-5 w-5 text-slate-400" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-white z-50 border border-slate-200 shadow-lg rounded-xl" align="start">
+                <PopoverContent className="w-auto p-0 bg-white dark:bg-card z-50 border border-slate-200 dark:border-border shadow-lg rounded-xl" align="start">
                   <Calendar
                     mode="single"
                     selected={field.value}
@@ -58,14 +58,14 @@ export function IdentityStep() {
         </div>
       </div>
 
-      <div className="pt-6 border-t border-slate-100">
-        <h2 className="text-2xl font-display font-bold text-slate-900 mb-2">Berapa Nomor Induk Kependudukan (NIK) Anda?</h2>
-        <p className="text-slate-500">Diperlukan untuk keperluan administrasi resmi.</p>
+      <div className="pt-6 border-t border-slate-100 dark:border-border">
+        <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-foreground mb-2">Berapa Nomor Induk Kependudukan (NIK) Anda?</h2>
+        <p className="text-slate-500 dark:text-muted-foreground">Diperlukan untuk keperluan administrasi resmi.</p>
         <div className="mt-4">
           <Input 
             {...register("nik")} 
             placeholder="16 digit NIK"
-            className="h-16 text-lg rounded-2xl px-4 bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+            className="h-16 text-lg rounded-2xl px-4 bg-slate-50 dark:bg-card border-slate-200 dark:border-border focus:bg-white dark:focus:bg-slate-800 transition-colors"
           />
           <ValidationMessage message={errors.nik?.message} />
         </div>

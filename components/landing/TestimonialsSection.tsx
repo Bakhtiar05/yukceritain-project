@@ -29,14 +29,14 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section id="testimoni" className="scroll-mt-24 py-12 md:py-20 bg-white">
+    <section id="testimoni" className="scroll-mt-24 py-12 md:py-20 bg-white dark:bg-background">
       <div className="max-w-container mx-auto px-6">
         <ScrollReveal variant="fade-up" className="text-center mb-16">
           <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest mb-3">Testimoni</p>
-          <h2 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold text-neutral-900 mb-4">
+          <h2 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold text-neutral-900 dark:text-foreground mb-4">
             Cerita Mereka yang Telah Terbantu
           </h2>
-          <p className="text-neutral-500 max-w-lg mx-auto text-lg">
+          <p className="text-neutral-500 dark:text-muted-foreground max-w-lg mx-auto text-lg">
             Ribuan orang telah menemukan ruang aman mereka bersama YukceritaIN
           </p>
         </ScrollReveal>
@@ -57,8 +57,8 @@ export default function TestimonialsSection() {
             }
           `}} />
           
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 md:w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 md:w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 md:w-32 bg-gradient-to-r from-white dark:from-background to-transparent z-10"></div>
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 md:w-32 bg-gradient-to-l from-white dark:from-background to-transparent z-10"></div>
 
           <div className="animate-scroll gap-6 pr-6">
             {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, idx) => (
@@ -67,7 +67,7 @@ export default function TestimonialsSection() {
                 className={`w-[85vw] sm:w-[350px] md:w-[400px] flex-shrink-0 rounded-2xl p-8 border transition-all duration-300 hover:-translate-y-1 ${
                   t.featured
                     ? 'bg-gradient-to-br from-blue-600 to-blue-700 border-transparent text-white shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)]'
-                    : 'bg-white border-blue-200 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-blue-400'
+                    : 'bg-white dark:bg-card border-blue-200 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-blue-400'
                 }`}
               >
                 {/* Stars */}
@@ -77,7 +77,7 @@ export default function TestimonialsSection() {
                   ))}
                 </div>
 
-                <p className={`text-sm leading-relaxed mb-8 ${t.featured ? 'text-blue-50' : 'text-neutral-600'}`}>
+                <p className={`text-sm leading-relaxed mb-8 ${t.featured ? 'text-blue-50' : 'text-neutral-600 dark:text-muted-foreground'}`}>
                   &ldquo;{t.quote}&rdquo;
                 </p>
 
@@ -86,7 +86,7 @@ export default function TestimonialsSection() {
                     {t.initials}
                   </div>
                   <div>
-                    <p className={`text-sm font-semibold ${t.featured ? 'text-white' : 'text-neutral-900'}`}>{t.name}</p>
+                    <p className={`text-sm font-semibold ${t.featured ? 'text-white' : 'text-neutral-900 dark:text-foreground'}`}>{t.name}</p>
                     <p className={`text-xs ${t.featured ? 'text-blue-200' : 'text-neutral-400'}`}>{t.role}</p>
                   </div>
                 </div>

@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Menu, X, Home, HeartHandshake, Activity, BookOpen, Calendar, MoreHorizontal } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import ThemeToggle from '@/components/community/ThemeToggle'
 
 interface NavbarProps {
   variant?: 'default' | 'blog'
@@ -74,7 +75,7 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
                   alt="YukceritaIN Logo"
                   width={200}
                   height={200}
-                  className={`w-auto transition-all duration-300 group-hover:scale-105 ${scrolled ? 'h-[42px] sm:h-[48px] lg:h-[56px]' : 'h-[48px] sm:h-[56px] lg:h-[64px]'}`}
+                  className={`w-auto dark:brightness-0 dark:invert transition-all duration-300 group-hover:scale-105 ${scrolled ? 'h-[42px] sm:h-[48px] lg:h-[56px]' : 'h-[48px] sm:h-[56px] lg:h-[64px]'}`}
                   style={{ width: "auto" }}
                   priority
                 />
@@ -105,6 +106,7 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
 
             {/* Actions */}
             <div className="hidden md:flex justify-end items-center gap-3 lg:gap-4">
+              <ThemeToggle />
               <Link
                 href="/cek-status"
                 className="text-[0.875rem] font-medium text-muted-foreground hover:text-primary transition-colors px-3 py-2 rounded-full hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
@@ -123,65 +125,91 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
         </header>
       )}
 
+      {/* Mobile Header */}
+      {!hideOnDesktop && (
+        <header
+          className={`md:hidden fixed top-0 inset-x-0 z-[1000] transition-all duration-300 flex items-center justify-between px-5 py-3 ${
+            scrolled || menuOpen ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-sm' : 'bg-transparent'
+          }`}
+        >
+          <Link href="/" className="flex items-center" onClick={() => setMenuOpen(false)}>
+            <Image
+              src="/assets/logo-v4.png"
+              alt="YukceritaIN Logo"
+              width={150}
+              height={40}
+              className="w-auto h-[32px] dark:brightness-0 dark:invert"
+              priority
+            />
+          </Link>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <button 
+              onClick={() => setMenuOpen(!menuOpen)} 
+              className="p-1.5 -mr-1.5 text-foreground focus:outline-none rounded-full hover:bg-muted/20"
+            >
+              {menuOpen ? <X size={28} strokeWidth={2.5} /> : <Menu size={28} strokeWidth={2.5} />}
+            </button>
+          </div>
+        </header>
+      )}
+
       {/* Mobile Bottom Navigation */}
       <nav className="md:hidden fixed bottom-0 inset-x-0 z-[998] bg-background/95 backdrop-blur-xl border-t border-border/50 shadow-[0_-8px_32px_rgba(0,0,0,0.08)] rounded-t-[32px] px-4 py-2 flex items-center justify-between pb-safe">
-        <Link href="/" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
+        <Link href="/" className="flex flex-col items-center justify-center w-1/4 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
           <Home size={22} className={pathname === '/' ? 'text-primary' : ''} />
           <span className={`text-[10px] font-medium ${pathname === '/' ? 'text-primary' : ''}`}>Beranda</span>
         </Link>
-        <Link href="/events" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
+        <Link href="/events" className="flex flex-col items-center justify-center w-1/4 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
           <Calendar size={22} className={pathname?.startsWith('/events') ? 'text-primary' : ''} />
           <span className={`text-[10px] font-medium ${pathname?.startsWith('/events') ? 'text-primary' : ''}`}>Event</span>
         </Link>
-        <Link href="/community" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors group">
-          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-background shadow-[0_8px_20px_rgba(0,0,0,0.12)] border-2 ${pathname?.startsWith('/community') ? 'border-primary/20' : 'border-border'} transition-transform duration-300 group-hover:-translate-y-1`}>
+        <Link href="/community" className="flex flex-col items-center justify-center w-1/4 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors group">
+          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white shadow-[0_8px_20px_rgba(0,0,0,0.12)] border-2 ${pathname?.startsWith('/community') ? 'border-primary/20' : 'border-border'} transition-transform duration-300 group-hover:-translate-y-1`}>
             <Image src="/assets/navbar-bawah.png" alt="Yukceritain" width={36} height={36} className={`object-contain transition-all duration-300 ${pathname?.startsWith('/community') ? 'opacity-100 scale-105 drop-shadow-md' : 'opacity-80'}`} />
           </div>
           <span className={`text-[10px] font-medium ${pathname?.startsWith('/community') ? 'text-primary' : ''}`}>Yukceritain</span>
         </Link>
-        <Link href="/blog" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
+        <Link href="/blog" className="flex flex-col items-center justify-center w-1/4 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
           <BookOpen size={22} className={pathname?.startsWith('/blog') ? 'text-primary' : ''} />
           <span className={`text-[10px] font-medium ${pathname?.startsWith('/blog') ? 'text-primary' : ''}`}>Blog</span>
         </Link>
-        <button onClick={() => setMenuOpen(true)} className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
-          <MoreHorizontal size={22} className={menuOpen ? 'text-primary' : ''} />
-          <span className={`text-[10px] font-medium ${menuOpen ? 'text-primary' : ''}`}>Lainnya</span>
-        </button>
       </nav>
 
-      {/* Mobile Drawer (Bottom Sheet) */}
+      {/* Mobile Menu Dropdown */}
       <div
-        className={`fixed inset-x-0 bottom-0 bg-background/95 backdrop-blur-2xl border-t border-border shadow-[0_-8px_30px_rgba(0,0,0,0.08)] rounded-t-[32px] p-6 pb-28 transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] md:hidden z-[1000] flex flex-col ${
-          menuOpen ? 'translate-y-0' : 'translate-y-full'
+        className={`fixed inset-x-0 top-0 bg-background/98 backdrop-blur-xl border-b border-border shadow-lg p-6 pt-24 transition-transform duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] md:hidden z-[999] flex flex-col ${
+          menuOpen ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="font-bold text-lg text-foreground">Menu Lainnya</h3>
-          <button onClick={() => setMenuOpen(false)} aria-label="Tutup Menu" className="p-2 bg-muted hover:bg-muted-foreground/20 rounded-full text-muted-foreground transition-colors">
-            <X size={20} />
-          </button>
-        </div>
-        
-        <div className="flex flex-col gap-2 overflow-y-auto max-h-[60vh]">
+        <div className="flex flex-col gap-2 overflow-y-auto max-h-[80vh]">
           {navLinks.map((link) => (
-            link.label !== 'Yuk Ceritain' && (
-              <Link
-                key={link.label}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className="px-4 py-3.5 text-[1rem] font-semibold rounded-xl transition-colors focus:outline-none text-foreground hover:bg-accent hover:text-primary"
-              >
-                {link.label}
-              </Link>
-            )
+            <Link
+              key={link.label}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className="px-4 py-3.5 text-[1.05rem] font-semibold rounded-xl transition-colors focus:outline-none text-foreground hover:bg-accent hover:text-primary"
+            >
+              {link.label}
+            </Link>
           ))}
+          
+          <div className="h-px bg-border my-2 mx-2" />
+          
+          <Link
+            href="/cek-status"
+            onClick={() => setMenuOpen(false)}
+            className="px-4 py-3.5 text-[1.05rem] font-semibold rounded-xl transition-colors focus:outline-none text-foreground hover:bg-accent hover:text-primary"
+          >
+            Cek Status
+          </Link>
         </div>
       </div>
 
       {/* Backdrop */}
       {menuOpen && (
         <div
-          className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-[999] md:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-[998] md:hidden transition-opacity duration-300"
           onClick={() => setMenuOpen(false)}
           aria-hidden="true"
         />

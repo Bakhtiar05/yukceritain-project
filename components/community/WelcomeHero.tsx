@@ -76,7 +76,7 @@ export default function WelcomeHero() {
                 onComplete={() => {
                   setCurrentSlide((prev) => (prev + 1) % slides.length)
                 }}
-                className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white dark:text-foreground leading-[1.2] mb-4 whitespace-nowrap sm:whitespace-normal"
+                className="text-[28px] sm:text-4xl md:text-5xl font-bold tracking-tight text-white dark:text-foreground leading-[1.2] mb-4"
               />
               
               <TypewriterText 
@@ -170,14 +170,17 @@ function TypewriterHeadline({ text, className, onComplete }: { text: string, cla
   }
 
   return (
-    <h1 className={`relative ${className}`}>
+    <h1 className={`relative ${className} whitespace-pre-wrap`}>
+      {/* Invisible full text maintains the exact layout and height */}
       <span className="invisible select-none break-words" aria-hidden="true">{text}</span>
+      
+      {/* Absolute overlay types the text progressively */}
       <span className="absolute left-0 top-0 w-full h-full text-left break-words">
         {text.substring(0, subIndex)}
         <motion.span 
           animate={{ opacity: blink ? 1 : 0 }} 
           transition={{ duration: 0.1 }}
-          className="inline-block w-[3px] h-[1.1em] bg-white dark:bg-primary ml-1 align-middle rounded-full -translate-y-[0.1em]"
+          className="inline-block w-[3px] h-[1.1em] bg-white dark:bg-primary ml-[2px] align-middle rounded-full -translate-y-[0.1em]"
         />
       </span>
     </h1>

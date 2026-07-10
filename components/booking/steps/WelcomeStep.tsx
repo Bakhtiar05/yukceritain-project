@@ -24,50 +24,50 @@ export function WelcomeStep({ onStart }: BookingStepProps) {
           alt="YukCeritain Logo" 
           width={120} 
           height={120} 
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain dark:brightness-0 dark:invert"
         />
       </div>
 
       {/* Heading & Description */}
       <div className="space-y-2 md:space-y-3 px-4">
-        <h2 className="text-3xl md:text-[42px] font-bold text-slate-900 tracking-tight leading-tight">
+        <h2 className="text-3xl md:text-[42px] font-bold text-slate-900 dark:text-foreground tracking-tight leading-tight">
           Pesan Sesi Konselingmu
         </h2>
-        <p className="text-[15px] md:text-[18px] text-slate-500 max-w-xl mx-auto leading-relaxed">
+        <p className="text-[15px] md:text-[18px] text-slate-500 dark:text-muted-foreground max-w-xl mx-auto leading-relaxed">
           Pilih jadwal yang paling sesuai untukmu dan mulai perjalanan konselingmu hanya dalam beberapa langkah mudah.
         </p>
       </div>
 
       {/* Trust Badges */}
       <div className="flex flex-wrap justify-center items-center gap-2 md:gap-3 pt-2 px-2">
-        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-slate-600 rounded-full text-xs font-medium border border-slate-100">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 dark:bg-card/50 text-slate-600 dark:text-white rounded-full text-xs font-medium border border-slate-100 dark:border-white/20">
           <Lock className="w-3.5 h-3.5 text-blue-500" /> 100% Rahasia
         </div>
-        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-slate-600 rounded-full text-xs font-medium border border-slate-100">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 dark:bg-card/50 text-slate-600 dark:text-white rounded-full text-xs font-medium border border-slate-100 dark:border-white/20">
           <Clock className="w-3.5 h-3.5 text-blue-500" /> Hanya butuh 2 menit
         </div>
-        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 text-slate-600 rounded-full text-xs font-medium border border-slate-100">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 dark:bg-card/50 text-slate-600 dark:text-white rounded-full text-xs font-medium border border-slate-100 dark:border-white/20">
           <UserCheck className="w-3.5 h-3.5 text-blue-500" /> Konselor Terverifikasi
         </div>
       </div>
 
       {/* Flow Preview */}
-      <div className="w-full max-w-[400px] mx-auto pt-3 md:pt-4 pb-1 flex items-center justify-between text-[11px] md:text-[12px] font-medium text-slate-400 relative">
-        <div className="absolute left-[15%] right-[15%] top-[12px] h-[1px] bg-slate-100 -z-10" />
+      <div className="w-full max-w-[400px] mx-auto pt-3 md:pt-4 pb-1 flex items-center justify-between text-[11px] md:text-[12px] font-medium text-slate-400 dark:text-white/70 relative">
+        <div className="absolute left-[15%] right-[15%] top-[12px] h-[1px] bg-slate-100 dark:bg-white/40 -z-10" />
         <div className="flex flex-col items-center gap-2 w-1/4">
-          <div className="w-6 h-6 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">1</div>
-          <span className="text-blue-600">Pesan</span>
+          <div className="w-6 h-6 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-white/50 flex items-center justify-center text-blue-600 dark:text-white">1</div>
+          <span className="text-blue-600 dark:text-white">Pesan</span>
         </div>
         <div className="flex flex-col items-center gap-2 w-1/4">
-          <div className="w-6 h-6 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center">2</div>
+          <div className="w-6 h-6 rounded-full bg-slate-50 dark:bg-card border border-slate-100 dark:border-white/30 flex items-center justify-center">2</div>
           <span>Jadwal</span>
         </div>
         <div className="flex flex-col items-center gap-2 w-1/4">
-          <div className="w-6 h-6 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center">3</div>
+          <div className="w-6 h-6 rounded-full bg-slate-50 dark:bg-card border border-slate-100 dark:border-white/30 flex items-center justify-center">3</div>
           <span>Bayar</span>
         </div>
         <div className="flex flex-col items-center gap-2 w-1/4">
-          <div className="w-6 h-6 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center">4</div>
+          <div className="w-6 h-6 rounded-full bg-slate-50 dark:bg-card border border-slate-100 dark:border-white/30 flex items-center justify-center">4</div>
           <span>Selesai</span>
         </div>
       </div>

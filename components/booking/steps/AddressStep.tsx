@@ -18,7 +18,7 @@ export function AddressStep() {
         <Textarea 
           {...register("alamat_lengkap")} 
           placeholder="Jl. Sudirman No. 1..."
-          className="min-h-[120px] text-lg rounded-2xl p-4 bg-slate-50 border-slate-200 focus:bg-white transition-colors resize-none"
+          className="min-h-[120px] text-lg rounded-2xl p-4 bg-slate-50 dark:bg-card border-slate-200 dark:border-border focus:bg-white dark:focus:bg-slate-800 transition-colors resize-none"
           autoFocus
         />
       </div>

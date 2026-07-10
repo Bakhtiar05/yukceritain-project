@@ -33,7 +33,7 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
         value={internal}
         onChange={(e) => setInternal(e.target.value)}
         placeholder="Cari artikel..."
-        className="w-full pl-11 pr-4 py-3 bg-neutral-50 rounded-full border border-neutral-200 text-sm text-neutral-700 placeholder:text-neutral-400 outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition-all"
+        className="w-full pl-11 pr-4 py-3 bg-neutral-50 dark:bg-card rounded-full border border-neutral-200 dark:border-border text-sm text-neutral-700 dark:text-foreground placeholder:text-neutral-400 dark:placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-400 transition-all"
       />
     </div>
   )

@@ -18,7 +18,7 @@ export function PreferredNameStep() {
         <Input 
           {...register("nama_panggilan")} 
           placeholder="Contoh: Budi"
-          className="h-16 text-lg rounded-2xl pl-4 pr-4 bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+          className="h-16 text-lg rounded-2xl pl-4 pr-4 bg-slate-50 dark:bg-card border-slate-200 dark:border-border focus:bg-white dark:focus:bg-slate-800 transition-colors"
           autoFocus
         />
       </div>

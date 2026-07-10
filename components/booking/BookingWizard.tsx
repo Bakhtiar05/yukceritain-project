@@ -61,14 +61,14 @@ export function BookingWizard() {
       {currentStep > 0 && (
         <div className="mb-6 md:mb-10 px-4 md:px-0 animate-in fade-in slide-in-from-top-4 duration-500">
           <div className="flex justify-between items-end mb-3">
-            <span className="text-sm font-semibold text-slate-500">
+            <span className="text-sm font-semibold text-slate-500 dark:text-muted-foreground">
               Langkah {currentStep} dari {TOTAL_STEPS - 1}
             </span>
-            <span className="text-xs font-medium text-slate-400 bg-slate-100 px-3 py-1 rounded-full">
+            <span className="text-xs font-medium text-slate-400 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
               Sekitar {estimatedMinutes} menit lagi
             </span>
           </div>
-          <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+          <div className="h-2 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
             <div 
               className="h-full bg-blue-600 rounded-full transition-all duration-700 ease-out"
               style={{ width: `${(currentStep / (TOTAL_STEPS - 1)) * 100}%` }}
@@ -79,7 +79,7 @@ export function BookingWizard() {
 
       {/* Main Form Content */}
       <FormProvider {...methods}>
-        <div className="bg-white min-h-[300px] md:min-h-[400px] flex flex-col rounded-3xl md:rounded-[40px] shadow-sm border border-slate-100 p-5 py-6 md:p-8 md:py-6 relative overflow-hidden">
+        <div className="bg-white dark:bg-card min-h-[300px] md:min-h-[400px] flex flex-col rounded-3xl md:rounded-[40px] shadow-sm border border-slate-100 dark:border-border p-5 py-6 md:p-8 md:py-6 relative overflow-hidden">
           
           <div className="flex-1 w-full flex flex-col justify-center">
             {CurrentStepComponent && (
@@ -92,11 +92,11 @@ export function BookingWizard() {
 
           {/* Sticky Navigation Bottom Bar (Hidden on Welcome Step) */}
           {currentStep > 0 && (
-            <div className="mt-6 md:mt-12 flex items-center justify-between gap-3 md:gap-4 pt-4 md:pt-6 border-t border-slate-100 animate-in fade-in duration-700">
+            <div className="mt-6 md:mt-12 flex items-center justify-between gap-3 md:gap-4 pt-4 md:pt-6 border-t border-slate-100 dark:border-border animate-in fade-in duration-700">
               <Button 
                 variant="ghost" 
                 onClick={handleBack} 
-                className="rounded-2xl px-2 md:px-4 h-12 md:h-14 text-slate-500 hover:text-slate-900 hover:bg-slate-100"
+                className="rounded-2xl px-2 md:px-4 h-12 md:h-14 text-slate-500 dark:text-muted-foreground hover:text-slate-900 dark:hover:text-foreground hover:bg-slate-100 dark:hover:bg-slate-800"
               >
                 <ArrowLeft className="w-5 h-5 mr-1 md:mr-2" />
                 <span className="hidden sm:inline">Kembali</span>
@@ -105,7 +105,7 @@ export function BookingWizard() {
               {currentStep < TOTAL_STEPS - 1 ? (
                 <Button 
                   onClick={handleNext} 
-                  className="rounded-2xl px-6 md:px-8 h-12 md:h-14 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base md:text-lg shadow-xl shadow-slate-900/10 transition-transform active:scale-95"
+                  className="rounded-2xl px-6 md:px-8 h-12 md:h-14 bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 font-semibold text-base md:text-lg shadow-xl shadow-slate-900/10 transition-transform active:scale-95"
                 >
                   {returnToReview ? "Simpan Perubahan" : "Lanjut"}
                   {!returnToReview && <ArrowRight className="w-5 h-5 ml-2" />}

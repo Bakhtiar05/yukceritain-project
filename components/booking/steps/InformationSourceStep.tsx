@@ -19,7 +19,7 @@ export function InformationSourceStep() {
   return (
     <QuestionCard>
       <div>
-        <h2 className="text-2xl font-display font-bold text-slate-900 mb-2">Apa alasan Anda mencari layanan konseling?</h2>
+        <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-foreground mb-2">Apa alasan Anda mencari layanan konseling?</h2>
         <div className="flex flex-wrap gap-3 mt-4">
           {alasans.map((opt) => (
             <button
@@ -29,8 +29,8 @@ export function InformationSourceStep() {
               className={cn(
                 "px-5 py-3 rounded-full border-2 text-sm font-medium transition-all",
                 alasan === opt 
-                  ? "border-blue-600 bg-blue-50 text-blue-700" 
-                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400" 
+                  : "border-slate-200 dark:border-border bg-white dark:bg-card text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800"
               )}
             >
               {opt}
@@ -42,15 +42,15 @@ export function InformationSourceStep() {
             <Input 
               {...register("alasan_lainnya")} 
               placeholder="Sebutkan alasan lainnya..."
-              className="h-12 rounded-xl px-4 bg-slate-50 border-slate-200"
+              className="h-12 rounded-xl px-4 bg-slate-50 dark:bg-card border-slate-200 dark:border-border"
             />
             <ValidationMessage message={errors.alasan_lainnya?.message} />
           </div>
         )}
       </div>
 
-      <div className="pt-6 border-t border-slate-100">
-        <h2 className="text-2xl font-display font-bold text-slate-900 mb-2">Ini konseling Anda yang ke berapa?</h2>
+      <div className="pt-6 border-t border-slate-100 dark:border-border">
+        <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-foreground mb-2">Ini konseling Anda yang ke berapa?</h2>
         <div className="flex flex-wrap gap-3 mt-4">
           {urutans.map((opt) => (
             <button
@@ -60,8 +60,8 @@ export function InformationSourceStep() {
               className={cn(
                 "px-5 py-3 rounded-full border-2 text-sm font-medium transition-all",
                 urutan === opt 
-                  ? "border-blue-600 bg-blue-50 text-blue-700" 
-                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400" 
+                  : "border-slate-200 dark:border-border bg-white dark:bg-card text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800"
               )}
             >
               {opt}
@@ -71,8 +71,8 @@ export function InformationSourceStep() {
         <ValidationMessage message={errors.urutan_konseling?.message} />
       </div>
 
-      <div className="pt-6 border-t border-slate-100">
-        <h2 className="text-2xl font-display font-bold text-slate-900 mb-2">Dari mana Anda mengetahui YukCeritaIN?</h2>
+      <div className="pt-6 border-t border-slate-100 dark:border-border">
+        <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-foreground mb-2">Dari mana Anda mengetahui YukCeritaIN?</h2>
         <div className="flex flex-wrap gap-3 mt-4">
           {sources.map((opt) => (
             <button
@@ -82,8 +82,8 @@ export function InformationSourceStep() {
               className={cn(
                 "px-5 py-3 rounded-full border-2 text-sm font-medium transition-all",
                 sumber === opt 
-                  ? "border-blue-600 bg-blue-50 text-blue-700" 
-                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400" 
+                  : "border-slate-200 dark:border-border bg-white dark:bg-card text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800"
               )}
             >
               {opt}
@@ -97,7 +97,7 @@ export function InformationSourceStep() {
             <Input 
               {...register("sumber_informasi_lainnya")} 
               placeholder="Sebutkan dari mana..."
-              className="h-12 rounded-xl px-4 bg-slate-50 border-slate-200"
+              className="h-12 rounded-xl px-4 bg-slate-50 dark:bg-card border-slate-200 dark:border-border"
             />
             <ValidationMessage message={errors.sumber_informasi_lainnya?.message} />
           </div>

@@ -25,7 +25,7 @@ export default function NewsletterSection() {
   }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white dark:bg-background">
       <div className="max-w-container mx-auto px-6">
         <div className="relative bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl py-12 px-8 md:px-16 overflow-hidden">
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />

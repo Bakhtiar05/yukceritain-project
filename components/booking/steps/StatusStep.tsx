@@ -28,8 +28,8 @@ export function StatusStep() {
             className={cn(
               "h-16 rounded-2xl border-2 text-base font-medium transition-all text-left px-5",
               statusVal === opt 
-                ? "border-blue-600 bg-blue-50 text-blue-700" 
-                : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400" 
+                : "border-slate-200 dark:border-border bg-white dark:bg-card text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800"
             )}
           >
             {opt}
@@ -43,7 +43,7 @@ export function StatusStep() {
           <Input 
             {...register("status_lainnya")} 
             placeholder="Sebutkan status Anda..."
-            className="h-16 text-lg rounded-2xl px-4 bg-slate-50 border-slate-200 focus:bg-white"
+            className="h-16 text-lg rounded-2xl px-4 bg-slate-50 dark:bg-card border-slate-200 dark:border-border focus:bg-white dark:focus:bg-slate-800"
             autoFocus
           />
           <ValidationMessage message={errors.status_lainnya?.message} />

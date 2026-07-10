@@ -43,8 +43,8 @@ export function MethodDateStep() {
               className={cn(
                 "h-16 rounded-2xl border-2 text-lg font-medium transition-all flex items-center justify-center gap-2",
                 metode === m 
-                  ? "border-blue-600 bg-blue-50 text-blue-700" 
-                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400" 
+                  : "border-slate-200 dark:border-border bg-white dark:bg-card text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800"
               )}
             >
               {m === "Online" ? "Google Meet" : "Tatap Muka"}
@@ -54,9 +54,9 @@ export function MethodDateStep() {
         <ValidationMessage message={errors.metode_konsultasi?.message} />
       </div>
 
-      <div className="pt-6 border-t border-slate-100">
-        <h2 className="text-2xl font-display font-bold text-slate-900 mb-2">Kapan Anda ingin menjadwalkan sesi?</h2>
-        <p className="text-slate-500">Konsultasi tersedia hari Selasa - Minggu.</p>
+      <div className="pt-6 border-t border-slate-100 dark:border-border">
+        <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-foreground mb-2">Kapan Anda ingin menjadwalkan sesi?</h2>
+        <p className="text-slate-500 dark:text-muted-foreground">Konsultasi tersedia hari Selasa - Minggu.</p>
         <div className="mt-4">
           <Controller
             control={control}
@@ -67,15 +67,15 @@ export function MethodDateStep() {
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-full h-16 text-left text-lg font-normal rounded-2xl bg-slate-50 border-slate-200 hover:bg-slate-100 px-4",
-                      !field.value && "text-slate-400"
+                      "w-full h-16 text-left text-lg font-normal rounded-2xl bg-slate-50 dark:bg-card border-slate-200 dark:border-border hover:bg-slate-100 dark:hover:bg-slate-800 px-4",
+                      !field.value && "text-slate-400 dark:text-muted-foreground"
                     )}
                   >
                     {field.value ? format(field.value, "PPP", { locale: idLocale }) : <span>Pilih tanggal sesi</span>}
-                    <CalendarIcon className="ml-auto h-5 w-5 text-slate-400" />
+                    <CalendarIcon className="ml-auto h-5 w-5 text-slate-400 dark:text-muted-foreground" />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-white z-50 border border-slate-200 shadow-lg rounded-xl" align="start">
+                <PopoverContent className="w-auto p-0 bg-white dark:bg-card z-50 border border-slate-200 dark:border-border shadow-lg rounded-xl" align="start">
                   <Calendar
                     mode="single"
                     selected={field.value}

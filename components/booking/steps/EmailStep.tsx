@@ -17,19 +17,19 @@ export function EmailStep() {
       />
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <Mail className="h-6 w-6 text-slate-400" />
+          <Mail className="h-6 w-6 text-slate-400 dark:text-muted-foreground" />
         </div>
         <Input 
           {...register("email")} 
           type="email"
           placeholder="email.anda@contoh.com"
-          className="h-16 text-lg rounded-2xl pl-12 pr-4 bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+          className="h-16 text-lg rounded-2xl pl-12 pr-4 bg-slate-50 dark:bg-card border-slate-200 dark:border-border focus:bg-white dark:focus:bg-slate-800 transition-colors"
           autoFocus
           autoComplete="email"
         />
       </div>
       <ValidationMessage message={errors.email?.message} />
-      <p className="text-sm text-slate-400">Anda sudah melakukannya dengan baik. Privasi Anda terjaga.</p>
+      <p className="text-sm text-slate-400 dark:text-muted-foreground">Anda sudah melakukannya dengan baik. Privasi Anda terjaga.</p>
     </QuestionCard>
   );
 }

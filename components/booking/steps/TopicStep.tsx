@@ -49,8 +49,8 @@ export function TopicStep() {
               className={cn(
                 "px-5 py-3 rounded-full border-2 text-sm font-medium transition-all",
                 isSelected 
-                  ? "border-blue-600 bg-blue-50 text-blue-700" 
-                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400" 
+                  : "border-slate-200 dark:border-border bg-white dark:bg-card text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800"
               )}
             >
               {topic}
@@ -65,7 +65,7 @@ export function TopicStep() {
           <Input 
             {...register("topik_lainnya")} 
             placeholder="Tuliskan topik spesifik lainnya..."
-            className="h-14 text-base rounded-2xl px-4 bg-slate-50 border-slate-200 focus:bg-white w-full max-w-md"
+            className="h-14 text-base rounded-2xl px-4 bg-slate-50 dark:bg-card border-slate-200 dark:border-border focus:bg-white dark:focus:bg-slate-800 w-full max-w-md"
             autoFocus
           />
           <ValidationMessage message={errors.topik_lainnya?.message} />

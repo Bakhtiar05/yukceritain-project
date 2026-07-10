@@ -18,13 +18,13 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
   if (!posts.length) return null
 
   return (
-    <section id="blog" className="scroll-mt-24 py-12 md:py-20 bg-white">
+    <section id="blog" className="scroll-mt-24 py-12 md:py-20 bg-white dark:bg-background">
       <div className="max-w-container mx-auto px-6">
         <div className="text-center mb-14">
-          <h2 className="font-display text-[clamp(1.8rem,4vw,2.6rem)] font-bold text-neutral-900 mb-4">
+          <h2 className="font-display text-[clamp(1.8rem,4vw,2.6rem)] font-bold text-neutral-900 dark:text-foreground mb-4">
             Artikel &amp; Insight Terbaru
           </h2>
-          <p className="text-neutral-500 max-w-lg mx-auto">
+          <p className="text-neutral-500 dark:text-muted-foreground max-w-lg mx-auto">
             Tips, panduan, dan wawasan dari para ahli kesehatan mental
           </p>
         </div>
@@ -34,7 +34,7 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
             <Link
               key={post.id}
               href={`/blog/${post.slug}`}
-              className={`blog-card rounded-xl border border-neutral-200 overflow-hidden bg-white shadow-sm ${idx === 0 ? 'md:row-span-2' : ''}`}
+              className={`blog-card rounded-xl border border-neutral-200 dark:border-border overflow-hidden bg-white dark:bg-card shadow-sm ${idx === 0 ? 'md:row-span-2' : ''}`}
             >
               <div className={`relative ${idx === 0 ? 'h-56 md:h-72' : 'h-44'} overflow-hidden`}>
                 {post.cover_image ? (
@@ -52,10 +52,10 @@ export default function BlogPreview({ posts }: { posts: Post[] }) {
                 >
                   {post.category}
                 </span>
-                <h3 className="text-base font-bold text-neutral-900 mb-2 line-clamp-2">{post.title}</h3>
-                <p className="text-sm text-neutral-500 line-clamp-2 mb-3">{post.excerpt}</p>
+                <h3 className="text-base font-bold text-neutral-900 dark:text-foreground mb-2 line-clamp-2">{post.title}</h3>
+                <p className="text-sm text-neutral-500 dark:text-muted-foreground line-clamp-2 mb-3">{post.excerpt}</p>
                 <div className="flex items-center gap-2 text-xs text-neutral-400">
-                  <span className="font-medium text-neutral-600">{post.author_name}</span>
+                  <span className="font-medium text-neutral-600 dark:text-muted-foreground">{post.author_name}</span>
                   <span>·</span>
                   <span>{formatDate(post.created_at)}</span>
                 </div>

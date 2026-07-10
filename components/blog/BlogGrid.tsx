@@ -40,7 +40,7 @@ export default function BlogGrid({ initialPosts }: { initialPosts: Post[] }) {
   return (
     <div>
       {/* Filter Bar */}
-      <div className="relative z-10 bg-white border-b border-neutral-200 shadow-sm -mx-6 px-6 py-4">
+      <div className="relative z-10 bg-white dark:bg-background border-b border-neutral-200 dark:border-border shadow-sm -mx-6 px-6 py-4">
         <div className="max-w-container mx-auto flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
           <CategoryFilter activeCategory={activeCategory} onCategoryChange={handleCategoryChange} />
           <div className="hidden md:block w-72">
@@ -66,7 +66,7 @@ export default function BlogGrid({ initialPosts }: { initialPosts: Post[] }) {
       ) : (
         <div className="text-center py-20">
           <p className="text-5xl mb-4">🔍</p>
-          <h3 className="text-lg font-semibold text-neutral-900 mb-2">Artikel tidak ditemukan</h3>
+          <h3 className="text-lg font-semibold text-neutral-900 dark:text-foreground mb-2">Artikel tidak ditemukan</h3>
           <p className="text-sm text-neutral-500 mb-6">Coba ubah filter atau kata kunci pencarian</p>
           <button onClick={reset} className="btn btn-outline text-sm">
             Reset Filter

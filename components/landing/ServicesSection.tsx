@@ -96,14 +96,14 @@ export default function ServicesSection() {
   }, [isMobile]);
 
   return (
-    <section id="layanan" className="scroll-mt-24 pt-6 pb-12 md:pt-12 md:pb-20 bg-white overflow-hidden">
+    <section id="layanan" className="scroll-mt-24 pt-6 pb-12 md:pt-12 md:pb-20 bg-white dark:bg-background overflow-hidden">
       <div className="max-w-container mx-auto px-6">
         <ScrollReveal variant="fade-up" className="text-center mb-10 md:mb-16">
           <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest mb-3">Layanan Kami</p>
-          <h2 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold text-neutral-900 mb-4">
+          <h2 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold text-neutral-900 dark:text-foreground mb-4">
             Layanan yang Dirancang Untukmu
           </h2>
-          <p className="text-neutral-500 max-w-lg mx-auto text-lg">
+          <p className="text-neutral-500 dark:text-muted-foreground max-w-lg mx-auto text-lg">
             Akses konseling profesional dengan cara yang mudah, terjangkau, dan sepenuhnya rahasia
           </p>
         </ScrollReveal>
@@ -128,7 +128,7 @@ export default function ServicesSection() {
                   className={`relative rounded-2xl p-7 md:p-8 border h-full cursor-default transition-all duration-300 hover:-translate-y-1 ${
                     svc.featured
                       ? 'bg-gradient-to-br from-blue-600 to-blue-700 border-transparent text-white shadow-[0_8px_30px_rgba(37,99,235,0.25)]'
-                      : 'bg-white border-blue-200 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-blue-400'
+                      : 'bg-white dark:bg-card border-blue-200 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-blue-400'
                   }`}
                 >
                   {svc.badge && (
@@ -141,10 +141,10 @@ export default function ServicesSection() {
                   }`}>
                     {svc.icon}
                   </div>
-                  <h3 className={`text-lg font-bold mb-2 ${svc.featured ? 'text-white' : 'text-neutral-900'}`}>
+                  <h3 className={`text-lg font-bold mb-2 ${svc.featured ? 'text-white' : 'text-neutral-900 dark:text-foreground'}`}>
                     {svc.title}
                   </h3>
-                  <p className={`text-sm leading-relaxed ${svc.featured ? 'text-blue-100' : 'text-neutral-500'}`}>
+                  <p className={`text-sm leading-relaxed ${svc.featured ? 'text-blue-100' : 'text-neutral-500 dark:text-muted-foreground'}`}>
                     {svc.desc}
                   </p>
                 </div>

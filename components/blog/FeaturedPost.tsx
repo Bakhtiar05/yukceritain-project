@@ -8,7 +8,7 @@ function formatDate(dateStr: string) {
 
 export default function FeaturedPost({ post }: { post: Post }) {
   return (
-    <Link href={`/blog/${post.slug}`} className="blog-card grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] rounded-xl border border-neutral-200 overflow-hidden bg-white shadow-sm">
+    <Link href={`/blog/${post.slug}`} className="blog-card grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] rounded-xl border border-neutral-200 dark:border-border overflow-hidden bg-white dark:bg-card shadow-sm">
       <div className="relative h-64 lg:h-[340px] overflow-hidden">
         {post.cover_image ? (
           <Image src={post.cover_image} alt={post.title} fill className="object-cover" priority />
@@ -26,12 +26,12 @@ export default function FeaturedPost({ post }: { post: Post }) {
         >
           {post.category}
         </span>
-        <h2 className="font-display text-xl lg:text-2xl font-bold text-neutral-900 mb-3 line-clamp-3">
+        <h2 className="font-display text-xl lg:text-2xl font-bold text-neutral-900 dark:text-foreground mb-3 line-clamp-3">
           {post.title}
         </h2>
-        <p className="text-sm text-neutral-500 leading-relaxed mb-5 line-clamp-3">{post.excerpt}</p>
+        <p className="text-sm text-neutral-500 dark:text-muted-foreground leading-relaxed mb-5 line-clamp-3">{post.excerpt}</p>
         <div className="flex items-center gap-3 text-xs text-neutral-400">
-          <span className="font-medium text-neutral-600">{post.author_name}</span>
+          <span className="font-medium text-neutral-600 dark:text-foreground">{post.author_name}</span>
           <span>·</span>
           <span>{formatDate(post.created_at)}</span>
           {post.read_time && <><span>·</span><span>{post.read_time}</span></>}

@@ -19,12 +19,12 @@ export function StoryStep() {
         <Textarea
           {...register("ceritakan_permasalahan")}
           placeholder="Saya akhir-akhir ini merasa..."
-          className="min-h-[250px] md:min-h-[350px] text-lg rounded-2xl p-6 bg-slate-50 border-slate-200 focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all resize-y shadow-inner"
+          className="min-h-[250px] md:min-h-[350px] text-lg rounded-2xl p-6 bg-slate-50 dark:bg-card border-slate-200 dark:border-border focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all resize-y shadow-inner"
           autoFocus
         />
       </div>
       <ValidationMessage message={errors.ceritakan_permasalahan?.message} />
-      <p className="text-sm text-slate-400 mt-4 text-center">Tidak perlu terburu-buru. Kami di sini untuk mendengarkan.</p>
+      <p className="text-sm text-slate-400 dark:text-muted-foreground mt-4 text-center">Tidak perlu terburu-buru. Kami di sini untuk mendengarkan.</p>
     </QuestionCard>
   );
 }

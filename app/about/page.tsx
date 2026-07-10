@@ -42,7 +42,7 @@ export default function AboutPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-white relative overflow-hidden">
+      <main className="min-h-screen bg-white dark:bg-background relative overflow-hidden">
         {/* Global Background Elements */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           {/* Blue radial glow */}
@@ -63,20 +63,20 @@ export default function AboutPage() {
             ]} className="justify-center" />
           </div>
           <ScrollReveal>
-            <div className="inline-flex items-center rounded-full border border-blue-100 bg-blue-50/50 px-3 py-1 text-sm font-medium text-blue-600 mb-6 backdrop-blur-sm">
+            <div className="inline-flex items-center rounded-full border border-blue-100 dark:border-blue-900 bg-blue-50/50 dark:bg-blue-900/20 px-3 py-1 text-sm font-medium text-blue-600 dark:text-blue-400 mb-6 backdrop-blur-sm">
               <span className="flex h-2 w-2 rounded-full bg-blue-600 mr-2"></span>
               About Yukceritain
             </div>
           </ScrollReveal>
 
           <ScrollReveal delay={0.1}>
-            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight max-w-4xl mb-6 font-playfair leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-foreground tracking-tight max-w-4xl mb-6 font-playfair leading-tight">
               Your safe space to be <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">heard</span>.
             </h1>
           </ScrollReveal>
 
           <ScrollReveal delay={0.2}>
-            <p className="text-lg md:text-xl text-slate-500 max-w-2xl mb-10 leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-500 dark:text-muted-foreground max-w-2xl mb-10 leading-relaxed">
               "We believe that everyone deserves access to a safe space where they can share their thoughts, seek guidance, and grow toward better mental well-being."
             </p>
           </ScrollReveal>
@@ -96,23 +96,23 @@ export default function AboutPage() {
         <section id="vision-mission" className="relative z-10 py-6 md:py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
           <div className="grid md:grid-cols-2 gap-8">
             <ScrollReveal>
-              <Card className="p-10 h-full rounded-[2rem] border-blue-200 shadow-lg shadow-blue-900/5 bg-white/60 backdrop-blur-xl hover:border-blue-400 hover:-translate-y-2 transition-all duration-300 group">
-                <div className="w-16 h-16 rounded-2xl bg-blue-100/50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <Card className="p-10 h-full rounded-[2rem] border-blue-200 dark:border-blue-900 shadow-lg shadow-blue-900/5 bg-white/60 dark:bg-card backdrop-blur-xl hover:border-blue-400 dark:hover:border-blue-500 hover:-translate-y-2 transition-all duration-300 group">
+                <div className="w-16 h-16 rounded-2xl bg-blue-100/50 dark:bg-blue-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <TrendingUp className="w-8 h-8 text-blue-600" />
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-4 font-playfair">Vision</h3>
-                <p className="text-slate-600 text-lg leading-relaxed">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-4 font-playfair">Vision</h3>
+                <p className="text-slate-600 dark:text-muted-foreground text-lg leading-relaxed">
                   To become the most trusted and inclusive digital mental health ecosystem, empowering every individual to achieve their full psychological potential through accessible and compassionate care.
                 </p>
               </Card>
             </ScrollReveal>
 
             <ScrollReveal delay={0.2}>
-              <Card className="p-10 h-full rounded-[2rem] border-blue-200 shadow-lg shadow-blue-900/5 bg-white/60 backdrop-blur-xl hover:border-blue-400 hover:-translate-y-2 transition-all duration-300 group">
-                <div className="w-16 h-16 rounded-2xl bg-blue-100/50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <Card className="p-10 h-full rounded-[2rem] border-blue-200 dark:border-blue-900 shadow-lg shadow-blue-900/5 bg-white/60 dark:bg-card backdrop-blur-xl hover:border-blue-400 dark:hover:border-blue-500 hover:-translate-y-2 transition-all duration-300 group">
+                <div className="w-16 h-16 rounded-2xl bg-blue-100/50 dark:bg-blue-900/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <Lock className="w-8 h-8 text-blue-600" />
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-4 font-playfair">Mission</h3>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-4 font-playfair">Mission</h3>
                 <ul className="space-y-4">
                   {[
                     "Provide affordable and professional online counseling.",
@@ -122,7 +122,7 @@ export default function AboutPage() {
                   ].map((item, i) => (
                     <li key={i} className="flex items-start">
                       <CheckCircle className="w-6 h-6 text-blue-500 mr-3 shrink-0" />
-                      <span className="text-slate-600 text-lg">{item}</span>
+                      <span className="text-slate-600 dark:text-muted-foreground text-lg">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -132,12 +132,12 @@ export default function AboutPage() {
         </section>
 
         {/* 3. Our Story */}
-        <section className="relative z-10 py-6 md:py-8 bg-slate-50/50 backdrop-blur-sm border-y border-slate-100">
+        <section className="relative z-10 py-6 md:py-8 bg-slate-50/50 dark:bg-card/30 backdrop-blur-sm border-y border-slate-100 dark:border-border">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-left md:text-center">
               <ScrollReveal delay={0.2}>
-                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 font-playfair">Our Story</h2>
-                <div className="space-y-4 text-slate-600 text-lg leading-relaxed">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-foreground mb-6 font-playfair">Our Story</h2>
+                <div className="space-y-4 text-slate-600 dark:text-muted-foreground text-lg leading-relaxed">
                   <p>
                     YukCeritain was born out of a simple observation: taking the first step to seek mental health support is often the hardest. Many people struggle in silence because of stigma, cost, or simply not knowing where to start.
                   </p>
@@ -154,10 +154,10 @@ export default function AboutPage() {
         </section>
 
         {/* 4. Core Values */}
-        <section className="relative z-10 py-6 md:py-8 bg-blue-50/30">
+        <section className="relative z-10 py-6 md:py-8 bg-blue-50/30 dark:bg-blue-950/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <ScrollReveal>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-16 font-playfair">Our Values</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-foreground mb-16 font-playfair">Our Values</h2>
             </ScrollReveal>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -168,12 +168,12 @@ export default function AboutPage() {
                 { icon: Users, title: 'Accessibility', desc: 'Making quality mental health care available for everyone.' },
               ].map((val, i) => (
                 <ScrollReveal key={i} delay={i * 0.1}>
-                  <Card className="p-8 text-center rounded-3xl border-blue-200 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-400 hover:-translate-y-2 transition-all duration-300 bg-white">
-                    <div className="w-14 h-14 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-6 text-blue-600">
+                  <Card className="p-8 text-center rounded-3xl border-blue-200 dark:border-blue-900 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-400 dark:hover:border-blue-500 hover:-translate-y-2 transition-all duration-300 bg-white dark:bg-card">
+                    <div className="w-14 h-14 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-6 text-blue-600">
                       <val.icon className="w-7 h-7" />
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-3">{val.title}</h3>
-                    <p className="text-slate-500">{val.desc}</p>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-foreground mb-3">{val.title}</h3>
+                    <p className="text-slate-500 dark:text-muted-foreground">{val.desc}</p>
                   </Card>
                 </ScrollReveal>
               ))}
@@ -185,8 +185,8 @@ export default function AboutPage() {
         <section className="relative z-10 py-6 md:py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <ScrollReveal>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-playfair">Meet Our Leadership</h2>
-              <p className="text-lg text-slate-500">The passionate people behind YukCeritain.</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-foreground mb-4 font-playfair">Meet Our Leadership</h2>
+              <p className="text-lg text-slate-500 dark:text-muted-foreground">The passionate people behind YukCeritain.</p>
             </ScrollReveal>
           </div>
 
@@ -197,13 +197,13 @@ export default function AboutPage() {
               { role: 'CMO', name: 'John Smith', desc: 'Responsible for branding, marketing strategy, and community engagement.', image: 'https://i.pravatar.cc/300?u=cmo' },
             ].map((leader, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <Card className="p-8 text-center rounded-[24px] border-blue-200 shadow-lg shadow-blue-200/20 hover:-translate-y-2 hover:border-blue-400 hover:shadow-xl transition-all duration-300 bg-white">
-                  <div className="w-32 h-32 rounded-full bg-slate-100 border-4 border-white shadow-sm mx-auto mb-6 overflow-hidden relative">
+                <Card className="p-8 text-center rounded-[24px] border-blue-200 dark:border-blue-900 shadow-lg shadow-blue-200/20 hover:-translate-y-2 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-xl transition-all duration-300 bg-white dark:bg-card">
+                  <div className="w-32 h-32 rounded-full bg-slate-100 dark:bg-slate-800 border-4 border-white dark:border-card shadow-sm mx-auto mb-6 overflow-hidden relative">
                     <Image src={leader.image} alt={leader.name} fill className="object-cover" sizes="(max-width: 128px) 100vw, 128px" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-1">{leader.name}</h3>
-                  <p className="text-blue-600 font-medium mb-4">{leader.role}</p>
-                  <p className="text-slate-500 text-sm mb-6 line-clamp-2">{leader.desc}</p>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-foreground mb-1">{leader.name}</h3>
+                  <p className="text-blue-600 dark:text-blue-400 font-medium mb-4">{leader.role}</p>
+                  <p className="text-slate-500 dark:text-muted-foreground text-sm mb-6 line-clamp-2">{leader.desc}</p>
 
                   <div className="flex justify-center gap-4 mb-8">
                     <a href="#" className="text-slate-400 hover:text-blue-600 transition-colors">
@@ -225,10 +225,10 @@ export default function AboutPage() {
         </section>
 
         {/* 6. Why People Trust Us */}
-        <section className="relative z-10 py-6 md:py-8 bg-slate-50 border-y border-slate-100">
+        <section className="relative z-10 py-6 md:py-8 bg-slate-50 dark:bg-card/30 border-y border-slate-100 dark:border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ScrollReveal className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 font-playfair">Why People Trust Us</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-foreground font-playfair">Why People Trust Us</h2>
             </ScrollReveal>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -241,13 +241,13 @@ export default function AboutPage() {
                 { icon: CalendarCheck, title: 'Easy Booking Process', desc: 'Seamless scheduling for online or offline sessions.' },
               ].map((feature, i) => (
                 <ScrollReveal key={i} delay={i * 0.1}>
-                  <div className="flex gap-4 p-6 rounded-2xl hover:bg-white hover:shadow-lg hover:shadow-blue-900/5 transition-all duration-300">
-                    <div className="shrink-0 w-12 h-12 rounded-xl bg-blue-100/50 flex items-center justify-center text-blue-600">
+                  <div className="flex gap-4 p-6 rounded-2xl hover:bg-white dark:hover:bg-card hover:shadow-lg hover:shadow-blue-900/5 transition-all duration-300">
+                    <div className="shrink-0 w-12 h-12 rounded-xl bg-blue-100/50 dark:bg-blue-900/30 flex items-center justify-center text-blue-600">
                       <feature.icon className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-slate-900 mb-2">{feature.title}</h3>
-                      <p className="text-slate-500 text-sm leading-relaxed">{feature.desc}</p>
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-foreground mb-2">{feature.title}</h3>
+                      <p className="text-slate-500 dark:text-muted-foreground text-sm leading-relaxed">{feature.desc}</p>
                     </div>
                   </div>
                 </ScrollReveal>
@@ -282,16 +282,16 @@ export default function AboutPage() {
         {/* 9. Call To Action */}
         <section className="relative z-10 py-6 md:py-8 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
-            <div className="relative rounded-[3rem] overflow-hidden bg-gradient-to-br from-blue-50 to-white border border-blue-100 p-12 md:p-20 text-center shadow-2xl shadow-blue-900/5">
+            <div className="relative rounded-[3rem] overflow-hidden bg-gradient-to-br from-blue-50 to-white dark:from-blue-900/20 dark:to-background border border-blue-100 dark:border-blue-900 p-12 md:p-20 text-center shadow-2xl shadow-blue-900/5">
               {/* Floating elements background */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 rounded-full blur-[80px]" />
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-300/10 rounded-full blur-[80px]" />
 
               <div className="relative z-10 max-w-2xl mx-auto">
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 font-playfair leading-tight">
+                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-foreground mb-6 font-playfair leading-tight">
                   Ready to Begin Your Journey?
                 </h2>
-                <p className="text-lg md:text-xl text-slate-500 mb-10">
+                <p className="text-lg md:text-xl text-slate-500 dark:text-muted-foreground mb-10">
                   "We're here to support you every step of the way."
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-4 flex-wrap">

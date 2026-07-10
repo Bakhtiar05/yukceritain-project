@@ -35,7 +35,7 @@ export default function CommentComposer({
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const { openModal }                 = useAuthModal()
   const textareaRef                   = useRef<HTMLTextAreaElement>(null)
-  const { t }                         = useCommunityLanguage()
+  const { t, language }               = useCommunityLanguage()
   const { toast }                     = useToast()
   const router                        = useRouter()
 
@@ -143,13 +143,13 @@ export default function CommentComposer({
 
       {/* ── Reply Composer ───────────────────────────── */}
       <div className="transition-all duration-200 relative pb-2">
-        <div className="flex items-end gap-3 p-2 pl-2.5 border border-border/40 bg-muted/30 dark:bg-[#1D1F24]/80 rounded-[26px] shadow-sm focus-within:border-primary/40 focus-within:shadow-[0_4px_16px_rgba(37,99,235,0.06)] focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-200">
+        <div className="flex items-end gap-3 sm:gap-4 bg-card rounded-full border border-border p-3 sm:p-4 shadow-sm focus-within:border-primary/40 focus-within:shadow-[0_4px_16px_rgba(37,99,235,0.06)] focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-200">
           {/* Avatar */}
-          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[#EFF6FF] dark:bg-blue-500/10 border border-[#BFDBFE] dark:border-blue-500/30 flex items-center justify-center text-[#60A5FA] overflow-hidden">
+          <div className="relative z-10 flex-shrink-0 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 shadow-sm border border-border overflow-hidden">
             {avatarUrl ? (
               <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
             ) : (
-              <User className="w-5 h-5" />
+              <User className="w-5 h-5 sm:w-[20px] sm:h-[20px]" strokeWidth={2.5} />
             )}
           </div>
 
@@ -161,7 +161,7 @@ export default function CommentComposer({
               onChange={(e) => setContent(e.target.value.slice(0, maxLength))}
               onFocus={() => { setIsFocused(true); handleClick() }}
               onBlur={() => setIsFocused(false)}
-              placeholder={t('comment.placeholder')}
+              placeholder={language === 'id' ? 'Tulis balasan...' : 'Write a reply...'}
               rows={1}
               className="w-full bg-transparent border-0 outline-none focus:outline-none focus:ring-0 text-foreground text-[15px] leading-relaxed resize-none placeholder:text-muted-foreground placeholder:font-medium py-1.5"
               style={{ minHeight: '36px' }}
@@ -173,7 +173,7 @@ export default function CommentComposer({
             type="button"
             onMouseDown={(e) => { e.preventDefault(); handleSubmit() }}
             disabled={!hasContent || isSubmitting}
-            className="w-[36px] h-[36px] flex-shrink-0 rounded-full flex items-center justify-center text-white bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-[0_2px_8px_rgba(37,99,235,0.25)] active:scale-95"
+            className="relative z-10 flex-shrink-0 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/25 hover:bg-blue-700 hover:shadow-blue-500/40 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
           >
             {isSubmitting ? (
               <Loader2 className="w-4 h-4 animate-spin" strokeWidth={2.5} />

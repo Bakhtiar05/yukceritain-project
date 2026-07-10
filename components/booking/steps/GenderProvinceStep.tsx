@@ -23,7 +23,7 @@ export function GenderProvinceStep() {
   return (
     <QuestionCard>
       <div>
-        <h2 className="text-3xl font-display font-bold text-slate-900 mb-2">Apa jenis kelamin Anda?</h2>
+        <h2 className="text-3xl font-display font-bold text-slate-900 dark:text-foreground mb-2">Apa jenis kelamin Anda?</h2>
         <div className="grid grid-cols-2 gap-4 mt-4">
           {["Laki-laki", "Perempuan"].map((jk) => (
             <button
@@ -33,8 +33,8 @@ export function GenderProvinceStep() {
               className={cn(
                 "h-16 rounded-2xl border-2 text-lg font-medium transition-all",
                 jenisKelamin === jk 
-                  ? "border-blue-600 bg-blue-50 text-blue-700" 
-                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400" 
+                  : "border-slate-200 dark:border-border bg-white dark:bg-card text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800"
               )}
             >
               {jk}
@@ -44,12 +44,12 @@ export function GenderProvinceStep() {
         <ValidationMessage message={errors.jenis_kelamin?.message} />
       </div>
 
-      <div className="pt-6 border-t border-slate-100">
-        <h2 className="text-2xl font-display font-bold text-slate-900 mb-2">Di provinsi mana Anda tinggal?</h2>
+      <div className="pt-6 border-t border-slate-100 dark:border-border">
+        <h2 className="text-2xl font-display font-bold text-slate-900 dark:text-foreground mb-2">Di provinsi mana Anda tinggal?</h2>
         <div className="mt-4">
           <select 
             {...register("provinsi")}
-            className="w-full h-16 text-lg rounded-2xl px-4 bg-slate-50 border border-slate-200 focus:bg-white transition-colors outline-none focus:ring-2 focus:ring-blue-100"
+            className="w-full h-16 text-lg rounded-2xl px-4 bg-slate-50 dark:bg-card border border-slate-200 dark:border-border text-slate-900 dark:text-foreground focus:bg-white dark:focus:bg-slate-800 transition-colors outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900"
           >
             <option value="" disabled>Pilih provinsi...</option>
             {PROVINCES.map(prov => (

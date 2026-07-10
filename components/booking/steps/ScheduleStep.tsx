@@ -54,12 +54,12 @@ export function ScheduleStep() {
       />
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center p-8 text-slate-500">
+        <div className="flex flex-col items-center justify-center p-8 text-slate-500 dark:text-muted-foreground">
           <Loader2 className="w-8 h-8 text-blue-600 animate-spin mb-4" />
           <p>Mencari jadwal yang tersedia...</p>
         </div>
       ) : availableSlots.length === 0 && tgl ? (
-        <div className="flex flex-col items-center justify-center p-8 text-slate-500 bg-slate-50 rounded-xl border border-slate-200 mt-4">
+        <div className="flex flex-col items-center justify-center p-8 text-slate-500 dark:text-muted-foreground bg-slate-50 dark:bg-card rounded-xl border border-slate-200 dark:border-border mt-4">
           <p className="text-center">Maaf, tidak ada konselor yang tersedia pada tanggal ini.</p>
           <p className="text-sm mt-2">Silakan pilih tanggal lain di langkah sebelumnya.</p>
         </div>
@@ -76,8 +76,8 @@ export function ScheduleStep() {
                 className={cn(
                   "w-full flex flex-col items-center justify-center rounded-xl border-2 p-4 text-sm font-medium transition-all duration-200",
                   isSelected
-                    ? "border-blue-600 bg-blue-50 text-blue-700"
-                    : "border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 text-slate-600"
+                    ? "border-blue-600 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
+                    : "border-slate-200 dark:border-border bg-white dark:bg-card hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-600 text-slate-600 dark:text-slate-300"
                 )}
               >
                 <span>{time}</span>
@@ -88,7 +88,7 @@ export function ScheduleStep() {
       )}
       
       {slotError && (
-        <div className="mt-4 p-3 bg-red-50 border border-red-100 text-red-600 rounded-lg text-sm">
+        <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900 text-red-600 dark:text-red-400 rounded-lg text-sm">
           {slotError}
         </div>
       )}

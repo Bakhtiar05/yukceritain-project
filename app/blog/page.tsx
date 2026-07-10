@@ -42,16 +42,16 @@ export default async function BlogPage() {
       </Suspense>
       <main>
         {/* Blog Hero */}
-        <section className="bg-gradient-to-b from-neutral-50 to-white border-b border-neutral-200 hidden md:block" style={{ paddingTop: 'calc(72px + 48px)' }}>
+        <section className="bg-gradient-to-b from-neutral-50 to-white dark:from-background dark:to-background border-b border-neutral-200 dark:border-border hidden md:block" style={{ paddingTop: 'calc(72px + 48px)' }}>
           <div className="max-w-container mx-auto px-6 pb-10">
             <Breadcrumbs items={[
               { name: 'Beranda', url: '/' },
               { name: 'Blog', url: '/blog' }
             ]} />
-            <h1 className="font-display text-[clamp(2rem,5vw,3rem)] font-bold text-neutral-900 mb-3">
+            <h1 className="font-display text-[clamp(2rem,5vw,3rem)] font-bold text-neutral-900 dark:text-foreground mb-3">
               Blog &amp; Artikel
             </h1>
-            <p className="text-neutral-500 max-w-lg">
+            <p className="text-neutral-500 dark:text-muted-foreground max-w-lg">
               Tips, panduan, dan wawasan dari para ahli kesehatan mental untuk membantumu menjalani hidup yang lebih seimbang.
             </p>
           </div>

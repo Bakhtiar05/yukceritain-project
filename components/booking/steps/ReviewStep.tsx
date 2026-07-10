@@ -9,9 +9,9 @@ import { BookingStepProps } from "../types/booking";
 import { getPublicCounselors } from "@/lib/actions/counselors";
 
 const Card = ({ title, onEditClick, children }: { title: string, onEditClick?: () => void, children: React.ReactNode }) => (
-  <div className="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm">
-    <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100">
-      <h3 className="font-bold text-slate-900">{title}</h3>
+  <div className="bg-white dark:bg-card rounded-2xl border border-slate-200 dark:border-border p-5 md:p-6 shadow-sm">
+    <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100 dark:border-border">
+      <h3 className="font-bold text-slate-900 dark:text-foreground">{title}</h3>
       {onEditClick && (
         <button onClick={onEditClick} className="text-sm font-medium text-blue-600 hover:text-blue-700">
           Ubah
@@ -26,8 +26,8 @@ const Card = ({ title, onEditClick, children }: { title: string, onEditClick?: (
 
 const Item = ({ label, value }: { label: string, value: any }) => (
   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between py-1 gap-1 sm:gap-4">
-    <span className="text-sm text-slate-500 min-w-[120px]">{label}</span>
-    <span className="text-sm font-medium text-slate-900 sm:text-right">{value || "-"}</span>
+    <span className="text-sm text-slate-500 dark:text-muted-foreground min-w-[120px]">{label}</span>
+    <span className="text-sm font-medium text-slate-900 dark:text-foreground sm:text-right">{value || "-"}</span>
   </div>
 );
 
@@ -82,8 +82,8 @@ export function ReviewStep({ onEdit }: BookingStepProps) {
   return (
     <StepTransition className="max-w-3xl mx-auto space-y-4 md:space-y-6 pb-6 md:pb-12">
       <div className="text-center mb-6 md:mb-10">
-        <h2 className="text-3xl font-display font-bold text-slate-900 mb-2">Tinjau Ringkasan Anda</h2>
-        <p className="text-slate-500">Pastikan seluruh data sudah sesuai sebelum mengirimkan permohonan.</p>
+        <h2 className="text-3xl font-display font-bold text-slate-900 dark:text-foreground mb-2">Tinjau Ringkasan Anda</h2>
+        <p className="text-slate-500 dark:text-muted-foreground">Pastikan seluruh data sudah sesuai sebelum mengirimkan permohonan.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
@@ -91,12 +91,12 @@ export function ReviewStep({ onEdit }: BookingStepProps) {
           <div className="py-2">
             {data.counselor_preference === "manual" ? (
               <div>
-                <p className="text-sm text-slate-500 mb-1">Konselor Terpilih</p>
-                <p className="font-semibold text-slate-900">{counselorName || "Memuat..."}</p>
+                <p className="text-sm text-slate-500 dark:text-muted-foreground mb-1">Konselor Terpilih</p>
+                <p className="font-semibold text-slate-900 dark:text-foreground">{counselorName || "Memuat..."}</p>
               </div>
             ) : (
               <div>
-                <p className="text-sm font-medium text-blue-700 bg-blue-50 p-3 rounded-lg border border-blue-100">
+                <p className="text-sm font-medium text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg border border-blue-100 dark:border-blue-800">
                   "Sistem akan mencocokkan Anda dengan salah satu konselor profesional kami yang tersedia."
                 </p>
               </div>
@@ -126,11 +126,11 @@ export function ReviewStep({ onEdit }: BookingStepProps) {
           <Card title="Alamat & Topik">
             <Item label="Provinsi" value={data.provinsi} />
             <Item label="Alamat Lengkap" value={data.alamat_lengkap} />
-            <div className="pt-3 mt-3 border-t border-slate-100">
-              <p className="text-sm text-slate-500 mb-2">Topik yang dipilih:</p>
+            <div className="pt-3 mt-3 border-t border-slate-100 dark:border-border">
+              <p className="text-sm text-slate-500 dark:text-muted-foreground mb-2">Topik yang dipilih:</p>
               <div className="flex flex-wrap gap-2">
                 {data.topik_permasalahan?.map(t => (
-                  <span key={t} className="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-medium">
+                  <span key={t} className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-medium">
                     {t === "Lainnya" ? data.topik_lainnya : t}
                   </span>
                 ))}
@@ -141,15 +141,15 @@ export function ReviewStep({ onEdit }: BookingStepProps) {
 
         <div className="md:col-span-2">
           <Card title="Situasi Anda" onEditClick={() => onEdit?.(11)}>
-            <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed bg-slate-50 p-4 rounded-xl">
+            <p className="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl">
               {data.ceritakan_permasalahan}
             </p>
           </Card>
         </div>
 
         <div className="md:col-span-2">
-          <div className="bg-white rounded-2xl border border-slate-200 p-5 md:p-6 shadow-sm">
-            <h3 className="font-bold text-slate-900 mb-4 pb-4 border-b border-slate-100">Kode Diskon (Opsional)</h3>
+          <div className="bg-white dark:bg-card rounded-2xl border border-slate-200 dark:border-border p-5 md:p-6 shadow-sm">
+            <h3 className="font-bold text-slate-900 dark:text-foreground mb-4 pb-4 border-b border-slate-100 dark:border-border">Kode Diskon (Opsional)</h3>
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1">
                 <input
@@ -158,7 +158,7 @@ export function ReviewStep({ onEdit }: BookingStepProps) {
                   value={discountInput}
                   onChange={(e) => setDiscountInput(e.target.value)}
                   disabled={isCheckingDiscount}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 uppercase transition-all"
+                  className="w-full px-4 py-2.5 bg-white dark:bg-card text-slate-900 dark:text-foreground rounded-xl border border-slate-200 dark:border-border focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 uppercase transition-all"
                 />
                 {discountStatus.type === "error" && (
                   <p className="text-sm text-red-500 mt-2">{discountStatus.message}</p>
@@ -171,21 +171,21 @@ export function ReviewStep({ onEdit }: BookingStepProps) {
                 type="button"
                 onClick={handleApplyDiscount}
                 disabled={isCheckingDiscount || !discountInput.trim()}
-                className="px-6 py-2.5 bg-slate-900 text-white rounded-xl font-medium hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all whitespace-nowrap"
+                className="px-6 py-2.5 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-xl font-medium hover:bg-slate-800 dark:hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed transition-all whitespace-nowrap"
               >
                 {isCheckingDiscount ? "Memeriksa..." : "Terapkan"}
               </button>
             </div>
             
             {data.discount_code && discountStatus.type === "success" && (
-              <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-xl flex justify-between items-center">
+              <div className="mt-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-900 rounded-xl flex justify-between items-center">
                 <div>
                   <p className="text-sm font-medium text-emerald-800">Total Pembayaran</p>
-                  <p className="text-xs text-emerald-600 mt-0.5">Setelah diskon {discountStatus.message.match(/\d+%/)?.[0]}</p>
+                  <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5">Setelah diskon {discountStatus.message.match(/\d+%/)?.[0]}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-slate-500 line-through">Rp 20.000</p>
-                  <p className="text-lg font-bold text-emerald-700">Rp 0</p>
+                  <p className="text-sm text-slate-500 dark:text-muted-foreground line-through">Rp 20.000</p>
+                  <p className="text-lg font-bold text-emerald-700 dark:text-emerald-400">Rp 0</p>
                 </div>
               </div>
             )}

@@ -19,7 +19,7 @@ export default function BlogCard({ post, variant = 'default' }: BlogCardProps) {
   const imgH = variant === 'compact' ? 'h-40' : 'h-48'
 
   return (
-    <Link href={`/blog/${post.slug}`} className="blog-card rounded-xl border border-neutral-200 overflow-hidden bg-white shadow-sm block">
+    <Link href={`/blog/${post.slug}`} className="blog-card rounded-xl border border-neutral-200 dark:border-border overflow-hidden bg-white dark:bg-card shadow-sm block">
       <div className={`relative ${imgH} overflow-hidden`}>
         {post.cover_image ? (
           <Image src={post.cover_image} alt={post.title} fill className="object-cover" />
@@ -36,11 +36,11 @@ export default function BlogCard({ post, variant = 'default' }: BlogCardProps) {
         >
           {post.category}
         </span>
-        <h3 className="text-base font-bold text-neutral-900 mb-2 line-clamp-2">{post.title}</h3>
-        <p className="text-sm text-neutral-500 line-clamp-2 mb-3">{post.excerpt}</p>
+        <h3 className="text-base font-bold text-neutral-900 dark:text-foreground mb-2 line-clamp-2">{post.title}</h3>
+        <p className="text-sm text-neutral-500 dark:text-muted-foreground line-clamp-2 mb-3">{post.excerpt}</p>
         <div className="flex items-center justify-between text-xs text-neutral-400">
           <div className="flex items-center gap-2">
-            <span className="font-medium text-neutral-600">{post.author_name}</span>
+            <span className="font-medium text-neutral-600 dark:text-foreground">{post.author_name}</span>
             <span>·</span>
             <span>{formatDate(post.created_at)}</span>
           </div>
