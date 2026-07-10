@@ -40,9 +40,9 @@ export default async function BlogPage() {
       <Suspense fallback={null}>
         <BlogMobileSearchBar />
       </Suspense>
-      <main>
+      <main className="min-h-screen bg-white dark:bg-background">
         {/* Blog Hero */}
-        <section className="bg-gradient-to-b from-neutral-50 to-white dark:from-background dark:to-background border-b border-neutral-200 dark:border-border hidden md:block" style={{ paddingTop: 'calc(72px + 48px)' }}>
+        <section className="bg-gradient-to-b from-neutral-50 to-white dark:from-background dark:to-background border-b border-neutral-200 dark:border-border hidden md:block pt-40 pb-10">
           <div className="max-w-container mx-auto px-6 pb-10">
             <Breadcrumbs items={[
               { name: 'Beranda', url: '/' },

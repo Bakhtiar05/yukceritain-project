@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X, Home, HeartHandshake, Activity, BookOpen, Calendar, MoreHorizontal } from 'lucide-react'
+import { Menu, X, Home, HeartHandshake, Activity, BookOpen, Calendar, MoreHorizontal, MessageCircle } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import ThemeToggle from '@/components/community/ThemeToggle'
 
@@ -155,24 +155,28 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
       )}
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-[998] bg-background/95 backdrop-blur-xl border-t border-border/50 shadow-[0_-8px_32px_rgba(0,0,0,0.08)] rounded-t-[32px] px-4 py-2 flex items-center justify-between pb-safe">
-        <Link href="/" className="flex flex-col items-center justify-center w-1/4 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
-          <Home size={22} className={pathname === '/' ? 'text-primary' : ''} />
-          <span className={`text-[10px] font-medium ${pathname === '/' ? 'text-primary' : ''}`}>Beranda</span>
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-[998] bg-white dark:bg-card/95 dark:backdrop-blur-xl shadow-[0_-4px_10px_rgba(0,0,0,0.05)] dark:shadow-[0_-4px_10px_rgba(0,0,0,0.5)] rounded-t-[32px] px-3 py-2 flex items-center justify-between pb-safe">
+        <Link href="/" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors">
+          <Home size={22} className={pathname === '/' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'} />
+          <span className={`text-[9px] font-medium ${pathname === '/' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Beranda</span>
         </Link>
-        <Link href="/events" className="flex flex-col items-center justify-center w-1/4 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
-          <Calendar size={22} className={pathname?.startsWith('/events') ? 'text-primary' : ''} />
-          <span className={`text-[10px] font-medium ${pathname?.startsWith('/events') ? 'text-primary' : ''}`}>Event</span>
+        <Link href="/konsultasi" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors">
+          <MessageCircle size={22} className={pathname?.startsWith('/konsultasi') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'} />
+          <span className={`text-[9px] font-medium ${pathname?.startsWith('/konsultasi') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Konseling</span>
         </Link>
-        <Link href="/community" className="flex flex-col items-center justify-center w-1/4 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors group">
-          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white shadow-[0_8px_20px_rgba(0,0,0,0.12)] border-2 ${pathname?.startsWith('/community') ? 'border-primary/20' : 'border-border'} transition-transform duration-300 group-hover:-translate-y-1`}>
-            <Image src="/assets/navbar-bawah.png" alt="Yukceritain" width={36} height={36} className={`object-contain transition-all duration-300 ${pathname?.startsWith('/community') ? 'opacity-100 scale-105 drop-shadow-md' : 'opacity-80'}`} />
+        <Link href="/community" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors group">
+          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white dark:bg-slate-800 shadow-lg shadow-blue-500/20 border-[6px] border-neutral-50 dark:border-background transition-transform duration-300 group-hover:-translate-y-1`}>
+            <Image src="/assets/navbar-bawah.png" alt="Yukceritain" width={32} height={32} className={`object-contain transition-all duration-300 ${pathname?.startsWith('/community') ? 'opacity-100 scale-105 drop-shadow-md' : 'opacity-80'}`} />
           </div>
-          <span className={`text-[10px] font-medium ${pathname?.startsWith('/community') ? 'text-primary' : ''}`}>Yukceritain</span>
+          <span className={`text-[9px] font-medium ${pathname?.startsWith('/community') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Yukceritain</span>
         </Link>
-        <Link href="/blog" className="flex flex-col items-center justify-center w-1/4 py-1 gap-1 text-muted-foreground hover:text-primary transition-colors">
-          <BookOpen size={22} className={pathname?.startsWith('/blog') ? 'text-primary' : ''} />
-          <span className={`text-[10px] font-medium ${pathname?.startsWith('/blog') ? 'text-primary' : ''}`}>Blog</span>
+        <Link href="/events" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors">
+          <Calendar size={22} className={pathname?.startsWith('/events') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'} />
+          <span className={`text-[9px] font-medium ${pathname?.startsWith('/events') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Event</span>
+        </Link>
+        <Link href="/blog" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors">
+          <BookOpen size={22} className={pathname?.startsWith('/blog') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'} />
+          <span className={`text-[9px] font-medium ${pathname?.startsWith('/blog') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Blog</span>
         </Link>
       </nav>
 

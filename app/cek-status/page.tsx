@@ -27,21 +27,21 @@ export default function CekStatusPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-neutral-50 pt-28 md:pt-36 lg:pt-40 pb-20">
+      <div className="min-h-screen bg-neutral-50 dark:bg-background pt-28 md:pt-36 lg:pt-40 pb-20">
       <div className="max-w-xl mx-auto px-4">
         <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-display font-bold text-neutral-900 mb-4 animate-fade-enter">
+          <h1 className="text-3xl md:text-4xl font-display font-bold text-neutral-900 dark:text-foreground mb-4 animate-fade-enter">
             Cek Status Permohonan
           </h1>
-          <p className="text-lg text-neutral-600 animate-fade-enter" style={{ animationDelay: '100ms' }}>
+          <p className="text-lg text-neutral-600 dark:text-muted-foreground animate-fade-enter" style={{ animationDelay: '100ms' }}>
             Masukkan nomor permohonan Anda untuk melihat status atau melanjutkan pembayaran.
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-neutral-200 p-6 md:p-10 animate-fade-enter" style={{ animationDelay: '200ms' }}>
+        <div className="bg-white dark:bg-card rounded-2xl shadow-sm border border-neutral-200 dark:border-border p-6 md:p-10 animate-fade-enter" style={{ animationDelay: '200ms' }}>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="requestNumber" className="block text-sm font-semibold text-neutral-700 mb-2">
+              <label htmlFor="requestNumber" className="block text-sm font-semibold text-neutral-700 dark:text-foreground mb-2">
                 Nomor Permohonan
               </label>
               <Input
@@ -53,7 +53,7 @@ export default function CekStatusPage() {
                 className="w-full text-lg py-6"
                 required
               />
-              <p className="text-xs text-neutral-500 mt-2">
+              <p className="text-xs text-neutral-500 dark:text-muted-foreground mt-2">
                 Nomor permohonan diberikan saat Anda berhasil mengisi formulir pendaftaran.
               </p>
             </div>

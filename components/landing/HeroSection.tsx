@@ -102,13 +102,7 @@ export default function HeroSection() {
     >
       {/* --- PREMIUM BACKGROUND ENHANCEMENT --- */}
       
-      {/* 1. Ambient radial glow behind the headline */}
-      <motion.div 
-        className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full pointer-events-none z-0"
-        style={prefersReducedMotion ? {} : { x: mouseX, y: mouseY, opacity: opacityFade }}
-      >
-        <div className="w-full h-full rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.06)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,rgba(59,130,246,0.15)_0%,transparent_70%)] blur-[100px]" />
-      </motion.div>
+      {/* Ambient glow moved to foreground content container */}
 
       {/* 7. Preserve Existing Grid (3-5% opacity) */}
       <div 
@@ -178,6 +172,7 @@ export default function HeroSection() {
           initial="hidden"
           animate="visible"
         >
+
           <motion.div
             variants={fadeUpVariants}
             className="mb-5 md:mb-6 flex justify-center w-full mt-4 lg:mt-0"
@@ -187,7 +182,7 @@ export default function HeroSection() {
                 GRATIS100
               </span>
               <span className="text-[11px] md:text-xs font-semibold text-blue-900/80 dark:text-foreground pr-1">
-                Diskon 100% Konseling <span className="hidden sm:inline font-normal text-blue-700/60 dark:text-muted-foreground">· s/d 31 Agu 2026</span>
+                Klaim Sesi Gratis Pertamamu
               </span>
             </div>
           </motion.div>
@@ -219,17 +214,41 @@ export default function HeroSection() {
             </Link>
             <Link
               href="#cara-kerja"
-              className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-6 py-2.5 md:py-3 bg-transparent border border-slate-200 dark:border-border hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-foreground rounded-full font-bold text-sm md:text-base transition-all duration-300 hover:-translate-y-1 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-6 py-2.5 md:py-3 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-500 dark:text-muted-foreground hover:text-slate-800 dark:hover:text-foreground rounded-full font-bold text-sm md:text-base transition-all duration-300 whitespace-nowrap"
             >
               Panduan Sesi
             </Link>
           </motion.div>
 
-          <motion.div variants={fadeUpVariants} className="mt-4 md:mt-6 flex items-center justify-center gap-1.5 text-xs md:text-sm text-slate-400 font-medium">
-            <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Mulai dari <span className="text-blue-500 font-extrabold text-sm md:text-base">Rp20.000</span> per sesi
+          <motion.div variants={fadeUpVariants} className="mt-6 md:mt-8 flex flex-col items-center justify-center gap-4">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4 bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/50 rounded-2xl md:rounded-full px-5 md:px-6 py-3 md:py-2.5 shadow-sm">
+              <div className="flex items-center -space-x-2.5">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-white dark:border-slate-800 bg-slate-100 dark:bg-slate-700 overflow-hidden">
+                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 20}`} alt="User" className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-col md:flex-row items-center justify-center md:gap-2 text-center md:text-left">
+                <div className="flex items-center gap-1 mb-0.5 md:mb-0">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                  <span className="text-xs font-bold text-slate-700 dark:text-foreground ml-1">4.9/5</span>
+                </div>
+                <span className="hidden md:block text-slate-300 dark:text-slate-600 mx-0.5">•</span>
+                <span className="text-[11px] md:text-xs text-slate-500 dark:text-muted-foreground font-medium">Bergabung dengan 10.000+ orang yang sudah bercerita</span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center gap-1.5 text-xs md:text-sm text-slate-400 font-medium">
+              <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Harga reguler mulai dari <span className="text-blue-500 font-extrabold text-sm md:text-base">Rp20.000</span> / sesi
+            </div>
           </motion.div>
         </motion.div>
 
@@ -282,7 +301,7 @@ export default function HeroSection() {
                 y: -5,
                 boxShadow: "0 10px 30px -5px rgba(0,0,0,0.05)"
               }}
-              className="bg-white dark:bg-card border border-slate-200/60 dark:border-border rounded-[20px] shadow-sm p-3 md:p-4 w-[200px] xl:w-[220px] flex flex-col gap-1.5 transition-colors duration-300 cursor-default"
+              className="bg-white dark:bg-card border border-slate-300 dark:border-white/30 rounded-[20px] shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(255,255,255,0.4)] p-3 md:p-4 w-[200px] xl:w-[220px] flex flex-col gap-1.5 transition-colors duration-300 cursor-default"
             >
               <div className="flex items-center gap-2">
                 <span className="text-xl leading-none">{card.icon}</span>

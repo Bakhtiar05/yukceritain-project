@@ -37,9 +37,7 @@ export function CounselorSelectionStep({ onStart, onEdit }: BookingStepProps) {
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto w-full">
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl md:rounded-3xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mb-4 md:mb-6 shadow-sm border border-blue-100 dark:border-blue-800">
-          <Star className="w-6 h-6 md:w-8 md:h-8" />
-        </div>
+
         <h2 className="text-2xl md:text-[32px] font-bold text-slate-900 dark:text-foreground mb-2 md:mb-3 tracking-tight">
           Pemilihan Konselor
         </h2>
@@ -91,7 +89,7 @@ export function CounselorSelectionStep({ onStart, onEdit }: BookingStepProps) {
 
       {counselorPreference === "manual" && (
         <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
-          <h3 className="font-semibold text-slate-900">Daftar Konselor</h3>
+          <h3 className="font-semibold text-slate-900 dark:text-foreground">Daftar Konselor</h3>
           <div className="grid grid-cols-1 gap-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
             {counselors.map((counselor) => {
               const isSelected = selectedCounselorId === counselor.id

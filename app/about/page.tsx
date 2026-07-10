@@ -59,7 +59,7 @@ export default function AboutPage() {
           <div className="w-full flex justify-center mb-6">
             <Breadcrumbs items={[
               { name: 'Beranda', url: '/' },
-              { name: 'About', url: '/about' }
+              { name: 'About Us', url: '/about' }
             ]} className="justify-center" />
           </div>
           <ScrollReveal>
