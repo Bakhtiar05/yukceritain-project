@@ -98,7 +98,7 @@ export default function HeroSection() {
     <section 
       id="hero" 
       ref={containerRef}
-      className="relative w-full min-h-[90vh] md:min-h-[100vh] bg-white dark:bg-background overflow-hidden flex flex-col justify-center pt-0 md:pt-[72px] pb-12 md:pb-0"
+      className="relative w-full min-h-[90vh] md:min-h-[100vh] bg-white dark:bg-background overflow-hidden flex flex-col justify-center pt-28 md:pt-[72px] pb-12 md:pb-0"
     >
       {/* --- PREMIUM BACKGROUND ENHANCEMENT --- */}
       
