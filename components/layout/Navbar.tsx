@@ -165,7 +165,7 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
           <span className={`text-[9px] font-medium ${pathname?.startsWith('/konsultasi') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Konseling</span>
         </Link>
         <Link href="/community" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors group">
-          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white dark:bg-slate-800 shadow-lg shadow-blue-500/20 border-[6px] border-neutral-50 dark:border-background transition-transform duration-300 group-hover:-translate-y-1`}>
+          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white dark:bg-slate-800 shadow-lg shadow-blue-500/20 border-[6px] border-background transition-transform duration-300 group-hover:-translate-y-1`}>
             <Image src="/assets/navbar-bawah.png" alt="Yukceritain" width={32} height={32} className={`object-contain transition-all duration-300 ${pathname?.startsWith('/community') ? 'opacity-100 scale-105 drop-shadow-md' : 'opacity-80'}`} />
           </div>
           <span className={`text-[9px] font-medium ${pathname?.startsWith('/community') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Yukceritain</span>
