@@ -140,7 +140,7 @@ export default function LeftSidebar() {
         >
           {isCollapsed ? (
             <Image
-              src="/assets/logo-v10.png"
+              src="/assets/logo-v13.webp"
               alt="Logo"
               width={48}
               height={48}
@@ -149,7 +149,7 @@ export default function LeftSidebar() {
             />
           ) : (
             <Image
-              src="/assets/logo-v10.png"
+              src="/assets/logo-v13.webp"
               alt="YukCeritain Logo"
               width={180}
               height={48}

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.yukceritain.com'),
   applicationName: 'YukceritaIN',
   title: {
-    default: 'YukceritaIN | Cerita. Didengar. Dimengerti.',
+    default: 'yukceritaIN',
     template: '%s | YukceritaIN',
   },
   description:
@@ -57,19 +57,19 @@ export const metadata: Metadata = {
     title: 'YukceritaIN',
     statusBarStyle: 'default',
     startupImage: [
-      '/assets/logo-v9.png'
+      '/assets/logo-v13.webp'
     ],
   },
   openGraph: {
     type: 'website',
     locale: 'id_ID',
     siteName: 'YukceritaIN',
-    title: 'YukceritaIN | Cerita. Didengar. Dimengerti.',
+    title: 'yukceritaIN',
     description:
       'Terhubung dengan psikolog profesional untuk konseling online yang aman, nyaman, dan terjangkau.',
     images: [
       {
-        url: '/assets/logo-v9.png',
+        url: '/assets/logo-v13.webp',
         width: 1200,
         height: 630,
         alt: 'YukceritaIN Logo',
@@ -78,10 +78,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'YukceritaIN | Cerita. Didengar. Dimengerti.',
+    title: 'yukceritaIN',
     description:
       'Terhubung dengan psikolog profesional untuk konseling online yang aman, nyaman, dan terjangkau.',
-    images: ['/assets/logo-v9.png'],
+    images: ['/assets/logo-v13.webp'],
   },
 }
 

@@ -20,7 +20,7 @@ export function WelcomeStep({ onStart }: BookingStepProps) {
       {/* Logo */}
       <div className="w-16 h-16 md:w-[72px] md:h-[72px] mb-0 md:mb-2">
         <Image 
-          src="/assets/logo-v5.png" 
+          src="/assets/logo-v5.webp" 
           alt="YukCeritain Logo" 
           width={120} 
           height={120} 

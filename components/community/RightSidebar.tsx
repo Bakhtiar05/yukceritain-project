@@ -45,7 +45,7 @@ export default function RightSidebar() {
       {/* Footer Links */}
       <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-[12px] font-medium text-slate-400 dark:text-muted-foreground px-2 pt-4">
         <Link href="/about" className="hover:text-muted-foreground transition-colors">Tentang</Link>
-        <Link href="/blog" className="hover:text-muted-foreground transition-colors">Blog</Link>
+        <Link href="/blog" className="hover:text-muted-foreground transition-colors">Artikel</Link>
         <Link href="/konsultasi" className="hover:text-muted-foreground transition-colors">Konseling</Link>
         <Link href="/privacy" className="hover:text-muted-foreground transition-colors">Privasi</Link>
         <span className="w-full text-center mt-2 opacity-60">© 2026 YukCeritain</span>

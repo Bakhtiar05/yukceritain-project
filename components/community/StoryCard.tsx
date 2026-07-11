@@ -7,7 +7,9 @@ import * as Dialog from '@radix-ui/react-dialog'
 import { Heart, MessageCircle, Share2, MoreVertical, Trash2, X, AlertCircle, Link as LinkIcon, Flag, EyeOff, Check } from 'lucide-react'
 import { useAuthModal } from './AuthModalProvider'
 import { useCommentSheet } from './CommentSheetProvider'
-import ShareModal from './ShareModal'
+import dynamic from 'next/dynamic'
+
+const ShareModal = dynamic(() => import('./ShareModal'), { ssr: false })
 import { toggleLike, deleteStory, updateStory } from '@/lib/actions/community'
 
 type Profile = {
@@ -297,10 +299,10 @@ export default function StoryCard({
             </div>
           </div>
         ) : (
-          <div className="mb-3">
+          <div className="mt-[12px] mb-[16px]">
             <p
               ref={contentRef}
-              className={`text-foreground text-[16px] leading-[1.7] whitespace-pre-wrap break-words community-post-content ${
+              className={`text-[#4B5563] dark:text-[#D1D5DB] text-[15px] md:text-[16px] leading-[1.5] whitespace-pre-wrap break-words community-post-content font-sans ${
                 isExpanded ? 'expanded' : ''
               }`}
             >
@@ -309,7 +311,7 @@ export default function StoryCard({
             {needsClamp && (
               <button
                 onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded) }}
-                className="mt-1 text-[13.5px] font-semibold text-primary hover:text-primary/90 transition-colors"
+                className="mt-1 text-[14px] font-semibold text-blue-600 hover:text-blue-700 dark:text-primary dark:hover:text-primary/90 transition-colors"
               >
                 {isExpanded ? 'Read Less' : 'Read More'}
               </button>
@@ -318,93 +320,100 @@ export default function StoryCard({
         )}
 
         {/* ── Card Footer ─────────────────────────────────── */}
-        <div className="flex items-center gap-2 pt-2 border-t border-border">
+        <div className="flex items-center gap-6">
 
           {/* Support (like) */}
-          <button
-            ref={heartRef}
-            onClick={handleLike}
-            className={`community-action-btn ${isLiked ? 'liked' : ''}`}
-            title="Kirim Dukungan"
-          >
-            <Heart
-              className="w-4 h-4 transition-colors"
-              strokeWidth={isLiked ? 0 : 1.75}
-              fill={isLiked ? '#93C5FD' : 'none'}
-            />
-            {likesCount > 0 && <span className="tabular-nums">{likesCount}</span>}
-            <span className="hidden sm:inline">Support</span>
-          </button>
+          <div className="relative min-w-[48px] min-h-[48px] flex items-center justify-start -ml-2">
+            <button
+              ref={heartRef}
+              onClick={handleLike}
+              className={`community-action-btn ${isLiked ? 'liked' : ''}`}
+              title="Kirim Dukungan"
+            >
+              <Heart
+                className="w-[18px] h-[18px] transition-colors"
+                strokeWidth={isLiked ? 0 : 1.75}
+                fill={isLiked ? 'currentColor' : 'none'}
+              />
+              <span className="font-medium text-[13px] ml-[2px]">{likesCount > 0 ? likesCount : ''}</span>
+            </button>
+          </div>
 
           {/* Reply */}
-          <button
-            onClick={handleComment}
-            className="community-action-btn"
-            title="Balas"
-          >
-            <MessageCircle className="w-4 h-4" strokeWidth={1.75} />
-            {comments_count > 0 && <span className="tabular-nums">{comments_count}</span>}
-            <span className="hidden sm:inline">Reply</span>
-          </button>
+          <div className="relative min-w-[48px] min-h-[48px] flex items-center justify-start">
+            <button
+              onClick={handleComment}
+              className="community-action-btn"
+              title="Balas"
+            >
+              <MessageCircle className="w-[18px] h-[18px]" strokeWidth={1.75} />
+              <span className="font-medium text-[13px] ml-[2px]">{comments_count > 0 ? comments_count : ''}</span>
+            </button>
+          </div>
 
           {/* Share */}
-          <button
-            onClick={(e) => { e.stopPropagation(); handleShare() }}
-            className="community-action-btn"
-            title="Bagikan"
-          >
-            <Share2 className="w-4 h-4" strokeWidth={1.75} />
-            <span className="hidden sm:inline">Share</span>
-          </button>
+          <div className="relative min-w-[48px] min-h-[48px] flex items-center justify-start">
+            <button
+              onClick={(e) => { e.stopPropagation(); handleShare() }}
+              className="community-action-btn"
+              title="Bagikan"
+            >
+              <Share2 className="w-[18px] h-[18px]" strokeWidth={1.75} />
+            </button>
+          </div>
         </div>
 
       </article>
 
       {/* ── Delete Confirmation Modal ────────────────────── */}
-      <Dialog.Root open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
-        <Dialog.Portal>
-          <Dialog.Overlay className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[9998] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-          <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[90vw] max-w-sm translate-x-[-50%] translate-y-[-50%] bg-card rounded-[24px] p-6 shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4 text-red-600">
-                <AlertCircle className="w-6 h-6" strokeWidth={1.75} />
-              </div>
-              <Dialog.Title className="text-[18px] font-bold text-foreground mb-2">
-                Delete this story?
-              </Dialog.Title>
-              <Dialog.Description className="text-muted-foreground text-[14px] mb-6 leading-relaxed">
-                This action cannot be undone. Your story and all its replies will be permanently deleted.
-              </Dialog.Description>
-              <div className="flex gap-3 w-full">
-                <Dialog.Close asChild>
-                  <button className="flex-1 px-4 py-2.5 bg-muted hover:bg-muted text-muted-foreground rounded-full font-semibold text-[14px] transition-colors">
-                    Cancel
+      {isDeleteModalOpen && (
+        <Dialog.Root open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+          <Dialog.Portal>
+            <Dialog.Overlay className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[9998] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+            <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-[90vw] max-w-sm translate-x-[-50%] translate-y-[-50%] bg-card rounded-[24px] p-6 shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4 text-red-600">
+                  <AlertCircle className="w-6 h-6" strokeWidth={1.75} />
+                </div>
+                <Dialog.Title className="text-[18px] font-bold text-foreground mb-2">
+                  Delete this story?
+                </Dialog.Title>
+                <Dialog.Description className="text-muted-foreground text-[14px] mb-6 leading-relaxed">
+                  This action cannot be undone. Your story and all its replies will be permanently deleted.
+                </Dialog.Description>
+                <div className="flex gap-3 w-full">
+                  <Dialog.Close asChild>
+                    <button className="flex-1 px-4 py-2.5 bg-muted hover:bg-muted text-muted-foreground rounded-full font-semibold text-[14px] transition-colors">
+                      Cancel
+                    </button>
+                  </Dialog.Close>
+                  <button
+                    onClick={handleDelete}
+                    disabled={isDeleting}
+                    className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold text-[14px] transition-colors disabled:opacity-50"
+                  >
+                    {isDeleting ? 'Deleting…' : 'Delete'}
                   </button>
-                </Dialog.Close>
-                <button
-                  onClick={handleDelete}
-                  disabled={isDeleting}
-                  className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-full font-semibold text-[14px] transition-colors disabled:opacity-50"
-                >
-                  {isDeleting ? 'Deleting…' : 'Delete'}
-                </button>
+                </div>
               </div>
-            </div>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
+            </Dialog.Content>
+          </Dialog.Portal>
+        </Dialog.Root>
+      )}
 
       {/* ── Share Modal ────────────────────────────────────── */}
-      <ShareModal 
-        isOpen={isShareModalOpen} 
-        onClose={() => setIsShareModalOpen(false)} 
-        post={{
-          id,
-          content,
-          is_anonymous,
-          profile
-        }}
-      />
+      {isShareModalOpen && (
+        <ShareModal 
+          isOpen={isShareModalOpen} 
+          onClose={() => setIsShareModalOpen(false)} 
+          post={{
+            id,
+            content,
+            is_anonymous,
+            profile
+          }}
+        />
+      )}
     </>
   )
 }

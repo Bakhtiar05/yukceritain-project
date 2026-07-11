@@ -12,17 +12,17 @@ import BlogMobileSearchBar from '@/components/blog/BlogMobileSearchBar'
 import { Suspense } from 'react'
 
 export const metadata: Metadata = {
-  title: 'Blog & Artikel',
+  title: 'Artikel',
   description: 'Tips, panduan, dan wawasan dari para ahli kesehatan mental untuk membantumu menjalani hidup yang lebih baik.',
   openGraph: {
-    title: 'Blog & Artikel | YukceritaIN',
+    title: 'Artikel | YukceritaIN',
     description: 'Tips, panduan, dan wawasan dari para ahli kesehatan mental untuk membantumu menjalani hidup yang lebih baik.',
     type: 'website',
     locale: 'id_ID',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Blog & Artikel | YukceritaIN',
+    title: 'Artikel | YukceritaIN',
     description: 'Tips, panduan, dan wawasan dari para ahli kesehatan mental untuk membantumu menjalani hidup yang lebih baik.',
   },
 }
@@ -36,7 +36,7 @@ export default async function BlogPage() {
   return (
     <>
       <Navbar variant="blog" hideMobileHeader={true} />
-      <MobileHeader title="YukceritaIN Blog" />
+      <MobileHeader title="Community Article" />
       <Suspense fallback={null}>
         <BlogMobileSearchBar />
       </Suspense>
@@ -46,10 +46,10 @@ export default async function BlogPage() {
           <div className="max-w-container mx-auto px-6 pb-10">
             <Breadcrumbs items={[
               { name: 'Beranda', url: '/' },
-              { name: 'Blog', url: '/blog' }
+              { name: 'Artikel', url: '/blog' }
             ]} />
             <h1 className="font-display text-[clamp(2rem,5vw,3rem)] font-bold text-neutral-900 dark:text-foreground mb-3">
-              Blog &amp; Artikel
+              Artikel &amp; Insight
             </h1>
             <p className="text-neutral-500 dark:text-muted-foreground max-w-lg">
               Tips, panduan, dan wawasan dari para ahli kesehatan mental untuk membantumu menjalani hidup yang lebih seimbang.

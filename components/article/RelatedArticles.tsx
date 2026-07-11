@@ -18,7 +18,7 @@ export default function RelatedArticles({ posts }: { posts: Post[] }) {
         </div>
         <div className="text-center">
           <Link href="/blog" className="btn btn-outline text-sm">
-            ← Kembali ke Blog
+            ← Kembali ke Artikel
           </Link>
         </div>
       </div>

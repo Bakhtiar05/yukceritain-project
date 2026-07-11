@@ -81,33 +81,30 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 340, damping: 30, delay: 0.1 }}
-          className="flex items-center justify-between h-[76px] px-6 pb-1 bg-card/95 backdrop-blur-xl rounded-t-[24px] border-t border-border shadow-[0_-4px_24px_rgba(0,0,0,0.06)]"
+          className="flex items-center justify-between h-[72px] px-2 bg-white dark:bg-background shadow-[0_-4px_16px_rgba(0,0,0,0.04)] dark:shadow-[0_-4px_16px_rgba(0,0,0,0.2)]"
         >
           {NAV_ITEMS.map((item) => {
             const active = isActive(item)
             const Icon   = item.icon
             const bounce = tapped === item.id
 
-            /* ── Primary "Create Story" button ─── */
+            /* ── Primary "Create Story" button (FAB) ─── */
             if (item.isPrimary) {
               return (
                 <button
                   key={item.id}
                   onClick={() => handleTap(item)}
-                  className="flex flex-col items-center justify-center gap-1 w-1/5"
+                  className="flex flex-col items-center justify-center w-1/5 relative h-full"
                   aria-label={item.label}
                 >
                   <motion.div
                     animate={bounce ? { scale: [1, 0.88, 1.05, 1] } : {}}
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.30, ease: 'easeOut' }}
-                    className="relative w-[48px] h-[48px] -mt-6 rounded-full bg-gradient-to-br from-primary via-blue-500 to-indigo-500 flex items-center justify-center shadow-[0_8px_24px_hsl(var(--primary)_/_0.15)] border-[3px] border-background before:absolute before:inset-0 before:rounded-full before:border before:border-white/20"
+                    className="absolute -top-[24px] w-[56px] h-[56px] rounded-full bg-[#2563EB] dark:bg-primary flex items-center justify-center shadow-[0_8px_16px_rgba(37,99,235,0.24)] border-[4px] border-white dark:border-background"
                   >
-                    <Icon size={24} strokeWidth={2} className="text-white drop-shadow-sm" />
+                    <Icon size={28} strokeWidth={2.5} className="text-white" />
                   </motion.div>
-                  <span className={`text-[10px] font-semibold mt-0.5 ${active ? 'text-primary' : 'text-muted-foreground'}`}>
-                    {t(`bottomNav.${item.id}`) !== `bottomNav.${item.id}` ? t(`bottomNav.${item.id}`) : item.label}
-                  </span>
                 </button>
               )
             }
@@ -117,26 +114,27 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
               <button
                 key={item.id}
                 onClick={() => handleTap(item)}
-                className="flex flex-col items-center justify-center gap-1 w-1/5"
+                className="flex flex-col items-center justify-center gap-[4px] w-1/5 h-full relative"
                 aria-label={item.label}
               >
                 <motion.div
                   animate={bounce ? { scale: [1, 0.80, 1.08, 1] } : {}}
                   transition={{ duration: 0.30, ease: 'easeOut' }}
-                  className={`w-10 h-10 flex items-center justify-center rounded-[12px] transition-all duration-200 ${
-                    active
-                      ? 'bg-primary/10 shadow-[0_2px_8px_hsl(var(--primary)_/_0.12)]'
-                      : 'bg-transparent'
-                  }`}
+                  className="flex items-center justify-center"
                 >
                   <Icon
-                    size={22}
-                    strokeWidth={active ? 2 : 1.75}
-                    className={`transition-colors duration-200 ${active ? 'text-primary' : 'text-muted-foreground'}`}
+                    size={24}
+                    strokeWidth={active ? 2.5 : 1.75}
+                    fill={active ? 'currentColor' : 'none'}
+                    className={`transition-colors duration-200 ${active ? 'text-[#2563EB] dark:text-primary' : 'text-[#9CA3AF]'}`}
                   />
                 </motion.div>
-                <span className={`text-[10px] font-semibold transition-colors duration-200 ${active ? 'text-primary' : 'text-muted-foreground'}`}>
+                <span className={`text-[10.5px] font-sans transition-colors duration-200 relative ${active ? 'text-[#2563EB] dark:text-primary font-semibold' : 'text-[#9CA3AF] font-normal'}`}>
                   {t(`bottomNav.${item.id}`) !== `bottomNav.${item.id}` ? t(`bottomNav.${item.id}`) : item.label}
+                  {/* Dot Indicator */}
+                  {active && (
+                     <span className="absolute left-1/2 -bottom-[8px] w-1 h-1 -translate-x-1/2 rounded-full bg-[#2563EB] dark:bg-primary" />
+                  )}
                 </span>
               </button>
             )

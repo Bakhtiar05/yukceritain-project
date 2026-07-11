@@ -152,13 +152,7 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
         </div>
 
         {/* ── WRITING AREA ────────────────────────────────────── */}
-        <div
-          className={`relative rounded-[24px] transition-all duration-300 border bg-white dark:bg-[#0F172A] ${
-            isFocused
-              ? 'border-primary/30 ring-4 ring-primary/10 shadow-[0_4px_20px_rgba(37,99,235,0.06)]'
-              : 'border-border/40 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:border-border/60 hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)]'
-          }`}
-        >
+        <div className="relative transition-all duration-300">
           <textarea
             ref={textareaRef}
             value={content}
@@ -166,7 +160,7 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
             onFocus={handleFocus}
             onBlur={() => setIsFocused(false)}
             placeholder="Apa yang sedang kamu rasakan hari ini?"
-            className="w-full bg-transparent outline-none focus:outline-none focus:ring-0 border-0 resize-none text-[16px] md:text-[17px] font-normal tracking-[-0.01em] text-[#1F2937] dark:text-gray-200 leading-[1.7] placeholder:text-muted-foreground/50 placeholder:transition-opacity p-5 md:p-6 rounded-[24px] caret-primary custom-scrollbar transition-opacity duration-300"
+            className="w-full bg-transparent outline-none focus:outline-none focus:ring-0 border-0 resize-none text-[16px] md:text-[17px] font-normal tracking-[-0.01em] text-[#1F2937] dark:text-gray-200 leading-[1.7] placeholder:text-muted-foreground/50 placeholder:transition-opacity py-4 custom-scrollbar transition-opacity duration-300"
             style={{ minHeight: '200px' }}
           />
         </div>
@@ -212,21 +206,8 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
           </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 pt-2 mt-1 min-h-[48px]">
-          {/* Left: counter + discard */}
+          {/* Left: discard */}
           <div className="flex items-center gap-3 sm:gap-4">
-            <AnimatePresence>
-              {hasContent && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="text-[13px] font-medium transition-colors"
-                  style={{ color: counterColor }}
-                >
-                  {remaining}
-                </motion.div>
-              )}
-            </AnimatePresence>
             
             {/* Discard */}
             <AnimatePresence>
@@ -276,6 +257,21 @@ export default function StoryComposer({ isAuthenticated, onStoryCreated }: { isA
             )}
           </AnimatePresence>
         </div>
+
+      {/* Privacy Note (Hidden when typing) */}
+      <AnimatePresence>
+        {!hasContent && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-4 text-center text-muted-foreground text-[13px] leading-relaxed px-4"
+          >
+            {t('composer.privacyNote')}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Modal Profanity */}
       <ProfanityModal
         isOpen={profanityModalOpen}

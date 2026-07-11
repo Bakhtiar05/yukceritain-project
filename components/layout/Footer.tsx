@@ -73,9 +73,9 @@ export default function Footer() {
             <div>
               <h3 className="font-bold text-white text-[15px] tracking-wide mb-6">Perusahaan</h3>
               <ul className="space-y-4">
-                {['Tentang Kami', 'Tim Ahli', 'Blog Kesehatan', 'Karir'].map((item) => (
+                {['Tentang Kami', 'Tim Ahli', 'Artikel Kesehatan', 'Karir'].map((item) => (
                   <li key={item}>
-                    <Link href={item === 'Blog Kesehatan' ? '/blog' : '#'} className="text-slate-400 text-[14px] hover:text-blue-400 hover:translate-x-1 inline-block transition-all duration-300">
+                    <Link href={item === 'Artikel Kesehatan' ? '/blog' : '#'} className="text-slate-400 text-[14px] hover:text-blue-400 hover:translate-x-1 inline-block transition-all duration-300">
                       {item}
                     </Link>
                   </li>

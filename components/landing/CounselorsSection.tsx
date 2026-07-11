@@ -8,7 +8,7 @@ export default async function CounselorsSection() {
   if (counselors.length === 0) return null
 
   return (
-    <section className="py-12 md:py-20 bg-slate-50 dark:bg-background relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-white dark:bg-background relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-8 md:mb-16">
           <h2 className="text-4xl font-bold text-slate-900 dark:text-foreground mb-4">

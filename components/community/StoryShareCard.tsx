@@ -96,7 +96,7 @@ export const StoryShareCard = forwardRef<HTMLDivElement, StoryShareCardProps>(
             {/* Logo replacing Anonim/Publik status */}
             <div className="flex items-center">
               <img 
-                src={typeof window !== 'undefined' ? `${window.location.origin}/assets/logo-v11.png` : '/assets/logo-v11.png'} 
+                src={typeof window !== 'undefined' ? `${window.location.origin}/assets/logo-v13.webp` : '/assets/logo-v13.webp'} 
                 alt="YukceritaIN Logo" 
                 className="h-[56px] object-contain" 
                 crossOrigin="anonymous"

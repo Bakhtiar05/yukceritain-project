@@ -184,7 +184,7 @@ export default function CommentSideSheet({ session }: { session: any }) {
                                         exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
                                         className="flex flex-col ml-1 relative mt-1"
                                       >
-                                        <div className="absolute left-5 top-0 bottom-0 w-px bg-border/50" />
+                                        <div className="absolute -left-4 top-0 bottom-0 w-[2px] bg-[#E5E7EB] dark:bg-[#374151] rounded-full" />
                                         {replies.map((reply, rIndex) => {
                                           const isReplyOwner = session?.user?.id === reply.profile_id
                                           const replyProfile = Array.isArray(reply.profile) ? reply.profile[0] : reply.profile

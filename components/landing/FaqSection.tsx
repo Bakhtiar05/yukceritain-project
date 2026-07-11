@@ -38,7 +38,7 @@ export default function FaqSection() {
   const toggle = (i: number) => setOpenIndex(openIndex === i ? null : i)
 
   return (
-    <section id="faq" className="scroll-mt-24 py-12 md:py-20 bg-neutral-50 dark:bg-background">
+    <section id="faq" className="scroll-mt-24 py-12 md:py-20 bg-white dark:bg-background">
       <FaqJsonLd faqs={faqs} />
       <div className="max-w-container mx-auto px-6">
         <ScrollReveal variant="fade-up" className="text-center mb-16">

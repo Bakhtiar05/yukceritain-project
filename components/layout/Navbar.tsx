@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X, Home, HeartHandshake, Activity, BookOpen, Calendar, MoreHorizontal, MessageCircle } from 'lucide-react'
+import { Menu, X, Home, HeartHandshake, Activity, BookOpen, Calendar, MoreHorizontal, MessageCircle, Users } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import ThemeToggle from '@/components/community/ThemeToggle'
 
@@ -44,13 +44,13 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false, hid
         { label: 'Layanan', href: '/#layanan' },
         { label: 'Tentang Kami', href: '/about', active: pathname === '/about' },
         { label: 'Event', href: '/events' },
-        { label: 'Blog', href: '/blog', active: true },
+        { label: 'Artikel', href: '/blog', active: true },
       ]
     : [
         { label: 'Layanan', href: '#layanan' },
         { label: 'Tentang Kami', href: '/about', active: pathname === '/about' },
         { label: 'Event', href: '/events' },
-        { label: 'Blog', href: '/blog' },
+        { label: 'Artikel', href: '/blog' },
       ]
 
   return (
@@ -64,19 +64,19 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false, hid
           <div
             className={`w-full max-w-container mx-auto flex items-center justify-between transition-all duration-500 ${
               scrolled
-                ? 'bg-background/70 backdrop-blur-xl border border-border/50 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-2xl md:rounded-full py-2 px-4 md:px-6 xl:px-8'
-                : 'bg-background/40 backdrop-blur-md border border-border/30 shadow-[0_4px_20px_rgba(0,0,0,0.04)] rounded-2xl md:rounded-full py-3 md:py-3.5 px-4 md:px-6 xl:px-8'
+                ? 'bg-background/70 backdrop-blur-xl border border-border/50 shadow-[0_8px_32px_rgba(0,0,0,0.08)] rounded-2xl md:rounded-full py-1.5 px-4 md:px-6 xl:px-8'
+                : 'bg-background/40 backdrop-blur-md border border-border/30 shadow-[0_4px_20px_rgba(0,0,0,0.04)] rounded-2xl md:rounded-full py-2 md:py-2.5 px-4 md:px-6 xl:px-8'
             }`}
           >
             {/* Logo */}
             <div className="flex justify-start items-center mr-auto">
               <Link href="/" className="flex items-center gap-3 flex-shrink-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg">
                 <Image
-                  src="/assets/logo-v4.png"
+                  src="/assets/logo-v13.webp"
                   alt="YukceritaIN Logo"
-                  width={200}
-                  height={200}
-                  className={`w-auto dark:brightness-0 dark:invert transition-all duration-300 group-hover:scale-105 ${scrolled ? 'h-[42px] sm:h-[48px] lg:h-[56px]' : 'h-[48px] sm:h-[56px] lg:h-[64px]'}`}
+                  width={150}
+                  height={150}
+                  className={`w-auto dark:brightness-0 dark:invert transition-all duration-300 group-hover:scale-105 ${scrolled ? 'h-[32px] sm:h-[36px] lg:h-[40px]' : 'h-[36px] sm:h-[40px] lg:h-[48px]'}`}
                   style={{ width: "auto" }}
                   priority
                 />
@@ -135,7 +135,7 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false, hid
         >
           <Link href="/" className="flex items-center" onClick={() => setMenuOpen(false)}>
             <Image
-              src="/assets/logo-v4.png"
+              src="/assets/logo-v13.webp"
               alt="YukceritaIN Logo"
               width={150}
               height={40}
@@ -156,28 +156,28 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false, hid
       )}
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-[998] bg-white dark:bg-card rounded-t-[32px] px-3 py-2 flex items-center justify-between pb-safe">
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-[998] bg-white dark:bg-card px-3 py-2 flex items-center justify-between pb-safe shadow-[0_-4px_16px_rgba(0,0,0,0.03)] border-t border-gray-100 dark:border-border">
         <Link href="/" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors">
-          <Home size={22} className={pathname === '/' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'} />
-          <span className={`text-[9px] font-medium ${pathname === '/' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Beranda</span>
+          <Home size={24} strokeWidth={2} className={pathname === '/' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'} />
+          <span className={`text-[10px] font-medium ${pathname === '/' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>Beranda</span>
         </Link>
         <Link href="/konsultasi" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors">
-          <MessageCircle size={22} className={pathname?.startsWith('/konsultasi') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'} />
-          <span className={`text-[9px] font-medium ${pathname?.startsWith('/konsultasi') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Konseling</span>
+          <MessageCircle size={24} strokeWidth={2} className={pathname?.startsWith('/konsultasi') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'} />
+          <span className={`text-[10px] font-medium ${pathname?.startsWith('/konsultasi') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>Konseling</span>
         </Link>
-        <Link href="/community" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors group">
-          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white dark:bg-slate-800 shadow-lg shadow-blue-500/20 border-[6px] border-white dark:border-background transition-transform duration-300 group-hover:-translate-y-1`}>
-            <Image src="/assets/navbar-bawah.png" alt="Yukceritain" width={32} height={32} className={`object-contain transition-all duration-300 ${pathname?.startsWith('/community') ? 'opacity-100 scale-105 drop-shadow-md' : 'opacity-80'}`} />
+        <Link href="/community" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors group relative z-10">
+          <div className="flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-blue-600 shadow-[0_4px_12px_rgba(0,0,0,0.1)] border-[4px] border-white dark:border-card transition-transform duration-300 group-hover:-translate-y-1">
+            <Users size={24} strokeWidth={2} className="text-white" />
           </div>
-          <span className={`text-[9px] font-medium ${pathname?.startsWith('/community') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Yukceritain</span>
+          <span className={`text-[10px] font-medium ${pathname?.startsWith('/community') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>Komunitas</span>
         </Link>
         <Link href="/events" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors">
-          <Calendar size={22} className={pathname?.startsWith('/events') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'} />
-          <span className={`text-[9px] font-medium ${pathname?.startsWith('/events') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Event</span>
+          <Calendar size={24} strokeWidth={2} className={pathname?.startsWith('/events') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'} />
+          <span className={`text-[10px] font-medium ${pathname?.startsWith('/events') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>Event</span>
         </Link>
         <Link href="/blog" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors">
-          <BookOpen size={22} className={pathname?.startsWith('/blog') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'} />
-          <span className={`text-[9px] font-medium ${pathname?.startsWith('/blog') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Blog</span>
+          <BookOpen size={24} strokeWidth={2} className={pathname?.startsWith('/blog') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'} />
+          <span className={`text-[10px] font-medium ${pathname?.startsWith('/blog') ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>Artikel</span>
         </Link>
       </nav>
 

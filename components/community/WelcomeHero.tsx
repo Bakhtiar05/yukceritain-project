@@ -49,11 +49,6 @@ export default function WelcomeHero() {
           transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
           className={`relative overflow-hidden rounded-[24px] bg-gradient-to-br ${activeSlide.gradient} border-0 dark:border dark:border-border group shadow-lg dark:shadow-none min-h-[190px]`}
         >
-          {/* Background Decorative Icon */}
-          <div className="absolute right-1 top-1 sm:right-3 sm:top-3 pointer-events-none text-white/15 dark:text-primary/15 -rotate-12">
-            <activeSlide.icon className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48" strokeWidth={1.5} />
-          </div>
-
           <div className="relative z-10 w-full px-6 sm:px-8 py-8 flex flex-col items-start gap-4">
             
             {/* Badge */}
@@ -170,19 +165,16 @@ function TypewriterHeadline({ text, className, onComplete }: { text: string, cla
   }
 
   return (
-    <h1 className={`relative ${className} whitespace-pre-wrap`}>
-      {/* Invisible full text maintains the exact layout and height */}
-      <span className="invisible select-none break-words" aria-hidden="true">{text}</span>
-      
-      {/* Absolute overlay types the text progressively */}
-      <span className="absolute left-0 top-0 w-full h-full text-left break-words">
-        {text.substring(0, subIndex)}
+    <h1 className={`${className} whitespace-pre-wrap break-words relative`}>
+      <span>{text.substring(0, subIndex)}</span>
+      <span className="relative inline-block w-0 h-0">
         <motion.span 
           animate={{ opacity: blink ? 1 : 0 }} 
           transition={{ duration: 0.1 }}
-          className="inline-block w-[3px] h-[1.1em] bg-white dark:bg-primary ml-[2px] align-middle rounded-full -translate-y-[0.1em]"
+          className="absolute left-[1px] top-1/2 -translate-y-[55%] w-[3px] h-[1.1em] bg-white dark:bg-primary rounded-full"
         />
       </span>
+      <span className="invisible">{text.substring(subIndex)}</span>
     </h1>
   )
 }

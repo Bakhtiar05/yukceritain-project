@@ -13,7 +13,7 @@ export default function ArticleHero({ post }: { post: Post }) {
         <nav className="flex items-center gap-1.5 text-[0.82rem] text-neutral-400 mb-6">
           <Link href="/" className="hover:text-blue-500 transition-colors">Beranda</Link>
           <span>›</span>
-          <Link href="/blog" className="hover:text-blue-500 transition-colors">Blog</Link>
+          <Link href="/blog" className="hover:text-blue-500 transition-colors">Artikel</Link>
           <span>›</span>
           <span className="text-neutral-500 dark:text-neutral-400 inline-block truncate max-w-[150px] md:max-w-[250px] align-bottom">
             {post.title}

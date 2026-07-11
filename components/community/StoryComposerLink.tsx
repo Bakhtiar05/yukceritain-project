@@ -9,29 +9,29 @@ import { useCreateStoryDrawer } from './CreateStoryDrawerProvider'
 import { useAuthModal } from './AuthModalProvider'
 
 const PROMPTS_EN = [
-  "What's up today?....",
-  "How's your day going?....",
-  "Anything on your mind?....",
-  "Got something to share?....",
-  "What's happening today?....",
-  "What's new with you?....",
-  "How are things going?....",
-  "What's going on?....",
-  "What's on your mind right now?....",
-  "Tell us what's up...."
+  "What's up today?",
+  "How's your day going?",
+  "Anything on your mind?",
+  "Got something to share?",
+  "What's happening today?",
+  "What's new with you?",
+  "How are things going?",
+  "What's going on?",
+  "What's on your mind right now?",
+  "Tell us what's up"
 ]
 
 const PROMPTS_ID = [
-  "Ada cerita apa hari ini?....",
-  "Gimana harimu hari ini?....",
-  "Lagi kepikiran apa?....",
-  "Mau cerita sesuatu?....",
-  "Ada apa hari ini?....",
-  "Ada kabar apa?....",
-  "Gimana kabarmu belakangan?....",
-  "Lagi ada apa?....",
-  "Lagi kepikiran apa sekarang?....",
-  "Coba ceritain, dong...."
+  "Ada cerita apa hari ini?",
+  "Gimana harimu hari ini?",
+  "Lagi kepikiran apa?",
+  "Mau cerita sesuatu?",
+  "Ada apa hari ini?",
+  "Ada kabar apa?",
+  "Gimana kabarmu belakangan?",
+  "Lagi ada apa?",
+  "Lagi kepikiran apa sekarang?",
+  "Coba ceritain, dong"
 ]
 
 export default function StoryComposerLink({ isAuthenticated }: { isAuthenticated?: boolean }) {

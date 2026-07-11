@@ -52,20 +52,16 @@ export default function CreateStoryDrawer({ isAuthenticated }: { isAuthenticated
               </h2>
               <button
                 onClick={closeDrawer}
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-muted hover:bg-muted-foreground/20 text-muted-foreground transition-colors"
+                className="flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors active:scale-95"
                 aria-label="Close"
               >
-                <X className="w-5 h-5" />
+                <X className="w-6 h-6" strokeWidth={1.75} />
               </button>
             </div>
 
             {/* Content (Composer) */}
             <div className="flex-1 overflow-y-auto custom-scrollbar p-4 flex flex-col">
               <StoryComposer isAuthenticated={isAuthenticated} onStoryCreated={closeDrawer} />
-              
-              <div className="mt-6 text-center text-muted-foreground text-[13px]">
-                {t('composer.privacyNote')}
-              </div>
             </div>
           </motion.div>
         </div>

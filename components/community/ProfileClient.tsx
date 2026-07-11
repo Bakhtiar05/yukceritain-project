@@ -138,50 +138,39 @@ export default function ProfileClient({
     <div className="w-full min-h-screen bg-background pb-32">
 
       {/* ── STICKY HEADER ──────────────────────────────── */}
-      <header className="sticky top-0 z-40 bg-card/92 backdrop-blur-xl border-b border-border md:hidden">
-        <div className="h-[60px] flex items-center justify-between px-4">
+      <header className="sticky top-0 z-40 bg-white dark:bg-background md:hidden">
+        <div className="h-[60px] flex items-center px-4">
           <button
             onClick={() => router.back()}
             aria-label="Kembali"
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-muted hover:bg-muted text-muted-foreground transition-colors active:scale-95 flex-shrink-0"
+            className="flex items-center justify-center text-[#9CA3AF] hover:text-foreground transition-colors active:scale-95"
           >
-            <ChevronLeft className="w-5 h-5" strokeWidth={2.2} />
+            <ChevronLeft className="w-6 h-6" strokeWidth={1.75} />
           </button>
-
-          <div className="flex flex-col items-center flex-1 px-3">
-            <span className="text-[17px] font-bold text-foreground leading-tight tracking-tight">
-              Profile
-            </span>
-            <span className="text-[11.5px] font-medium text-muted-foreground leading-tight mt-0.5">
-              @{profile.username}
-            </span>
-          </div>
-
-          <div className="w-10 h-10 flex-shrink-0" />
         </div>
       </header>
 
       <div className="max-w-2xl mx-auto px-4 space-y-6 pt-5">
         {/* ── PROFILE HERO ───────────────────────────────── */}
-        <motion.div {...fadeUp(0)} className="relative bg-card rounded-[24px] border border-border shadow-[0_2px_12px_rgba(0,0,0,0.05)] p-6">
+        <motion.div {...fadeUp(0)} className="relative bg-white dark:bg-background p-6">
           <div className="flex flex-col items-center text-center">
             {/* Avatar */}
             <motion.div
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="relative mb-4"
+              className="relative mb-6"
             >
               <img
                 src={avatarUrl}
                 alt={profile.display_name}
-                className="w-24 h-24 rounded-full object-cover bg-muted ring-4 ring-background shadow-[0_4px_20px_rgba(0,0,0,0.10)]"
+                className="w-24 h-24 rounded-full object-cover bg-muted shadow-sm"
               />
               <button
                 onClick={() => setIsEditOpen(true)}
-                className="absolute bottom-0 right-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center border-2 border-white shadow-sm hover:bg-primary/90 transition-colors"
+                className="absolute bottom-0 right-0 w-8 h-8 bg-[#2563EB] dark:bg-primary rounded-full flex items-center justify-center shadow-sm hover:opacity-90 transition-opacity"
               >
-                <Edit3 className="w-3.5 h-3.5 text-white" />
+                <Edit3 className="w-4 h-4 text-white" strokeWidth={2} />
               </button>
             </motion.div>
 
@@ -189,21 +178,21 @@ export default function ProfileClient({
             <h1 className="text-[24px] font-bold text-foreground leading-tight">
               {profile.display_name}
             </h1>
-            <p className="text-[15px] text-muted-foreground font-medium mt-1">@{profile.username}</p>
+            <p className="text-[15px] text-[#9CA3AF] font-medium mt-1">@{profile.username}</p>
 
             {/* Bio */}
             {profile.bio && (
-              <p className="text-[15px] text-muted-foreground leading-relaxed mt-3 max-w-[280px] line-clamp-2">
+              <p className="text-[15px] text-[#4B5563] dark:text-[#9CA3AF] leading-relaxed mt-4 max-w-[280px] line-clamp-2">
                 {profile.bio}
               </p>
             )}
 
             {/* Stats row */}
-            <div className="flex items-stretch gap-px w-full mt-5 pt-5 border-t border-border">
+            <div className="flex items-stretch w-full mt-8 gap-4">
               {stats.map((s, i) => (
-                <div key={s.label} className={`flex-1 flex flex-col items-center gap-1 px-2 ${i < stats.length - 1 ? 'border-r border-border' : ''}`}>
-                  <span className="text-[22px] font-bold text-foreground tabular-nums">{s.value}</span>
-                  <span className="text-[12px] text-muted-foreground font-medium text-center leading-tight">{s.label}</span>
+                <div key={s.label} className="flex-1 flex flex-col items-center gap-1.5 px-2">
+                  <span className="text-[22px] font-bold text-foreground tabular-nums leading-none">{s.value}</span>
+                  <span className="text-[12px] text-[#9CA3AF] font-medium text-center leading-tight uppercase tracking-wider">{s.label}</span>
                 </div>
               ))}
             </div>
@@ -283,80 +272,78 @@ export default function ProfileClient({
             {activeTab === 'pengaturan' && (
               <motion.div key="pengaturan" initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-10}} transition={{duration: 0.2}}>
                 {/* SETTINGS CARD */}
-                <div className="bg-white dark:bg-card rounded-[24px] border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden">
-                  <div className="divide-y divide-border">
+                <div className="bg-white dark:bg-background overflow-hidden px-4">
+                  <div className="flex flex-col gap-2">
                     {/* Edit Profile */}
-                    <button onClick={() => setIsEditOpen(true)} className="w-full flex items-center justify-between p-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors text-left group">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-[#F8FAFC] dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
-                          <Edit3 className="w-5 h-5" />
+                    <button onClick={() => setIsEditOpen(true)} className="w-full flex items-center justify-between py-5 group text-left transition-opacity hover:opacity-80">
+                      <div className="flex items-center gap-6">
+                        <div className="text-[#9CA3AF] group-hover:text-[#2563EB] dark:group-hover:text-primary transition-colors">
+                          <Edit3 className="w-6 h-6" strokeWidth={1.75} />
                         </div>
                         <div>
-                          <p className="text-[15px] font-semibold text-slate-800 dark:text-foreground leading-tight">{t('profile.editProfile')}</p>
-                          <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">{t('profile.editProfileDesc')}</p>
+                          <p className="text-[16px] font-semibold text-foreground leading-tight">{t('profile.editProfile')}</p>
+                          <p className="text-[13px] text-[#9CA3AF] mt-1 leading-snug">{t('profile.editProfileDesc')}</p>
                         </div>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
                     </button>
                     {/* Privacy */}
-                    <button onClick={() => {}} className="w-full flex items-center justify-between p-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors text-left group">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-[#F8FAFC] dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
-                          <Lock className="w-5 h-5" />
+                    <button onClick={() => {}} className="w-full flex items-center justify-between py-5 group text-left transition-opacity hover:opacity-80">
+                      <div className="flex items-center gap-6">
+                        <div className="text-[#9CA3AF] group-hover:text-[#2563EB] dark:group-hover:text-primary transition-colors">
+                          <Lock className="w-6 h-6" strokeWidth={1.75} />
                         </div>
                         <div>
-                          <p className="text-[15px] font-semibold text-slate-800 dark:text-foreground leading-tight">Privacy</p>
-                          <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">Control your data and visibility</p>
+                          <p className="text-[16px] font-semibold text-foreground leading-tight">Privacy</p>
+                          <p className="text-[13px] text-[#9CA3AF] mt-1 leading-snug">Control your data and visibility</p>
                         </div>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
                     </button>
                     {/* Security */}
-                    <button onClick={() => {}} className="w-full flex items-center justify-between p-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors text-left group">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-[#F8FAFC] dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
-                          <Shield className="w-5 h-5" />
+                    <button onClick={() => {}} className="w-full flex items-center justify-between py-5 group text-left transition-opacity hover:opacity-80">
+                      <div className="flex items-center gap-6">
+                        <div className="text-[#9CA3AF] group-hover:text-[#2563EB] dark:group-hover:text-primary transition-colors">
+                          <Shield className="w-6 h-6" strokeWidth={1.75} />
                         </div>
                         <div>
-                          <p className="text-[15px] font-semibold text-slate-800 dark:text-foreground leading-tight">{t('profile.security')}</p>
-                          <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">{t('profile.securityDesc')}</p>
+                          <p className="text-[16px] font-semibold text-foreground leading-tight">{t('profile.security')}</p>
+                          <p className="text-[13px] text-[#9CA3AF] mt-1 leading-snug">{t('profile.securityDesc')}</p>
                         </div>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
                     </button>
                     {/* Language */}
-                    <button onClick={() => setIsLanguageOpen(true)} className="w-full flex items-center justify-between p-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors text-left group">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-[#F8FAFC] dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
-                          <Globe className="w-5 h-5" />
+                    <button onClick={() => setIsLanguageOpen(true)} className="w-full flex items-center justify-between py-5 group text-left transition-opacity hover:opacity-80">
+                      <div className="flex items-center gap-6">
+                        <div className="text-[#9CA3AF] group-hover:text-[#2563EB] dark:group-hover:text-primary transition-colors">
+                          <Globe className="w-6 h-6" strokeWidth={1.75} />
                         </div>
                         <div>
-                          <p className="text-[15px] font-semibold text-slate-800 dark:text-foreground leading-tight">{t('profile.language')}</p>
-                          <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">{t('profile.languageDesc')}</p>
+                          <p className="text-[16px] font-semibold text-foreground leading-tight">{t('profile.language')}</p>
+                          <p className="text-[13px] text-[#9CA3AF] mt-1 leading-snug">{t('profile.languageDesc')}</p>
                         </div>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
                     </button>
-
                     {/* Notifications */}
-                    <button onClick={() => {}} className="w-full flex items-center justify-between p-5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors text-left group">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-[#F8FAFC] dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300">
-                          <Bell className="w-5 h-5" />
+                    <button onClick={() => {}} className="w-full flex items-center justify-between py-5 group text-left transition-opacity hover:opacity-80">
+                      <div className="flex items-center gap-6">
+                        <div className="text-[#9CA3AF] group-hover:text-[#2563EB] dark:group-hover:text-primary transition-colors">
+                          <Bell className="w-6 h-6" strokeWidth={1.75} />
                         </div>
                         <div>
-                          <p className="text-[15px] font-semibold text-slate-800 dark:text-foreground leading-tight">Notifications</p>
-                          <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">Manage alerts and reminders</p>
+                          <p className="text-[16px] font-semibold text-foreground leading-tight">Notifications</p>
+                          <p className="text-[13px] text-[#9CA3AF] mt-1 leading-snug">Manage alerts and reminders</p>
                         </div>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
                     </button>
                   </div>
                   {/* LOGOUT */}
-                  <div className="bg-[#F8FAFC] dark:bg-slate-900/30 p-5 flex items-center justify-center border-t border-border">
-                    <button onClick={handleLogout} disabled={isLoggingOut} className="flex items-center gap-2 text-[#E11D48] font-semibold text-[15px] hover:text-[#BE123C] transition-colors disabled:opacity-50">
-                      <LogOut className="w-5 h-5" strokeWidth={2.5} />
-                      {isLoggingOut ? t('profile.loggingOut') : "Keluar Akun"}
+                  <div className="py-8 mt-4">
+                    <button onClick={handleLogout} disabled={isLoggingOut} className="w-full flex items-center gap-6 group text-left disabled:opacity-50 transition-opacity hover:opacity-80">
+                      <div className="text-[#EF4444] group-hover:text-[#DC2626] transition-colors">
+                        <LogOut className="w-6 h-6" strokeWidth={1.75} />
+                      </div>
+                      <div className="text-[16px] font-semibold text-[#EF4444] group-hover:text-[#DC2626] transition-colors leading-tight">
+                        {isLoggingOut ? t('profile.loggingOut') : "Keluar Akun"}
+                      </div>
                     </button>
                   </div>
                 </div>

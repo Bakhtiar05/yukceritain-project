@@ -6,7 +6,7 @@ export function OrganizationJsonLd() {
     '@type': 'Organization',
     name: 'YukceritaIN',
     url: 'https://www.yukceritain.com',
-    logo: 'https://www.yukceritain.com/assets/logo-v5.png',
+    logo: 'https://www.yukceritain.com/assets/logo-v5.webp',
     description: 'Platform konseling online untuk kesehatan mental yang aman, nyaman, dan terjangkau.',
   };
   return (
