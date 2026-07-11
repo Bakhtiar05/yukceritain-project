@@ -9,12 +9,13 @@ import FaqSection from '@/components/landing/FaqSection'
 import BlogPreview from '@/components/landing/BlogPreview'
 import CtaSection from '@/components/landing/CtaSection'
 import { getLatestPosts } from '@/lib/actions/posts'
+import IntroOverlay from '@/components/IntroOverlay'
 
 export default async function HomePage() {
   const posts = await getLatestPosts(3)
 
   return (
-    <>
+    <IntroOverlay>
       <Navbar />
       <main>
         <HeroSection />
@@ -27,6 +28,6 @@ export default async function HomePage() {
       </main>
       <Footer />
       <ScrollToTop />
-    </>
+    </IntroOverlay>
   )
 }

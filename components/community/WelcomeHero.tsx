@@ -165,16 +165,19 @@ function TypewriterHeadline({ text, className, onComplete }: { text: string, cla
   }
 
   return (
-    <h1 className={`${className} whitespace-pre-wrap break-words relative`}>
-      <span>{text.substring(0, subIndex)}</span>
-      <span className="relative inline-block w-0 h-0">
+    <h1 className={`${className} relative`}>
+      {/* Skeleton (invisible) dictates exact final height/width/wrapping */}
+      <span className="invisible whitespace-pre-wrap break-words">{text}</span>
+      
+      {/* Overlay (visible) types the text */}
+      <span className="absolute inset-0 whitespace-pre-wrap break-words text-left pointer-events-none">
+        {text.substring(0, subIndex)}
         <motion.span 
           animate={{ opacity: blink ? 1 : 0 }} 
           transition={{ duration: 0.1 }}
-          className="absolute left-[1px] top-1/2 -translate-y-[55%] w-[3px] h-[1.1em] bg-white dark:bg-primary rounded-full"
+          className="inline-block w-[3px] h-[1.05em] bg-white dark:bg-primary rounded-full align-middle -mt-[0.1em] ml-[1px] -mr-[4px]"
         />
       </span>
-      <span className="invisible">{text.substring(subIndex)}</span>
     </h1>
   )
 }

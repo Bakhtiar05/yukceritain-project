@@ -746,6 +746,45 @@ body {
 }
 
 /* ============================================
+   INTRO TRANSITION FLASH PREVENTION
+   ============================================ */
+
+.intro-overlay-container[data-ssr="true"] {
+  display: block !important;
+}
+.main-content-container[data-ssr="true"] {
+  opacity: 0 !important;
+  transform: translateY(30px) !important;
+}
+
+/* ============================================
+   INTRO CONVERSATION ANIMATION
+   ============================================ */
+
+@keyframes intro-cloud-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+
+@keyframes intro-particle-float {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% { opacity: 0.10; }
+  90% { opacity: 0.10; }
+  100% {
+    transform: translateY(-100vh) translateX(20px);
+    opacity: 0;
+  }
+}
+
+@keyframes intro-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ============================================
    TAILWIND TYPOGRAPHY (prose) OVERRIDES
    Blends @tailwindcss/typography with the
    existing blue-themed article design.
@@ -1299,11 +1338,11 @@ body {
    ============================================ */
 
 .community-light {
-  --background: 240 14% 98%; /* #FAFAFB */
+  --background: 210 40% 96.1%; /* #F1F5F9 (slightly darker for contrast) */
   --foreground: 215 28% 17%; /* #1F2937 */
-  --card: 0 0% 100%;         /* #FFFFFF */
+  --card: 210 40% 98%;         /* #F8FAFC (Cool White) */
   --card-foreground: 215 28% 17%;
-  --popover: 0 0% 100%;
+  --popover: 210 40% 98%;      /* #F8FAFC */
   --popover-foreground: 215 28% 17%;
   --primary: 221.2 83.2% 53.3%;
   --primary-foreground: 210 40% 98%;
