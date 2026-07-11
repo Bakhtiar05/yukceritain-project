@@ -790,6 +790,26 @@ body {
   color: #64778E;
 }
 
+/* Dark mode typography overrides */
+.dark .article-content.prose :where(h2),
+.community-dark .article-content.prose :where(h2) {
+  color: #f1f5f9;
+}
+
+.dark .article-content.prose :where(h3),
+.community-dark .article-content.prose :where(h3),
+.dark .article-content.prose :where(strong),
+.community-dark .article-content.prose :where(strong) {
+  color: #e2e8f0;
+}
+
+.dark .article-content.prose :where(p),
+.community-dark .article-content.prose :where(p),
+.dark .article-content.prose :where(em),
+.community-dark .article-content.prose :where(em) {
+  color: #cbd5e1;
+}
+
 /* Blue-themed blockquotes */
 .article-content.prose :where(blockquote) {
   border-left-color: #5BA4E8;
@@ -798,6 +818,83 @@ body {
   border-radius: 0 12px 12px 0;
   font-style: italic;
   color: #1457A0;
+}
+
+/* Dark mode overrides for article content custom boxes */
+.dark .article-content .tip-card,
+.community-dark .article-content .tip-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .article-content .tip-number,
+.community-dark .article-content .tip-number {
+  color: #38bdf8;
+}
+
+.dark .article-content .symptom-card--physical,
+.community-dark .article-content .symptom-card--physical,
+.dark .article-content .symptom-card--emotional,
+.community-dark .article-content .symptom-card--emotional,
+.dark .article-content .symptom-card--behavior,
+.community-dark .article-content .symptom-card--behavior {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .article-content .symptom-card h3,
+.community-dark .article-content .symptom-card h3 {
+  color: #f1f5f9;
+}
+
+.dark .article-content .symptom-card li,
+.community-dark .article-content .symptom-card li {
+  color: #cbd5e1;
+}
+
+.dark .article-content .article-quote,
+.community-dark .article-content .article-quote {
+  background: #1e293b;
+  border-left-color: #3b82f6;
+}
+
+.dark .article-content .article-quote p,
+.community-dark .article-content .article-quote p {
+  color: #60a5fa;
+}
+
+.dark .article-content .article-list--numbered li::before,
+.community-dark .article-content .article-list--numbered li::before {
+  background: #1e293b;
+  color: #60a5fa;
+}
+
+.dark .article-content .article-list--numbered li,
+.community-dark .article-content .article-list--numbered li,
+.dark .article-content .article-list--check li,
+.community-dark .article-content .article-list--check li {
+  color: #cbd5e1;
+}
+
+.dark .article-content .article-highlight-box,
+.community-dark .article-content .article-highlight-box {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-left-color: #3b82f6;
+}
+
+.dark .article-content .article-highlight-box h3,
+.community-dark .article-content .article-highlight-box h3 {
+  color: #f1f5f9;
+}
+
+.dark .article-content .article-highlight-box p,
+.community-dark .article-content .article-highlight-box p {
+  color: #cbd5e1;
+}
+
+.dark .article-content .article-cta-box,
+.community-dark .article-content .article-cta-box {
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
 }
 
 .article-content.prose :where(blockquote p) {

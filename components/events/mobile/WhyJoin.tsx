@@ -26,21 +26,21 @@ export default function WhyJoin() {
   ];
 
   return (
-    <section className="px-4 py-8 bg-slate-50 border-t border-slate-100 mb-20">
+    <section className="px-4 py-8 bg-slate-50 dark:bg-background border-t border-slate-100 dark:border-slate-800 mb-20">
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-900 tracking-tight">Why Join Us?</h2>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Why Join Us?</h2>
       </div>
 
       <div className="flex flex-col gap-3">
         {benefits.map((benefit, idx) => {
           const Icon = benefit.icon;
           return (
-            <div key={idx} className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${benefit.bg} ${benefit.color}`}>
+            <div key={idx} className="flex items-center gap-4 bg-white dark:bg-card p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${benefit.bg} dark:bg-opacity-20 ${benefit.color}`}>
                 <Icon className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900">{benefit.title}</h3>
+                <h3 className="font-bold text-slate-900 dark:text-white">{benefit.title}</h3>
               </div>
             </div>
           );

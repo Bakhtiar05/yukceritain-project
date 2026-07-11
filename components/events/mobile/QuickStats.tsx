@@ -12,17 +12,17 @@ export default function QuickStats() {
   ];
 
   return (
-    <section className="px-4 py-8 bg-white border-t border-slate-100">
+    <section className="px-4 py-8 bg-white dark:bg-background border-t border-slate-100 dark:border-slate-800">
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {stats.map((stat, idx) => {
           const Icon = stat.icon;
           return (
-            <div key={idx} className="flex flex-col items-center justify-center p-4 rounded-[20px] bg-slate-50 border border-slate-100 text-center">
-              <div className={`w-10 h-10 rounded-full ${stat.bg} ${stat.color} flex items-center justify-center mb-3`}>
+            <div key={idx} className="flex flex-col items-center justify-center p-4 rounded-[20px] bg-slate-50 dark:bg-card border border-slate-100 dark:border-slate-800 text-center">
+              <div className={`w-10 h-10 rounded-full ${stat.bg} dark:bg-opacity-20 ${stat.color} flex items-center justify-center mb-3`}>
                 <Icon className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">{stat.value}</h3>
-              <p className="text-xs text-slate-500 font-medium mt-0.5">{stat.label}</p>
+              <h3 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">{stat.value}</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">{stat.label}</p>
             </div>
           );
         })}

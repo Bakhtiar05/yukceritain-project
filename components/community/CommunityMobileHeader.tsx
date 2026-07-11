@@ -25,7 +25,7 @@ export default function CommunityMobileHeader() {
   const closeSidebar = () => setIsSidebarOpen(false)
 
   const navLinks = [
-    { href: '/landing', label: 'Konseling', icon: <Heart className="w-5 h-5" /> },
+    { href: '/booking', label: 'Konseling', icon: <Heart className="w-5 h-5" /> },
     { href: '/events', label: 'Event', icon: <Calendar className="w-5 h-5" /> },
     { href: '/blog', label: 'Blog', icon: <FileText className="w-5 h-5" /> },
     { href: '/about', label: 'About Us', icon: <Info className="w-5 h-5" /> },

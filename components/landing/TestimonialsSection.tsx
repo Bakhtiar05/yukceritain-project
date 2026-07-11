@@ -36,7 +36,7 @@ export default function TestimonialsSection() {
           <h2 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold text-neutral-900 dark:text-foreground mb-4">
             Cerita Mereka yang Telah Terbantu
           </h2>
-          <p className="text-neutral-500 dark:text-muted-foreground max-w-lg mx-auto text-lg">
+          <p className="text-neutral-500 dark:text-muted-foreground max-w-lg mx-auto text-sm md:text-base lg:text-lg">
             Ribuan orang telah menemukan ruang aman mereka bersama YukceritaIN
           </p>
         </ScrollReveal>

@@ -95,6 +95,18 @@ export default function StoryDetailClient({
   const [isMenuOpen, setIsMenuOpen]     = useState(false)
   const [isShareOpen, setIsShareOpen]   = useState(false)
   const [expandedReplies, setExpandedReplies] = useState<Record<string, boolean>>({})
+  const [isExpanded, setIsExpanded]       = useState(false)
+  const [needsClamp, setNeedsClamp]       = useState(false)
+  const contentRef = React.useRef<HTMLParagraphElement>(null)
+
+  /* ── Detect if content overflows 5 lines ─────────────── */
+  React.useEffect(() => {
+    if (contentRef.current) {
+      const lineHeight = parseFloat(getComputedStyle(contentRef.current).lineHeight)
+      const maxHeight  = lineHeight * 5
+      setNeedsClamp(contentRef.current.scrollHeight > maxHeight + 2)
+    }
+  }, [post.content])
 
   const isOwner = session?.user?.id === post.profile_id
   const displayName = post.is_anonymous ? t('storyDetail.anonymous') : post.profile?.display_name
@@ -285,9 +297,24 @@ export default function StoryDetailClient({
                 </div>
               </div>
             ) : (
-              <p className="text-[17px] text-foreground leading-[1.8] whitespace-pre-wrap break-words mb-5">
-                {post.content}
-              </p>
+              <div className="mb-5">
+                <p 
+                  ref={contentRef}
+                  className={`text-[17px] text-foreground leading-[1.8] whitespace-pre-wrap break-words community-post-content ${
+                    isExpanded ? 'expanded' : ''
+                  }`}
+                >
+                  {post.content}
+                </p>
+                {needsClamp && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded) }}
+                    className="mt-1 text-[13.5px] font-semibold text-primary hover:text-primary/90 transition-colors"
+                  >
+                    {isExpanded ? 'Read Less' : 'Read More'}
+                  </button>
+                )}
+              </div>
             )}
 
             {/* Action buttons */}
@@ -359,7 +386,7 @@ export default function StoryDetailClient({
               </p>
             </motion.div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-3 pb-32">
               {(() => {
                 const topLevelComments = comments
                   .filter(c => !c.parent_id)
@@ -404,10 +431,10 @@ export default function StoryDetailClient({
                           <AnimatePresence>
                             {expandedReplies[comment.id] && (
                               <motion.div 
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                exit={{ opacity: 0, height: 0 }}
-                                className="flex flex-col ml-1 relative mt-1 overflow-hidden"
+                                initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
+                                animate={{ opacity: 1, height: 'auto', transitionEnd: { overflow: 'visible' } }}
+                                exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
+                                className="flex flex-col ml-1 relative mt-1"
                               >
                                 <div className="absolute left-5 top-0 bottom-0 w-px bg-border/50" />
                                 {replies.map((reply, rIndex) => {

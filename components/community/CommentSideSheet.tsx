@@ -122,7 +122,7 @@ export default function CommentSideSheet({ session }: { session: any }) {
 
 
                   {/* Comments List */}
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 pb-32">
                     <h3 className="font-semibold text-sm text-muted-foreground px-2">{t('storyDetail.responses')} ({commentsData.length})</h3>
                     {commentsData.length === 0 ? (
                       <div className="text-center py-10 px-4">
@@ -179,10 +179,10 @@ export default function CommentSideSheet({ session }: { session: any }) {
                                   <AnimatePresence>
                                     {expandedReplies[comment.id] && (
                                       <motion.div 
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: 'auto' }}
-                                        exit={{ opacity: 0, height: 0 }}
-                                        className="flex flex-col ml-1 relative mt-1 overflow-hidden"
+                                        initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
+                                        animate={{ opacity: 1, height: 'auto', transitionEnd: { overflow: 'visible' } }}
+                                        exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
+                                        className="flex flex-col ml-1 relative mt-1"
                                       >
                                         <div className="absolute left-5 top-0 bottom-0 w-px bg-border/50" />
                                         {replies.map((reply, rIndex) => {

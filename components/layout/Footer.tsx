@@ -16,7 +16,7 @@ const TikTokIcon = () => (
 
 export default function Footer() {
   return (
-    <footer id="footer" className="relative bg-[#0A0F1C] text-white pt-24 pb-12 overflow-hidden border-t border-white/5">
+    <footer id="footer" className="relative bg-[#0A0F1C] text-white pt-24 pb-28 md:pb-12 overflow-hidden border-t border-white/5">
       {/* Background Enhancements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[1px] bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
       <div className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] max-w-[500px] max-h-[500px] rounded-full bg-blue-600/10 blur-[120px] pointer-events-none" />

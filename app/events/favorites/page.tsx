@@ -18,7 +18,7 @@ export default async function FavoritesPage() {
   return (
     <main className="min-h-screen bg-white relative pb-10">
       <Navbar hideOnDesktop={true} />
-      <MobileHeader title="Favorited Events" backUrl="/events" />
+      <MobileHeader title="Favorited Events" backUrl="/events" hideOnDesktop={false} />
       
       <div className="max-w-md mx-auto w-full md:max-w-2xl lg:max-w-4xl relative">
         <FavoritesList allEvents={allEvents} />

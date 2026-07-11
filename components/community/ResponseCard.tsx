@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MoreVertical, Trash2, AlertCircle, Flag, EyeOff } from 'lucide-react'
@@ -66,7 +66,20 @@ export default function ResponseCard({
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
   const { t } = useCommunityLanguage()
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (isMenuOpen && menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isMenuOpen])
 
   const handleDelete = async () => {
     try {
@@ -84,7 +97,7 @@ export default function ResponseCard({
       initial="hidden"
       animate="visible"
       transition={{ duration: 0.35, delay, ease: 'easeOut' }}
-      className={`py-1 ${isReply ? 'mt-2 relative' : ''}`}
+      className={`py-1 ${isReply ? 'mt-2' : ''} relative ${isMenuOpen ? 'z-[50]' : 'z-10 hover:z-20 focus-within:z-20'}`}
     >
       {isReply && (
         <div className="absolute -left-6 top-0 bottom-0 w-px bg-border/50 hidden" />
@@ -116,7 +129,7 @@ export default function ResponseCard({
             </div>
 
             {/* More menu */}
-            <div className="relative -mt-1 -mr-1">
+            <div className="relative -mt-1 -mr-1" ref={menuRef}>
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="w-8 h-8 flex items-center justify-center rounded-full text-muted-foreground hover:text-muted-foreground hover:bg-muted transition-colors"
@@ -130,7 +143,7 @@ export default function ResponseCard({
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.94, y: -4 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-full mt-1.5 w-44 bg-card rounded-[14px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-border py-1.5 z-20"
+                    className="absolute right-0 top-full mt-1.5 w-44 bg-card rounded-[14px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-border py-1.5 z-[50]"
                   >
                     <button
                       onClick={() => { setIsMenuOpen(false) }}

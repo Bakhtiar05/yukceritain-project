@@ -39,7 +39,7 @@ export default function WelcomeHero() {
   const activeSlide = slides[currentSlide]
 
   return (
-    <div className="w-full px-4 sm:px-6 pt-5 pb-3">
+    <div className="w-full px-4 pt-5 pb-3">
       <AnimatePresence mode="wait">
         <motion.div
           key={activeSlide.id}

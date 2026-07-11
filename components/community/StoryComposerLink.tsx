@@ -59,7 +59,7 @@ export default function StoryComposerLink({ isAuthenticated }: { isAuthenticated
   }
 
   return (
-    <div className="pt-1 px-4 md:px-0 mb-5">
+    <div className="pt-1 px-4 mb-5">
       <button 
         onClick={handleClick}
         className="w-full relative flex items-center text-left gap-3 sm:gap-4 bg-card rounded-full border border-border p-3 sm:p-4 cursor-pointer transition-all duration-200 ease-out hover:bg-muted/50 hover:shadow-sm active:scale-[0.98] group"

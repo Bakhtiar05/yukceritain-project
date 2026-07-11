@@ -46,7 +46,7 @@ export default function FaqSection() {
           <h2 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold text-neutral-900 dark:text-foreground mb-4">
             Pertanyaan yang Sering Diajukan
           </h2>
-          <p className="text-neutral-500 dark:text-muted-foreground max-w-lg mx-auto text-lg">
+          <p className="text-neutral-500 dark:text-muted-foreground max-w-lg mx-auto text-sm md:text-base lg:text-lg">
             Temukan jawaban untuk pertanyaanmu tentang layanan konseling kami
           </p>
         </ScrollReveal>

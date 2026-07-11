@@ -100,20 +100,20 @@ export default async function PublicEventsPage(
   const isDefaultView = !search && (!filter || filter === "all");
 
   return (
-    <main className="min-h-screen bg-white relative pb-10">
+    <main className="min-h-screen bg-white dark:bg-background relative pb-10">
       <Navbar hideOnDesktop={true} />
-      <MobileHeader />
+      <MobileHeader hideOnDesktop={false} />
       
       <div className="max-w-md mx-auto w-full md:max-w-2xl lg:max-w-4xl relative">
         <MobileSearchBar />
+
+        <div id="all-events" className="scroll-mt-24 pt-1 mb-4">
+          <CategoryFilter />
+        </div>
         
         {isDefaultView && featuredEvents.length > 0 && (
           <AutoHeroBanner events={featuredEvents} />
         )}
-
-        <div id="all-events" className="scroll-mt-24 pt-2">
-          <CategoryFilter />
-        </div>
 
         {isDefaultView && featuredEvents.length > 0 && (
           <MobileFeaturedEvents events={featuredEvents} />

@@ -10,9 +10,10 @@ import ThemeToggle from '@/components/community/ThemeToggle'
 interface NavbarProps {
   variant?: 'default' | 'blog'
   hideOnDesktop?: boolean
+  hideMobileHeader?: boolean
 }
 
-export default function Navbar({ variant = 'default', hideOnDesktop = false }: NavbarProps) {
+export default function Navbar({ variant = 'default', hideOnDesktop = false, hideMobileHeader = false }: NavbarProps) {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -126,7 +127,7 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
       )}
 
       {/* Mobile Header */}
-      {!hideOnDesktop && (
+      {!hideOnDesktop && !hideMobileHeader && (
         <header
           className={`md:hidden fixed top-0 inset-x-0 z-[1000] transition-all duration-300 flex items-center justify-between px-5 py-3 ${
             scrolled || menuOpen ? 'bg-background/95 backdrop-blur-md border-b border-border shadow-sm' : 'bg-transparent'
@@ -155,7 +156,7 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
       )}
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-[998] bg-white dark:bg-card/95 dark:backdrop-blur-xl shadow-[0_-4px_10px_rgba(0,0,0,0.05)] dark:shadow-[0_-4px_10px_rgba(0,0,0,0.5)] rounded-t-[32px] px-3 py-2 flex items-center justify-between pb-safe">
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-[998] bg-white dark:bg-card rounded-t-[32px] px-3 py-2 flex items-center justify-between pb-safe">
         <Link href="/" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors">
           <Home size={22} className={pathname === '/' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'} />
           <span className={`text-[9px] font-medium ${pathname === '/' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Beranda</span>
@@ -165,7 +166,7 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false }: N
           <span className={`text-[9px] font-medium ${pathname?.startsWith('/konsultasi') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Konseling</span>
         </Link>
         <Link href="/community" className="flex flex-col items-center justify-center w-1/5 py-1 gap-1 transition-colors group">
-          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white dark:bg-slate-800 shadow-lg shadow-blue-500/20 border-[6px] border-background transition-transform duration-300 group-hover:-translate-y-1`}>
+          <div className={`flex items-center justify-center w-[56px] h-[56px] -mt-8 rounded-full bg-white dark:bg-slate-800 shadow-lg shadow-blue-500/20 border-[6px] border-white dark:border-background transition-transform duration-300 group-hover:-translate-y-1`}>
             <Image src="/assets/navbar-bawah.png" alt="Yukceritain" width={32} height={32} className={`object-contain transition-all duration-300 ${pathname?.startsWith('/community') ? 'opacity-100 scale-105 drop-shadow-md' : 'opacity-80'}`} />
           </div>
           <span className={`text-[9px] font-medium ${pathname?.startsWith('/community') ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>Yukceritain</span>

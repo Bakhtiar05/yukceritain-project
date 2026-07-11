@@ -38,39 +38,33 @@ export default function HowItWorks() {
           <h2 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold text-neutral-900 dark:text-foreground mb-4">
             Semudah 4 Langkah
           </h2>
-          <p className="text-neutral-500 dark:text-muted-foreground max-w-lg mx-auto text-lg">
+          <p className="text-neutral-500 dark:text-muted-foreground max-w-lg mx-auto text-sm md:text-base lg:text-lg">
             Tanpa alur rumit. Dari booking sampai konseling, semuanya dirancang agar kamu bisa mulai secepat mungkin.
           </p>
         </ScrollReveal>
 
-        <ScrollReveal staggerChildren={0.15} className="max-w-3xl mx-auto">
-          <div className="relative">
-            {/* Connecting line */}
-            <div className="absolute left-6 md:left-8 top-12 bottom-12 w-px bg-gradient-to-b from-blue-200 via-blue-300 to-blue-200 hidden md:block" aria-hidden="true" />
-
-            <div className="space-y-6">
-              {steps.map((step) => (
-                <ScrollRevealItem key={step.num} variant="fade-up">
-                  <div className="relative flex gap-5 md:gap-8 items-start group">
-                    {/* Step number circle */}
-                    <div className="relative z-10 flex-shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white dark:bg-card border-2 border-blue-100 group-hover:border-blue-400 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all duration-300">
-                      <span className="text-2xl">{step.icon}</span>
-                    </div>
-
-                    {/* Content card */}
-                    <div className="flex-1 bg-white dark:bg-card rounded-2xl p-6 md:p-8 border border-neutral-100 dark:border-border group-hover:border-blue-100 shadow-sm group-hover:shadow-card transition-all duration-300">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">
-                          Langkah {step.num}
-                        </span>
-                      </div>
-                      <h3 className="text-lg font-bold text-neutral-900 dark:text-foreground mb-2">{step.title}</h3>
-                      <p className="text-sm text-neutral-500 dark:text-muted-foreground leading-relaxed">{step.desc}</p>
-                    </div>
+        <ScrollReveal staggerChildren={0.15} className="max-w-[100vw] mx-auto md:max-w-none">
+          <div className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory hide-scrollbar gap-4 md:gap-6 pb-8 px-6 md:px-0 md:grid-cols-2 lg:grid-cols-4">
+            {steps.map((step) => (
+              <ScrollRevealItem key={step.num} variant="fade-up" className="w-[85vw] max-w-[320px] md:w-auto md:max-w-none shrink-0 snap-center">
+                <div className="relative overflow-hidden bg-white dark:bg-card rounded-3xl p-6 md:p-8 border border-neutral-100 dark:border-border hover:border-blue-200 dark:hover:border-blue-800 shadow-sm hover:shadow-card transition-all duration-300 h-full flex flex-col min-h-[220px]">
+                  {/* Giant transparent typography */}
+                  <div className="absolute -right-2 -bottom-4 text-[120px] md:text-[140px] font-black text-slate-100 dark:text-slate-800/30 leading-none z-0 select-none pointer-events-none">
+                    {step.num}
                   </div>
-                </ScrollRevealItem>
-              ))}
-            </div>
+                  
+                  <div className="relative z-10 flex-1 flex flex-col">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full">
+                        Langkah {step.num}
+                      </span>
+                    </div>
+                    <h3 className="text-[1.15rem] font-bold text-neutral-900 dark:text-foreground mb-3">{step.title}</h3>
+                    <p className="text-sm text-neutral-500 dark:text-muted-foreground leading-relaxed flex-1">{step.desc}</p>
+                  </div>
+                </div>
+              </ScrollRevealItem>
+            ))}
           </div>
         </ScrollReveal>
       </div>

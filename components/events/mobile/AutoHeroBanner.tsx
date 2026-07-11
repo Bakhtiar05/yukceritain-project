@@ -32,8 +32,8 @@ export default function AutoHeroBanner({ events }: AutoHeroBannerProps) {
   const formattedDate = format(new Date(event.start_datetime), "MMM dd");
 
   return (
-    <div className="px-4 py-2 w-full">
-      <div className="relative w-full aspect-square sm:aspect-[16/10] md:aspect-[21/9] rounded-[24px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.08)] bg-slate-100">
+    <div className="px-4 py-2 w-full bg-white dark:bg-background">
+      <div className="relative w-full aspect-square sm:aspect-[16/10] md:aspect-[21/9] rounded-[24px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.08)] bg-slate-100 dark:bg-slate-800">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -52,8 +52,8 @@ export default function AutoHeroBanner({ events }: AutoHeroBannerProps) {
                 className="object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-slate-200">
-                <span className="text-slate-400 font-medium">No Image</span>
+              <div className="w-full h-full flex items-center justify-center bg-slate-200 dark:bg-slate-800">
+                <span className="text-slate-400 dark:text-slate-500 font-medium">No Image</span>
               </div>
             )}
             
@@ -138,10 +138,10 @@ export default function AutoHeroBanner({ events }: AutoHeroBannerProps) {
       </div>
       
       {/* Hero CTAs */}
-      <div className="flex flex-row justify-center gap-3 mt-5 mb-2 px-4 w-full">
+      <div className="flex flex-row justify-center gap-3 mt-5 mb-2 px-4 w-full bg-white dark:bg-background">
         <Link 
           href="/events/partner"
-          className="flex-1 px-4 py-3 bg-white hover:bg-blue-50 border border-blue-600 text-blue-600 rounded-full font-medium transition-all duration-300 hover:scale-[0.98] active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm h-[44px]"
+          className="flex-1 px-4 py-3 bg-white dark:bg-card hover:bg-blue-50 dark:hover:bg-blue-900/30 border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 rounded-full font-medium transition-all duration-300 hover:scale-[0.98] active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm h-[44px]"
         >
           <Handshake className="w-4 h-4" />
           Partner

@@ -63,13 +63,9 @@ export default async function ArticlePage({ params }: PageProps) {
       <ArticleJsonLd post={post} />
       <Navbar variant="blog" />
       <ReadingProgress />
-      <main>
-        <div className="max-w-container mx-auto px-6 pt-24 pb-4">
-          <Breadcrumbs items={[
-            { name: 'Beranda', url: '/' },
-            { name: 'Blog', url: '/blog' },
-            { name: post.title, url: `/blog/${post.slug}` }
-          ]} />
+      <main className="bg-white dark:bg-background">
+        <div className="max-w-container mx-auto px-6 pb-0 pt-0">
+          {/* Breadcrumb removed because it's already in ArticleHero */}
         </div>
         <ArticleHero post={post} />
         <ArticleCover

@@ -20,7 +20,7 @@ export default function ArticleContent({ content }: { content: string }) {
   if (isHtmlContent(content)) {
     return (
       <div
-        className="article-content max-w-[680px]"
+        className="article-content prose prose-blue prose-slate dark:prose-invert max-w-[680px]"
         dangerouslySetInnerHTML={{ __html: content }}
       />
     )
@@ -28,7 +28,7 @@ export default function ArticleContent({ content }: { content: string }) {
 
   // New Markdown posts: render with react-markdown + prose styling
   return (
-    <div className="article-content prose prose-blue prose-slate max-w-[680px]">
+    <div className="article-content prose prose-blue prose-slate dark:prose-invert max-w-[680px]">
       <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug]}>
         {content}
       </ReactMarkdown>

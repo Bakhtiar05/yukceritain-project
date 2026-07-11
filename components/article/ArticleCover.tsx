@@ -15,7 +15,7 @@ export default function ArticleCover({ src, alt, caption }: ArticleCoverProps) {
         <Image src={src} alt={alt} fill className="object-cover" priority />
       </div>
       {caption && (
-        <figcaption className="text-center text-sm italic text-neutral-500 mt-4 bg-neutral-50 py-2 px-4 rounded-md mx-auto max-w-xl">
+        <figcaption className="text-center text-sm italic text-neutral-500 dark:text-neutral-400 mt-4 bg-neutral-50 dark:bg-card py-2 px-4 rounded-md mx-auto max-w-xl">
           {caption}
         </figcaption>
       )}

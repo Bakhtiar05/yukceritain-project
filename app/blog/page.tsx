@@ -35,7 +35,7 @@ export default async function BlogPage() {
 
   return (
     <>
-      <Navbar variant="blog" />
+      <Navbar variant="blog" hideMobileHeader={true} />
       <MobileHeader title="YukceritaIN Blog" />
       <Suspense fallback={null}>
         <BlogMobileSearchBar />

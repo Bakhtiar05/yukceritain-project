@@ -89,14 +89,6 @@ export default function CommentComposer({
     }
   }, [replyingTo])
 
-  // Auto-focus on mount so keyboard appears automatically
-  useEffect(() => {
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.focus()
-      }
-    }, 100)
-  }, [])
 
   const handleSubmit = async () => {
     if (!isAuthenticated) { openModal(); return }

@@ -121,7 +121,7 @@ export default function TableOfContents({ content }: { content: string }) {
 
   return (
     <aside className="hidden lg:block w-[220px] flex-shrink-0">
-      <div className="sticky bg-neutral-50 border border-neutral-200 rounded-lg p-5" style={{ top: 'calc(72px + 3px + 24px)' }}>
+      <div className="sticky bg-neutral-50 dark:bg-card border border-neutral-200 dark:border-border rounded-lg p-5" style={{ top: 'calc(72px + 3px + 24px)' }}>
         <h4 className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-3">Daftar Isi</h4>
         <nav className="space-y-0.5 mb-6">
           {headings.map((h) => (
@@ -132,8 +132,8 @@ export default function TableOfContents({ content }: { content: string }) {
                 h.level === 3 ? 'pl-6' : ''
               } ${
                 activeId === h.id
-                  ? 'text-blue-500 bg-blue-50 font-medium'
-                  : 'text-neutral-500 hover:bg-blue-50 hover:text-blue-500'
+                  ? 'text-blue-500 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-medium'
+                  : 'text-neutral-500 dark:text-neutral-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-500 dark:hover:text-blue-400'
               }`}
             >
               {h.text}
@@ -145,8 +145,8 @@ export default function TableOfContents({ content }: { content: string }) {
         <div className="flex gap-2">
           <button
             onClick={copyLink}
-            className={`w-9 h-9 rounded-lg border flex items-center justify-center text-sm transition-all ${
-              copied ? 'bg-green-50 border-green-300 text-green-600' : 'border-neutral-200 text-neutral-500 hover:bg-blue-50 hover:text-blue-500'
+            className={`w-9 h-9 rounded-lg border flex items-center justify-center transition-all ${
+              copied ? 'bg-green-50 dark:bg-green-900/30 border-green-300 dark:border-green-800 text-green-600 dark:text-green-400' : 'border-neutral-200 dark:border-border text-neutral-500 dark:text-neutral-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-500 dark:hover:text-blue-400'
             }`}
             title="Salin tautan"
           >
@@ -154,7 +154,7 @@ export default function TableOfContents({ content }: { content: string }) {
           </button>
           <button
             onClick={shareWhatsApp}
-            className="w-9 h-9 rounded-lg border border-neutral-200 flex items-center justify-center text-sm text-neutral-500 hover:bg-green-50 hover:text-green-600 transition-all"
+            className="w-9 h-9 rounded-lg border border-neutral-200 dark:border-border flex items-center justify-center text-sm text-neutral-500 dark:text-neutral-400 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-600 dark:hover:text-green-400 transition-all"
             title="Bagikan via WhatsApp"
           >
             💬
