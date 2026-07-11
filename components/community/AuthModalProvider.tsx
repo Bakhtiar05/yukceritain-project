@@ -24,11 +24,22 @@ export function useAuthModal() {
 
 export default function AuthModalProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
+  
   const supabase = createClient()
 
-  const openModal = () => setIsOpen(true)
+  const openModal = () => {
+    setIsOpen(true)
+    setErrorMsg('')
+    setEmail('')
+    setPassword('')
+  }
   const closeModal = () => setIsOpen(false)
 
+  /* --- FITUR GOOGLE AUTH (DIBEKUKAN SEMENTARA UNTUK TESTING) ---
   const handleGoogleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -36,6 +47,57 @@ export default function AuthModalProvider({ children }: { children: React.ReactN
         redirectTo: `${window.location.origin}/auth/community/callback`,
       },
     })
+  }
+  ------------------------------------------------------------- */
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email || !password) {
+      setErrorMsg("Harap isi username/email dan password.")
+      return
+    }
+    
+    setIsLoading(true)
+    setErrorMsg('')
+    
+    try {
+      const { error, data } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
+      
+      if (!error && data?.session?.user) {
+        // Cek apakah profile sudah ada
+        const user = data.session.user;
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', user.id)
+          .single()
+
+        // Jika belum ada, buatkan otomatis
+        if (!profile) {
+          const baseUsername = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '')
+          const uniqueUsername = `${baseUsername}${Math.floor(Math.random() * 10000)}`
+          
+          await supabase.from('profiles').insert({
+            id: user.id,
+            username: uniqueUsername,
+            display_name: email.split('@')[0], // Menggunakan nama depan dari email
+            avatar_url: '',
+          })
+        }
+
+        window.location.reload()
+      } else {
+        setErrorMsg("Username atau password salah!")
+      }
+    } catch (err) {
+      console.error(err)
+      setErrorMsg("Terjadi kesalahan jaringan.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -53,13 +115,17 @@ export default function AuthModalProvider({ children }: { children: React.ReactN
                 className="w-full h-full object-cover dark:brightness-0 dark:invert" 
               />
             </div>
-            <DialogTitle className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">Bergabung Sekarang</DialogTitle>
+            <DialogTitle className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">Login Uji Coba</DialogTitle>
             <DialogDescription className="text-muted-foreground text-[15px] pt-1.5 leading-relaxed">
-              Ruang aman untuk saling berbagi cerita dan mendukung satu sama lain.
+              Silakan masuk menggunakan akun tester yang telah diberikan.
             </DialogDescription>
           </DialogHeader>
-          <div className="mt-6 flex justify-center">
+          
+          <form onSubmit={handleLogin} className="mt-6 flex flex-col gap-4">
+            
+            {/* --- FITUR GOOGLE AUTH BUTTON (DIBEKUKAN SEMENTARA UNTUK TESTING) ---
             <Button 
+              type="button"
               onClick={handleGoogleLogin}
               className="w-full bg-card hover:bg-muted dark:hover:bg-muted text-muted-foreground border border-border h-12 rounded-full text-[15px] font-semibold shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all active:scale-[0.98]"
             >
@@ -71,7 +137,50 @@ export default function AuthModalProvider({ children }: { children: React.ReactN
               </svg>
               Lanjutkan dengan Google
             </Button>
-          </div>
+            
+            <div className="relative flex items-center py-2">
+              <div className="flex-grow border-t border-border"></div>
+              <span className="flex-shrink-0 mx-4 text-xs text-muted-foreground uppercase tracking-widest">Atau</span>
+              <div className="flex-grow border-t border-border"></div>
+            </div>
+            ---------------------------------------------------------------------- */}
+
+            {errorMsg && (
+              <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm font-medium px-4 py-3 rounded-xl border border-red-100 dark:border-red-900/50 text-center">
+                {errorMsg}
+              </div>
+            )}
+            
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-semibold text-foreground px-1">Username / Email</label>
+              <input 
+                type="text" 
+                placeholder="Masukkan username/email..." 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 text-[15px] text-foreground placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+              />
+            </div>
+            
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-semibold text-foreground px-1">Password</label>
+              <input 
+                type="password" 
+                placeholder="Masukkan password..." 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 text-[15px] text-foreground placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+              />
+            </div>
+
+            <Button 
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 rounded-xl text-[15px] font-semibold mt-2 transition-all active:scale-[0.98] shadow-md shadow-blue-500/20 disabled:opacity-70 disabled:pointer-events-none"
+            >
+              {isLoading ? "Memproses..." : "Masuk"}
+            </Button>
+          </form>
         </DialogContent>
       </Dialog>
     </AuthModalContext.Provider>
