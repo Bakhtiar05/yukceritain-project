@@ -125,7 +125,7 @@ export default function CommunityBottomNav({ isAuthenticated }: { isAuthenticate
                   <Icon
                     size={24}
                     strokeWidth={active ? 2.5 : 1.75}
-                    fill={active ? 'currentColor' : 'none'}
+                    fill="none"
                     className={`transition-colors duration-200 ${active ? 'text-[#2563EB] dark:text-primary' : 'text-[#9CA3AF]'}`}
                   />
                 </motion.div>

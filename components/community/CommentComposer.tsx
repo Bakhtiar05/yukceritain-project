@@ -135,7 +135,7 @@ export default function CommentComposer({
 
       {/* ── Reply Composer ───────────────────────────── */}
       <div className="transition-all duration-200 relative pb-2">
-        <div className="flex items-end gap-3 sm:gap-4 bg-card rounded-full border border-border p-3 sm:p-4 shadow-sm focus-within:border-primary/40 focus-within:shadow-[0_4px_16px_rgba(37,99,235,0.06)] focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-200">
+        <div className="flex items-end gap-3 sm:gap-4 bg-card rounded-[28px] border border-border p-3 sm:p-4 shadow-sm focus-within:border-primary/40 focus-within:shadow-[0_4px_16px_rgba(37,99,235,0.06)] focus-within:ring-2 focus-within:ring-primary/10 transition-all duration-200">
           {/* Avatar */}
           <div className="relative z-10 flex-shrink-0 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 shadow-sm border border-border overflow-hidden">
             {avatarUrl ? (

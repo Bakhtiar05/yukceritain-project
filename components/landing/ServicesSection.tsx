@@ -12,7 +12,11 @@ const services = [
       </svg>
     ),
     title: 'Konseling Individu',
-    desc: 'Tersedia secara Online (Google Meet) dari mana saja, atau sesi Offline (Tatap Muka) khusus di area Kota Serang.',
+    desc: (
+      <>
+        Tersedia secara Online (Google Meet) dari mana saja, atau sesi Offline (Tatap Muka) khusus di area <strong className="text-blue-600 dark:text-blue-400 whitespace-nowrap">📍 Kota Serang</strong>.
+      </>
+    ),
     featured: true,
     badge: 'Layanan Utama',
   },
@@ -48,7 +52,7 @@ export default function ServicesSection() {
   }
 
   return (
-    <section id="layanan" className="scroll-mt-24 pt-6 pb-12 md:pt-12 md:pb-20 bg-white dark:bg-background overflow-hidden">
+    <section id="layanan" className="scroll-mt-24 py-16 md:py-24 bg-white dark:bg-background overflow-hidden">
       <div className="max-w-container mx-auto px-6">
         <ScrollReveal variant="fade-up" className="text-center mb-10 md:mb-16">
           <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest mb-3">Layanan Kami</p>
@@ -76,23 +80,7 @@ export default function ServicesSection() {
             ))}
           </div>
 
-          {/* Navigation Buttons (Mobile) */}
-          <div className="flex justify-center gap-3 mt-2 mb-6 md:hidden">
-            <button 
-              onClick={() => scroll('left')} 
-              className="w-10 h-10 rounded-full border border-neutral-200 dark:border-slate-800 flex items-center justify-center text-neutral-600 dark:text-slate-400 hover:bg-neutral-100 dark:hover:bg-slate-800 transition-colors active:scale-95"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button 
-              onClick={() => scroll('right')} 
-              className="w-10 h-10 rounded-full border border-neutral-200 dark:border-slate-800 flex items-center justify-center text-neutral-600 dark:text-slate-400 hover:bg-neutral-100 dark:hover:bg-slate-800 transition-colors active:scale-95"
-              aria-label="Scroll right"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+          {/* Navigation Buttons removed per user request for cleaner UI */}
         </ScrollReveal>
       </div>
     </section>
@@ -103,7 +91,7 @@ function ServiceCard({ svc }: { svc: typeof services[0] }) {
   return (
     <div className="relative overflow-hidden bg-white dark:bg-card rounded-3xl p-6 md:p-8 border border-neutral-100 dark:border-border hover:border-blue-200 dark:hover:border-blue-800 shadow-sm hover:shadow-card transition-all duration-300 h-full flex flex-col min-h-[220px]">
       <div className="flex justify-between items-start mb-4 md:mb-5 gap-2">
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 shrink-0">
+        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#0066ff]/10 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 shrink-0 ring-4 ring-[#0066ff]/5">
           {svc.icon}
         </div>
         {svc.badge && (

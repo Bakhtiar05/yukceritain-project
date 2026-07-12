@@ -220,7 +220,7 @@ export default function CommentSideSheet({ session }: { session: any }) {
             </div>
 
             {/* Composer Footer */}
-            <div className="border-t border-border bg-card p-4 shrink-0 shadow-[0_-4px_12px_rgba(0,0,0,0.02)]">
+            <div className="bg-card p-4 shrink-0">
               {activePostId && (
                 <CommentComposer
                   postId={activePostId}

@@ -107,7 +107,6 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false, hid
 
             {/* Actions */}
             <div className="hidden md:flex justify-end items-center gap-3 lg:gap-4">
-              <ThemeToggle />
               <Link
                 href="/cek-status"
                 className="text-[0.875rem] font-medium text-muted-foreground hover:text-primary transition-colors px-3 py-2 rounded-full hover:bg-primary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
@@ -121,6 +120,13 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false, hid
               >
                 Yuk Ceritain
               </Link>
+            </div>
+          </div>
+
+          {/* ThemeToggle Outside Nav (Desktop) */}
+          <div className="hidden md:flex absolute right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center">
+            <div className="bg-background/40 backdrop-blur-md border border-border/30 rounded-full p-1 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+              <ThemeToggle />
             </div>
           </div>
         </header>
@@ -144,7 +150,6 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false, hid
             />
           </Link>
           <div className="flex items-center gap-2">
-            <ThemeToggle />
             <button 
               onClick={() => setMenuOpen(!menuOpen)} 
               className="p-1.5 -mr-1.5 text-foreground focus:outline-none rounded-full hover:bg-muted/20"
@@ -208,6 +213,13 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false, hid
           >
             Cek Status
           </Link>
+
+          <div className="h-px bg-border my-2 mx-2" />
+          
+          <div className="px-4 py-3 flex items-center justify-between">
+            <span className="text-[1.05rem] font-semibold text-foreground">Mode Tampilan</span>
+            <ThemeToggle />
+          </div>
         </div>
       </div>
 

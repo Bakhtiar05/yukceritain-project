@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, Bookmark } from "lucide-react";
-import ThemeToggle from "@/components/community/ThemeToggle";
 
 interface MobileHeaderProps {
   title?: string;
@@ -44,7 +43,6 @@ export default function MobileHeader({ title = "Community Events", backUrl = "/"
         </h1>
 
         <div className="flex items-center gap-1">
-          <ThemeToggle />
           {!hideBookmark ? (
             <Link 
               href="/events/favorites"

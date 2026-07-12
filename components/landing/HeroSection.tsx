@@ -73,7 +73,7 @@ export default function HeroSection() {
     <section
       id="hero"
       ref={containerRef}
-      className="relative w-full min-h-[90vh] md:min-h-[100vh] overflow-hidden flex flex-col justify-center pt-28 md:pt-[72px] pb-12 md:pb-0"
+      className="relative w-full min-h-[95dvh] md:min-h-[100vh] overflow-hidden flex flex-col justify-center pt-28 md:pt-[72px] pb-12 md:pb-0"
     >
       {/* --- BACKGROUND IMAGE & OVERLAYS --- */}
       <div className="absolute inset-0 z-0 bg-slate-50 dark:bg-background">
@@ -105,7 +105,7 @@ export default function HeroSection() {
       <div className="hidden md:block absolute inset-0 z-0 bg-gradient-to-r from-white/95 via-white/50 to-transparent dark:from-background/95 dark:via-background/70 dark:to-background/20 pointer-events-none w-full" />
 
       {/* Smooth transition gradient at the bottom to blend with the next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 md:h-72 bg-gradient-to-t from-slate-50 via-slate-50/60 to-transparent dark:from-background dark:via-background/60 z-10 pointer-events-none" />
+      <div className="absolute bottom-[-2px] left-0 right-0 h-32 md:h-72 bg-gradient-to-t from-slate-50 from-25% via-slate-50/90 via-50% to-transparent dark:from-background dark:from-25% dark:via-background/90 dark:via-50% z-10 pointer-events-none" />
 
       {/* --- FOREGROUND CONTENT --- */}
       <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-10 lg:px-16 xl:px-20 h-full flex flex-col items-center md:items-start justify-start md:justify-center flex-1 pb-16 pt-0 md:pb-16 lg:py-0">
@@ -143,7 +143,7 @@ export default function HeroSection() {
             variants={fadeUpVariants}
             className="text-slate-600 dark:text-slate-300 text-sm md:text-[17px] lg:text-[18px] leading-[1.7] mb-4 md:mb-8 w-full max-w-[480px] font-medium text-center md:text-left"
           >
-            Ruang aman untuk setiap ceritamu. Konseling bersama konselor &amp; psikolog klinis profesional yang siap mendengar tanpa menghakimi.
+            Ruang aman untuk setiap ceritamu. Konseling bersama konselor &amp; psikolog klinis profesional.
           </motion.p>
 
           {/* Social Proof (Moved Above CTA) */}
@@ -185,7 +185,7 @@ export default function HeroSection() {
               href="#cara-kerja"
               className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-5 md:px-7 py-3 md:py-3.5 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border border-blue-200 dark:border-white/20 hover:bg-white/80 dark:hover:bg-slate-800 text-blue-600 dark:text-blue-300 rounded-full font-bold text-sm md:text-base transition-all duration-300 hover:-translate-y-0.5 whitespace-nowrap"
             >
-              Lihat Cara Kerja
+              Panduan
             </Link>
           </motion.div>
 

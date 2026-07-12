@@ -11,10 +11,10 @@ export default async function CounselorsSection() {
     <section className="py-12 md:py-20 bg-white dark:bg-background relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-8 md:mb-16">
-          <h2 className="text-4xl font-bold text-slate-900 dark:text-foreground mb-4">
+          <h2 className="text-[clamp(1.6rem,4vw,2.4rem)] font-extrabold text-neutral-900 dark:text-foreground mb-4">
             Meet Our Counselors
           </h2>
-          <p className="text-sm md:text-base lg:text-lg text-slate-600 dark:text-muted-foreground mb-6 md:mb-0">
+          <p className="text-neutral-500 dark:text-muted-foreground max-w-lg mx-auto text-sm md:text-base lg:text-lg mb-6 md:mb-0">
             Our experienced mental health professionals are ready to support your journey with empathy, professionalism, and evidence-based care.
           </p>
           <div className="flex md:hidden items-center justify-center gap-2 text-slate-400 text-sm font-medium mt-4 animate-pulse">
