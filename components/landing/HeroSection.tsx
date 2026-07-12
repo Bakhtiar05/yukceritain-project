@@ -73,7 +73,7 @@ export default function HeroSection() {
     <section
       id="hero"
       ref={containerRef}
-      className="relative w-full min-h-[95dvh] md:min-h-[100vh] overflow-hidden flex flex-col justify-center pt-28 md:pt-[72px] pb-12 md:pb-0"
+      className="relative w-full min-h-[95svh] md:min-h-[100vh] overflow-hidden flex flex-col justify-center pt-28 md:pt-[72px] pb-12 md:pb-0"
     >
       {/* --- BACKGROUND IMAGE & OVERLAYS --- */}
       <div className="absolute inset-0 z-0 bg-slate-50 dark:bg-background">
@@ -86,7 +86,7 @@ export default function HeroSection() {
           className="hidden md:block object-cover object-center transition-all duration-700 dark:brightness-[0.55] dark:contrast-[1.1] dark:saturate-[0.7] dark:hue-rotate-[5deg]"
         />
         {/* Mobile Image */}
-        <div className="absolute bottom-0 left-0 right-0 h-[45vh] md:hidden">
+        <div className="absolute bottom-0 left-0 right-0 h-[45svh] md:hidden">
           <Image
             src="/assets/latar-v3.webp"
             alt="Background Mobile"
@@ -147,27 +147,27 @@ export default function HeroSection() {
           </motion.p>
 
           {/* Social Proof (Moved Above CTA) */}
-          <motion.div variants={fadeUpVariants} className="mb-6 md:mb-10 flex flex-col md:flex-row items-center justify-center md:justify-start gap-2 md:gap-4 w-full">
-            <div className="flex items-center -space-x-4">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-white dark:border-slate-900 bg-slate-100 overflow-hidden shadow-sm">
-                  <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 20}`} alt="User" className="w-full h-full object-cover" />
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col items-center md:items-start gap-1 md:gap-0.5 text-center md:text-left">
-              <div className="flex items-center gap-1 mb-0.5">
+          <motion.div variants={fadeUpVariants} className="mb-6 md:mb-10 flex flex-col items-center md:items-start justify-center md:justify-start gap-2 w-full">
+            <div className="flex flex-row items-center justify-center md:justify-start gap-3 md:gap-4">
+              <div className="flex items-center -space-x-3 md:-space-x-4">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-white dark:border-slate-900 bg-slate-100 overflow-hidden shadow-sm">
+                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 20}`} alt="User" className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center gap-1">
                 <div className="flex items-center gap-0.5">
                   {[1, 2, 3, 4, 5].map((i) => (
-                    <svg key={i} className="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                    <svg key={i} className="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
                   ))}
                 </div>
                 <span className="text-xs md:text-sm font-bold text-slate-800 dark:text-white ml-1">4.9/5</span>
               </div>
-              <span className="text-[11px] md:text-xs text-slate-600 dark:text-slate-300 font-medium">Bergabung dengan 10.000+ orang yang sudah bercerita</span>
             </div>
+            <span className="text-[11px] md:text-xs text-slate-600 dark:text-slate-300 font-medium text-center md:text-left">Bergabung dengan 10.000+ orang yang sudah bercerita</span>
           </motion.div>
 
           {/* CTA Buttons */}

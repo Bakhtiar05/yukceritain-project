@@ -120,13 +120,10 @@ export default function Navbar({ variant = 'default', hideOnDesktop = false, hid
               >
                 Yuk Ceritain
               </Link>
-            </div>
-          </div>
 
-          {/* ThemeToggle Outside Nav (Desktop) */}
-          <div className="hidden md:flex absolute right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 z-10 items-center justify-center">
-            <div className="bg-background/40 backdrop-blur-md border border-border/30 rounded-full p-1 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
-              <ThemeToggle />
+              <div className="ml-2 bg-background/40 backdrop-blur-md border border-border/30 rounded-full p-1 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+                <ThemeToggle />
+              </div>
             </div>
           </div>
         </header>
