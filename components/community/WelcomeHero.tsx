@@ -13,7 +13,6 @@ export default function WelcomeHero() {
     {
       id: 0,
       icon: HeartHandshake,
-      gradient: "from-[#1d4ed8] to-[#2563eb] dark:from-transparent dark:to-transparent",
       badge: t('welcomeHero.badge_1'),
       headline: t('welcomeHero.headline_1'),
       description: t('welcomeHero.description_1')
@@ -21,7 +20,6 @@ export default function WelcomeHero() {
     {
       id: 1,
       icon: Sparkles,
-      gradient: "from-emerald-600 to-teal-500 dark:from-transparent dark:to-transparent",
       badge: t('welcomeHero.badge_2'),
       headline: t('welcomeHero.headline_2'),
       description: t('welcomeHero.description_2')
@@ -29,7 +27,6 @@ export default function WelcomeHero() {
     {
       id: 2,
       icon: Feather,
-      gradient: "from-purple-600 to-indigo-500 dark:from-transparent dark:to-transparent",
       badge: t('welcomeHero.badge_3'),
       headline: t('welcomeHero.headline_3'),
       description: t('welcomeHero.description_3')
@@ -47,8 +44,16 @@ export default function WelcomeHero() {
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: -20, scale: 0.98 }}
           transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className={`relative overflow-hidden rounded-[24px] bg-gradient-to-br ${activeSlide.gradient} border-0 dark:border dark:border-border group shadow-lg dark:shadow-none min-h-[190px]`}
+          className={`relative overflow-hidden rounded-[24px] border-0 dark:border dark:border-border group shadow-sm min-h-[190px]`}
         >
+          {/* Calming Cloud Background */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-10000 ease-linear group-hover:scale-110"
+            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1509803874385-db7c23652552?auto=format&fit=crop&q=80&w=800')" }}
+          />
+          {/* Glassmorphism Overlay */}
+          <div className="absolute inset-0 bg-slate-900/40 dark:bg-slate-900/70 backdrop-blur-[6px] transition-colors duration-500" />
+          
           <div className="relative z-10 w-full px-6 sm:px-8 py-8 flex flex-col items-start gap-4">
             
             {/* Badge */}

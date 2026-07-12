@@ -27,8 +27,8 @@ export default function MobileHeader({ title = "Community Events", backUrl = "/"
     <header 
       className={`${hideOnDesktop ? "md:hidden " : ""}sticky top-0 z-50 w-full transition-all duration-300 ${
         isScrolled 
-          ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800 shadow-sm" 
-          : "bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-b border-transparent"
+          ? "bg-white/80 dark:bg-background/90 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800 shadow-sm" 
+          : "bg-white/50 dark:bg-background/70 backdrop-blur-sm border-b border-transparent"
       }`}
     >
       <div className="flex items-center justify-between px-4 h-16 max-w-7xl mx-auto">

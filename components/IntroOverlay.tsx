@@ -231,6 +231,9 @@ type IntroPhase = 'idle' | 'showing' | 'hiding' | 'done'
 
 // ─── Main Component ──────────────────────────────────────────────
 export default function IntroOverlay({ children }: { children: React.ReactNode }) {
+  // Intro overlay is frozen per user request
+  return <>{children}</>;
+
   const [introState, setIntroState] = useState<IntroPhase>('idle')
   const prefersReducedMotion = useReducedMotion()
 
@@ -312,8 +315,8 @@ export default function IntroOverlay({ children }: { children: React.ReactNode }
 
       addTimeout(() => {
         setIntroState('done')
-      }, 1800)
-    }, 200)
+      }, 3000)
+    }, 100)
 
     return () => clearTimeout(exitTimer)
   }, [convStep, addTimeout])
@@ -351,12 +354,7 @@ export default function IntroOverlay({ children }: { children: React.ReactNode }
   const showIndicator = convStep.type === 'indicator'
   const showBubble = convStep.type === 'bubble' || convStep.type === 'pausing'
 
-  const activeMsgIndex =
-    convStep.type === 'indicator' ||
-    convStep.type === 'bubble' ||
-    convStep.type === 'pausing'
-      ? convStep.index
-      : null
+  const activeMsgIndex = 'index' in convStep ? (convStep as any).index : null
 
   // ─── Render ─────────────────────────────────────────────────────
   return (
@@ -366,12 +364,12 @@ export default function IntroOverlay({ children }: { children: React.ReactNode }
           <motion.div
             key="intro-overlay"
             data-ssr={introState === 'idle'}
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, filter: 'blur(12px)' }}
+            initial={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: '-12vh', filter: 'blur(8px)' }}
             transition={
               prefersReducedMotion
                 ? { duration: 0.3 }
-                : { duration: 1.4, ease: [0.4, 0, 0.2, 1] }
+                : { duration: 3.0, ease: [0.4, 0, 0.2, 1] }
             }
             className="intro-overlay-container fixed inset-0 z-[9999] overflow-hidden bg-background"
             style={{ willChange: 'opacity, transform, filter' }}
@@ -469,17 +467,20 @@ export default function IntroOverlay({ children }: { children: React.ReactNode }
 
       {/* Main Content */}
       <motion.div
-        className="main-content-container"
+        className="main-content-container relative z-0"
         data-ssr={introState === 'idle'}
-        initial={introState === 'showing' ? { opacity: 0, y: 30 } : false}
+        initial={introState === 'showing' ? { opacity: 0, y: 60 } : false}
         animate={
           introState === 'hiding' || introState === 'done'
             ? { opacity: 1, y: 0 }
             : introState === 'showing'
-              ? { opacity: 0, y: 30 }
+              ? { opacity: 0, y: 60 }
               : { opacity: 1, y: 0 }
         }
-        transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+        transition={{
+          duration: 3.0,
+          ease: [0.4, 0, 0.2, 1],
+        }}
       >
         {children}
       </motion.div>

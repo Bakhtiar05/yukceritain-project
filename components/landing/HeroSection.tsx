@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
-import { motion, useReducedMotion, Variants, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion'
+import Image from 'next/image'
+import { motion, useReducedMotion, Variants, AnimatePresence } from 'framer-motion'
 
 const dynamicWords = ["Didengar", "Dimengerti", "Divalidasi", "Dihargai"];
 
@@ -17,12 +18,12 @@ const DynamicTextSwap = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center w-full">
-      <span className="text-slate-800 dark:text-foreground text-[2rem] md:text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-tight text-center">
+    <div className="flex flex-col items-center md:items-start w-full">
+      <span className="text-slate-900 dark:text-foreground text-[2.5rem] md:text-6xl lg:text-[72px] font-extrabold leading-[1.1] tracking-tight text-center md:text-left block w-full">
         Ceritamu Layak
       </span>
       {/* Stable container height to prevent layout shift */}
-      <div className="relative h-[40px] md:h-[56px] lg:h-[64px] w-full flex justify-center mt-1 md:mt-3">
+      <div className="relative h-[50px] md:h-[72px] lg:h-[84px] w-full flex justify-center md:justify-start mt-1 md:mt-2">
         <AnimatePresence>
           <motion.span
             key={index}
@@ -30,7 +31,7 @@ const DynamicTextSwap = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -25, opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute font-bold text-[2rem] md:text-4xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 pb-2 md:pb-3 lg:pb-4 text-center"
+            className="absolute w-full text-center md:text-left font-extrabold text-[2.5rem] md:text-6xl lg:text-[72px] bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400 pb-2 md:pb-3 lg:pb-4 leading-[1.1] tracking-tight"
           >
             {dynamicWords[index]}
           </motion.span>
@@ -68,106 +69,50 @@ export default function HeroSection() {
     },
   }
 
-  // Scroll parallax effects
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  })
-  
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, 150])
-  const opacityFade = useTransform(scrollYProgress, [0, 0.8], [1, 0])
-
-  // Mouse parallax effects (Max movement 6px, smooth)
-  const mouseX = useSpring(0, { stiffness: 40, damping: 25 })
-  const mouseY = useSpring(0, { stiffness: 40, damping: 25 })
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 12 // Max movement 6px (-6px to +6px)
-      const y = (e.clientY / window.innerHeight - 0.5) * 12
-      mouseX.set(x)
-      mouseY.set(y)
-    }
-    if (!prefersReducedMotion && isMounted) {
-      window.addEventListener("mousemove", handleMouseMove)
-      return () => window.removeEventListener("mousemove", handleMouseMove)
-    }
-  }, [mouseX, mouseY, prefersReducedMotion, isMounted])
-
   return (
-    <section 
-      id="hero" 
+    <section
+      id="hero"
       ref={containerRef}
-      className="relative w-full min-h-[90vh] md:min-h-[100vh] bg-white dark:bg-background overflow-hidden flex flex-col justify-center pt-28 md:pt-[72px] pb-12 md:pb-0"
+      className="relative w-full min-h-[90vh] md:min-h-[100vh] overflow-hidden flex flex-col justify-center pt-28 md:pt-[72px] pb-12 md:pb-0"
     >
-      {/* --- PREMIUM BACKGROUND ENHANCEMENT --- */}
-      
-      {/* Ambient glow moved to foreground content container */}
-
-      {/* 7. Preserve Existing Grid (3-5% opacity) */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-[0.04] text-black dark:text-white" 
-        style={{
-          backgroundImage: `linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)`,
-          backgroundSize: '4rem 4rem',
-          maskImage: 'radial-gradient(ellipse at center, black 50%, transparent 90%)',
-          WebkitMaskImage: 'radial-gradient(ellipse at center, black 50%, transparent 90%)'
-        }} 
-      />
-
-      {/* 3. Mesh Gradient */}
-      <motion.div 
-        className="absolute inset-0 z-0 pointer-events-none" 
-        style={prefersReducedMotion ? {} : { x: mouseX, y: mouseY, opacity: opacityFade }}
-      >
-        <div className="absolute top-[10%] left-[10%] w-[50vw] h-[50vw] max-w-[700px] max-h-[700px] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.03)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,rgba(37,99,235,0.05)_0%,transparent_70%)] blur-[120px]" />
-        <div className="absolute bottom-[20%] right-[10%] w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] rounded-full bg-[radial-gradient(circle,rgba(6,182,212,0.02)_0%,rgba(255,255,255,0)_70%)] dark:bg-[radial-gradient(circle,rgba(6,182,212,0.05)_0%,transparent_70%)] blur-[150px]" />
-      </motion.div>
-
-      {/* 2. Abstract Organic Blobs */}
-      {!prefersReducedMotion && isMounted && (
-        <motion.div 
-          className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
-          style={{ y: bgY, opacity: opacityFade }}
-        >
-          {/* Top Left - Large, 10-15% opacity */}
-          <motion.div
-            animate={{
-              rotate: [0, 90, 180, 270, 360],
-              scale: [1, 1.05, 1, 1.05, 1],
-            }}
-            transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
-            className="absolute top-[-5%] left-[-5%] w-[45vw] max-w-[500px] aspect-square rounded-[40%_60%_70%_30%/40%_50%_60%_50%] bg-[#DBEAFE] dark:bg-blue-900/20 opacity-[0.12] dark:opacity-30 blur-[80px]"
+      {/* --- BACKGROUND IMAGE & OVERLAYS --- */}
+      <div className="absolute inset-0 z-0 bg-slate-50 dark:bg-background">
+        {/* Desktop Image */}
+        <Image
+          src="/assets/latar-v2.webp"
+          alt="Background Desktop"
+          fill
+          priority
+          className="hidden md:block object-cover object-center transition-all duration-700 dark:brightness-[0.55] dark:contrast-[1.1] dark:saturate-[0.7] dark:hue-rotate-[5deg]"
+        />
+        {/* Mobile Image */}
+        <div className="absolute bottom-0 left-0 right-0 h-[45vh] md:hidden">
+          <Image
+            src="/assets/latar-v3.webp"
+            alt="Background Mobile"
+            fill
+            priority
+            className="object-cover object-top transition-all duration-700 dark:brightness-[0.40] dark:contrast-[1.1] dark:saturate-[0.6] dark:hue-rotate-[10deg]"
           />
-          {/* Bottom Right - Medium, 10% opacity */}
-          <motion.div
-            animate={{
-              rotate: [360, 270, 180, 90, 0],
-              scale: [1, 1.1, 1, 1.1, 1],
-            }}
-            transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
-            className="absolute bottom-[5%] right-[5%] w-[35vw] max-w-[400px] aspect-square rounded-[60%_40%_30%_70%/60%_30%_70%_40%] bg-[#BFDBFE] dark:bg-indigo-900/20 opacity-[0.10] dark:opacity-30 blur-[90px]"
-          />
-        </motion.div>
-      )}
+          {/* Fade out the top of the image so it blends into the text area above it */}
+          <div className="absolute top-[-2px] left-0 right-0 h-48 bg-gradient-to-b from-slate-50 via-slate-50/80 to-transparent dark:from-background dark:via-background/90" />
+        </div>
+        {/* Dark mode blueish tint overlay to make it feel like night time */}
+        <div className="absolute inset-0 hidden dark:block bg-blue-900/20 mix-blend-multiply pointer-events-none" />
+      </div>
 
+      {/* Soft gradient overlay for text readability on the left (Desktop Only) */}
+      <div className="hidden md:block absolute inset-0 z-0 bg-gradient-to-r from-white/95 via-white/50 to-transparent dark:from-background/95 dark:via-background/70 dark:to-background/20 pointer-events-none w-full" />
 
-
-      {/* 5. Soft Edge Vignette */}
-      <div className="absolute inset-0 z-0 pointer-events-none shadow-[inset_0_0_120px_50px_#FFFFFF] dark:shadow-[inset_0_0_120px_50px_#1D1F24] mix-blend-normal opacity-80" />
-
-      {/* 8. Noise Layer for texture and banding prevention */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-[0.015] mix-blend-overlay"
-        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
-      />
+      {/* Smooth transition gradient at the bottom to blend with the next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 md:h-72 bg-gradient-to-t from-slate-50 via-slate-50/60 to-transparent dark:from-background dark:via-background/60 z-10 pointer-events-none" />
 
       {/* --- FOREGROUND CONTENT --- */}
-      <div className="relative z-10 w-full max-w-[1280px] mx-auto px-8 md:px-12 lg:px-20 xl:px-24 h-full flex flex-col items-center justify-center flex-1 pb-16 lg:py-0">
-        
-        {/* CENTERED TEXT & CTA */}
+      <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 md:px-10 lg:px-16 xl:px-20 h-full flex flex-col items-center md:items-start justify-start md:justify-center flex-1 pb-16 pt-0 md:pb-16 lg:py-0">
+
+        {/* TEXT & CTA (Centered on Mobile, Left-Aligned on Desktop) */}
         <motion.div
-          className="relative z-20 w-full max-w-3xl flex flex-col items-center text-center mt-4 md:mt-0"
+          className="relative z-20 w-full max-w-3xl flex flex-col items-center md:items-start text-center md:text-left"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -175,7 +120,7 @@ export default function HeroSection() {
 
           <motion.div
             variants={fadeUpVariants}
-            className="mb-5 md:mb-6 flex justify-center w-full mt-4 lg:mt-0"
+            className="mb-2 md:mb-4 flex justify-center md:justify-start w-full mt-0 lg:mt-0"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50/50 dark:bg-card backdrop-blur-sm border border-blue-100/60 dark:border-border rounded-full shadow-sm hover:bg-blue-100/40 dark:hover:bg-slate-800 transition-colors">
               <span className="flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[10px] md:text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
@@ -189,23 +134,47 @@ export default function HeroSection() {
 
           <motion.div
             variants={fadeUpVariants}
-            className="mb-3 md:mb-8 w-full"
+            className="mb-3 md:mb-6 w-full"
           >
             <DynamicTextSwap />
           </motion.div>
 
           <motion.p
             variants={fadeUpVariants}
-            className="text-slate-500 dark:text-muted-foreground text-sm md:text-base lg:text-lg leading-relaxed mb-5 md:mb-10 max-w-[600px]"
+            className="text-slate-600 dark:text-slate-300 text-sm md:text-[17px] lg:text-[18px] leading-[1.7] mb-4 md:mb-8 w-full max-w-[480px] font-medium text-center md:text-left"
           >
-            Ruang aman untuk setiap ceritamu. Konseling <br className="hidden md:block" />
-            bersama konselor &amp; psikolog klinis profesional.
+            Ruang aman untuk setiap ceritamu. Konseling bersama konselor &amp; psikolog klinis profesional yang siap mendengar tanpa menghakimi.
           </motion.p>
 
-          <motion.div variants={fadeUpVariants} className="flex flex-row gap-3 md:gap-4 justify-center w-full">
+          {/* Social Proof (Moved Above CTA) */}
+          <motion.div variants={fadeUpVariants} className="mb-6 md:mb-10 flex flex-col md:flex-row items-center justify-center md:justify-start gap-2 md:gap-4 w-full">
+            <div className="flex items-center -space-x-4">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-white dark:border-slate-900 bg-slate-100 overflow-hidden shadow-sm">
+                  <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 20}`} alt="User" className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-col items-center md:items-start gap-1 md:gap-0.5 text-center md:text-left">
+              <div className="flex items-center gap-1 mb-0.5">
+                <div className="flex items-center gap-0.5">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <svg key={i} className="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <span className="text-xs md:text-sm font-bold text-slate-800 dark:text-white ml-1">4.9/5</span>
+              </div>
+              <span className="text-[11px] md:text-xs text-slate-600 dark:text-slate-300 font-medium">Bergabung dengan 10.000+ orang yang sudah bercerita</span>
+            </div>
+          </motion.div>
+
+          {/* CTA Buttons */}
+          <motion.div variants={fadeUpVariants} className="flex flex-row items-center gap-3 md:gap-4 justify-center md:justify-start w-full">
             <Link
               href="/konsultasi"
-              className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-6 py-2.5 md:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-sm md:text-base shadow-[0_8px_30px_rgba(37,99,235,0.25)] hover:shadow-[0_12px_40px_rgba(37,99,235,0.35)] transition-all duration-300 hover:-translate-y-1 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-5 md:px-7 py-3 md:py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-sm md:text-base shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-1 whitespace-nowrap"
             >
               Mulai Konseling
               <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -214,39 +183,19 @@ export default function HeroSection() {
             </Link>
             <Link
               href="#cara-kerja"
-              className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-6 py-2.5 md:py-3 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-500 dark:text-muted-foreground hover:text-slate-800 dark:hover:text-foreground rounded-full font-bold text-sm md:text-base transition-all duration-300 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-1.5 md:gap-2 px-5 md:px-7 py-3 md:py-3.5 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md border border-blue-200 dark:border-white/20 hover:bg-white/80 dark:hover:bg-slate-800 text-blue-600 dark:text-blue-300 rounded-full font-bold text-sm md:text-base transition-all duration-300 hover:-translate-y-0.5 whitespace-nowrap"
             >
-              Panduan Sesi
+              Lihat Cara Kerja
             </Link>
           </motion.div>
 
-          <motion.div variants={fadeUpVariants} className="mt-6 md:mt-8 flex flex-col items-center justify-center gap-4">
-            <div className="flex flex-col items-center justify-center gap-2 md:gap-3">
-              <div className="flex items-center -space-x-2.5">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="w-7 h-7 md:w-8 md:h-8 rounded-full border-2 border-white dark:border-slate-800 bg-slate-100 dark:bg-slate-700 overflow-hidden">
-                    <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 20}`} alt="User" className="w-full h-full object-cover" />
-                  </div>
-                ))}
-              </div>
-              <div className="flex flex-col items-center justify-center gap-0.5 text-center">
-                <div className="flex items-center gap-1 mb-1">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                  <span className="text-xs font-bold text-slate-700 dark:text-foreground ml-1">4.9/5</span>
-                </div>
-                <span className="text-[11px] md:text-xs text-slate-500 dark:text-muted-foreground font-medium">Bergabung dengan 10.000+ orang yang sudah bercerita</span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-center gap-1.5 text-xs md:text-sm text-slate-400 font-medium">
-              <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          {/* Pricing Info (Moved Below CTA) */}
+          <motion.div variants={fadeUpVariants} className="mt-3 md:mt-4 flex flex-col items-center md:items-start justify-center md:justify-start w-full">
+            <div className="flex items-center justify-center md:justify-start gap-1.5 text-xs md:text-sm text-slate-500 dark:text-slate-300 font-medium w-full md:w-auto">
+              <svg className="w-4 h-4 text-emerald-500 dark:text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Harga reguler mulai dari <span className="text-blue-500 font-extrabold text-sm md:text-base">Rp20.000</span> / sesi
+              Mulai dari <span className="text-blue-600 dark:text-blue-300 font-bold">Rp20.000</span> per sesi
             </div>
           </motion.div>
         </motion.div>
@@ -258,7 +207,7 @@ export default function HeroSection() {
             icon: "🔒",
             title: "Privacy Protected",
             description: "Your conversations remain completely confidential.",
-            position: "top-[25%] lg:left-[-2%] xl:left-[2%]",
+            position: "top-[15%] lg:right-[8%] xl:right-[12%]",
             delay: 0.8,
             duration: 5.5
           },
@@ -266,8 +215,8 @@ export default function HeroSection() {
             id: 2,
             icon: "👩‍⚕️",
             title: "Professional Counselors",
-            description: "Guidance from experienced counselors and licensed psychologists.",
-            position: "top-[15%] lg:right-[-2%] xl:right-[2%]",
+            description: "Guidance from licensed psychologists.",
+            position: "top-[45%] lg:right-[1%] xl:right-[4%]",
             delay: 1.1,
             duration: 6.2
           },
@@ -276,7 +225,7 @@ export default function HeroSection() {
             icon: "💬",
             title: "Judgment-Free Space",
             description: "Share your story safely without fear of being judged.",
-            position: "bottom-[25%] lg:right-[2%] xl:right-[8%]",
+            position: "bottom-[12%] lg:right-[12%] xl:right-[18%]",
             delay: 1.4,
             duration: 5.8
           }
@@ -290,33 +239,28 @@ export default function HeroSection() {
           >
             <motion.div
               animate={prefersReducedMotion ? {} : { y: [0, -12, 0] }}
-              transition={{ 
-                repeat: Infinity, 
+              transition={{
+                repeat: Infinity,
                 duration: card.duration,
                 ease: "easeInOut",
                 delay: card.delay
               }}
               whileHover={{
                 y: -5,
-                boxShadow: "0 10px 30px -5px rgba(0,0,0,0.05)"
+                boxShadow: "0 25px 50px -12px rgba(30,58,138,0.15)"
               }}
-              className="bg-white dark:bg-card border border-slate-300 dark:border-white/30 rounded-[20px] shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(255,255,255,0.4)] p-3 md:p-4 w-[200px] xl:w-[220px] flex flex-col gap-1.5 transition-colors duration-300 cursor-default"
+              className="bg-white/80 dark:bg-slate-900/60 backdrop-blur-md border border-white/60 dark:border-white/10 rounded-[20px] shadow-2xl shadow-blue-900/5 p-4 md:p-5 w-[190px] xl:w-[210px] flex flex-col gap-2 transition-all duration-300 cursor-default"
             >
-              <div className="flex items-center gap-2">
-                <span className="text-xl leading-none">{card.icon}</span>
+              <div className="flex items-center gap-2 mb-0.5">
+                <span className="text-[22px] leading-none">{card.icon}</span>
                 <h4 className="font-bold text-slate-800 dark:text-foreground text-xs md:text-sm leading-tight">{card.title}</h4>
               </div>
-              <p className="text-slate-500 dark:text-muted-foreground text-[10px] md:text-[11px] leading-relaxed">{card.description}</p>
+              <p className="font-medium text-slate-500 dark:text-slate-400 text-[10px] md:text-xs leading-relaxed">{card.description}</p>
             </motion.div>
           </motion.div>
         ))}
 
-
-
       </div>
-
-      {/* Gradient fade to next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 lg:h-32 bg-gradient-to-b from-transparent to-white dark:to-background pointer-events-none z-10" />
     </section>
   )
 }
