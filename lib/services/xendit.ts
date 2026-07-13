@@ -62,3 +62,25 @@ export async function createXenditInvoice(data: XenditInvoiceRequest): Promise<X
 
   return response.json();
 }
+
+export async function getXenditInvoice(invoiceId: string): Promise<XenditInvoiceResponse> {
+  const apiKey = process.env.XENDIT_SECRET_KEY;
+  if (!apiKey) {
+    throw new Error("XENDIT_SECRET_KEY is not configured.");
+  }
+
+  const base64Auth = Buffer.from(`${apiKey}:`).toString("base64");
+
+  const response = await fetch(`https://api.xendit.co/v2/invoices/${invoiceId}`, {
+    method: "GET",
+    headers: {
+      "Authorization": `Basic ${base64Auth}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to get Xendit invoice: ${response.statusText}`);
+  }
+
+  return response.json();
+}

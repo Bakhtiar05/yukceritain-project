@@ -193,31 +193,7 @@ export async function submitBooking(data: BookingFormData) {
     const basePriceStr = process.env.NEXT_PUBLIC_CONSULTATION_BASE_PRICE || "20000";
     let amount = parseInt(basePriceStr, 10);
     
-    // Check for discount code
-    if (parsedData.discount_code) {
-      const { data: discount } = await supabase
-        .from("discount_codes")
-        .select("*")
-        .ilike("code", parsedData.discount_code)
-        .eq("is_active", true)
-        .single();
-        
-      if (discount) {
-        if (discount.max_uses === null || discount.current_uses < discount.max_uses) {
-          const discountAmount = Math.floor((amount * discount.discount_percentage) / 100);
-          amount = Math.max(0, amount - discountAmount);
-          
-          // Increment usage
-          const { error: rpcError } = await supabase.rpc('increment_discount_usage', { code_val: discount.code });
-          if (rpcError) {
-            // Fallback if RPC doesn't exist
-            await supabase.from("discount_codes")
-              .update({ current_uses: discount.current_uses + 1 })
-              .eq("id", discount.id);
-          }
-        }
-      }
-    }
+
     
     let appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://yukceritain.vercel.app";
     
@@ -228,62 +204,18 @@ export async function submitBooking(data: BookingFormData) {
     
     // External ID format INV-{requestNumber}-{timestamp}
     const externalId = `INV-${requestNumber}-${Date.now()}`;
-    
-    if (amount === 0) {
-      console.log("[submitBooking] Amount is 0 after discount, bypassing Xendit...");
-      
-      // Update db_status directly to Menunggu Verifikasi
-      await supabase
-        .from("consultation_requests")
-        .update({ db_status: "Menunggu Verifikasi" })
-        .eq("id", consultationRequestId);
-        
-      // Save dummy payment record
-      await supabase
-        .from("payments")
-        .insert({
-          consultation_request_id: consultationRequestId,
-          xendit_invoice_id: `FREE-${externalId}`,
-          external_id: `FREE-${externalId}`,
-          amount: 0,
-          payment_status: "PAID",
-          invoice_url: "-",
-          paid_at: new Date().toISOString(),
-          expired_at: new Date(Date.now() + 86400000).toISOString(), // +24h dummy
-        });
-        
-      console.log("[submitBooking] Free booking completed successfully for:", requestNumber);
-      return { success: true, requestNumber, invoiceUrl: null };
-    }
 
-    const invoiceReq = {
-      external_id: externalId,
-      amount: amount,
-      description: `Pembayaran Konsultasi ${requestNumber} (1 Jam)`,
-      customer: {
-        given_names: parsedData.nama_lengkap,
-        email: parsedData.email,
-        mobile_number: parsedData.nomor_hp,
-      },
-      success_redirect_url: `${appUrl}/booking/success?request_number=${requestNumber}`,
-      failure_redirect_url: `${appUrl}/booking/success?request_number=${requestNumber}`,
-    };
-
-    console.log("[submitBooking] Creating Xendit invoice...");
-    const invoice = await createXenditInvoice(invoiceReq);
-    console.log("[submitBooking] Xendit invoice created:", invoice.id);
-
-    // Save payment to database
+    // Save payment to database with PENDING status and dummy invoice details
     const { error: paymentError } = await supabase
       .from("payments")
       .insert({
         consultation_request_id: consultationRequestId,
-        xendit_invoice_id: invoice.id,
+        xendit_invoice_id: `PENDING-${externalId}`,
         external_id: externalId,
         amount: amount,
         payment_status: "PENDING",
-        invoice_url: invoice.invoice_url,
-        expired_at: invoice.expiry_date,
+        invoice_url: "-",
+        expired_at: new Date(Date.now() + 86400000).toISOString(), // +24h dummy until Xendit creates real expiry
       });
 
     if (paymentError) {
@@ -294,7 +226,7 @@ export async function submitBooking(data: BookingFormData) {
     }
 
     console.log("[submitBooking] All steps completed successfully for:", requestNumber);
-    return { success: true, requestNumber, invoiceUrl: invoice.invoice_url };
+    return { success: true, requestNumber, invoiceUrl: null };
   } catch (error: unknown) {
     console.error("[submitBooking] Booking submission error:", error);
     // Surface detailed error info for Zod validation errors
